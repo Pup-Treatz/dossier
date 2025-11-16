@@ -1331,6 +1331,39 @@
       transparent);
   }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#status-left,
+#status-right {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  #status-bar {
+    flex-wrap: wrap;
+  }
+
+  /* verhindert, dass der lange Text rechts alles nach außen schiebt */
+  #status-left span:last-child {
+    font-size: 0.7rem;
+  }
+
+  .hud-group {
+    flex-wrap: wrap;
+  }
+}
+
+#intro-overlay {
+  width: 100%;
+}
+
+.intro-scanline {
+  width: 100%;
+}
+
   </style>
 </head>
 <body>
@@ -2649,7 +2682,7 @@
     if (!overlay) return;
 
     // Dauer des Intros in Millisekunden (z.B. 2600–3200)
-    const INTRO_DURATION = 3000;
+    const INTRO_DURATION = 3500;
 
     setTimeout(function () {
       overlay.classList.add('intro-finish');
