@@ -1364,6 +1364,154 @@ html, body {
   width: 100%;
 }
 
+/* === WRAFF FORCE CUSTOM AUDIO PLAYER === */
+
+.audio-header {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #6fb8ff88;
+  border-bottom: 1px solid #1d2633;
+  padding-bottom: 4px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.audio-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 4px;
+}
+
+@media (min-width: 900px) {
+  .audio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.audio-card.wf-audio-card {
+  border-radius: 10px;
+  border: 1px solid #1d2633;
+  padding: 10px 12px 12px;
+  background: radial-gradient(circle at top left, #151b28 0, #090c12 55%, #05070a 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+}
+
+.audio-card.wf-audio-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(61,169,255,0.12), transparent 60%);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.audio-card.wf-audio-card.playing {
+  border-color: #3da9ff;
+  box-shadow: 0 0 14px rgba(61,169,255,0.45);
+  transform: translateY(-1px);
+}
+
+.audio-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #6fb8ff;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.audio-label .icon {
+  opacity: 0.6;
+  font-size: 11px;
+}
+
+.audio-card.wf-audio-card p.muted {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.wf-audio-ui {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  row-gap: 4px;
+  align-items: center;
+}
+
+.wf-audio-play {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid #3da9ff;
+  background: radial-gradient(circle at 30% 30%, #3da9ff33, #05070a 60%);
+  color: #e9f2ff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.wf-audio-play:hover {
+  box-shadow: 0 0 10px rgba(61,169,255,0.6);
+  transform: translateY(-1px);
+}
+
+.wf-audio-play:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.wf-audio-track {
+  grid-column: 2 / 3;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #111623;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.wf-audio-progress {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #3da9ff, #8ce3ff);
+  box-shadow: 0 0 10px rgba(61,169,255,0.7);
+  transition: width 0.1s linear;
+}
+
+.wf-audio-time {
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #a2a9bc;
+  opacity: 0.9;
+}
+
+.wf-audio {
+  /* echtes Audio-Element verstecken, aber im DOM lassen */
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -1813,6 +1961,67 @@ html, body {
               <li><strong>Level 2 – Treat Distribution:</strong> Authorized snack handlers only.</li>
               <li><strong>Level 3 – Secret Snack Stashes:</strong> Restricted to K-9 personnel and trusted humans.</li>
             </ul>
+      <h3>Official Anthems</h3>
+<p class="muted">
+  Authorized WRAFF FORCE themes for ceremonies, briefings and high-drama treat situations.
+</p>
+
+<div class="audio-header">CLASSIFIED AUDIO // CLEARANCE LEVEL 2+</div>
+
+<div class="audio-grid">
+  <!-- GRAND ANTHEM -->
+  <div class="audio-card wf-audio-card">
+    <div class="audio-label">
+      <span class="icon">▶</span>
+      WF-A01 // Grand Unit Anthem
+    </div>
+    <p class="muted">
+      Primary ceremonial anthem for flag moments, promotion rituals and approved slow-motion morale sequences.
+    </p>
+
+    <div class="wf-audio-ui">
+      <button class="wf-audio-play" type="button" aria-label="Play Grand Unit Anthem">
+        ▶
+      </button>
+      <div class="wf-audio-track">
+        <div class="wf-audio-progress"></div>
+      </div>
+      <div class="wf-audio-time">
+        <span class="wf-audio-current">0:00</span>
+        <span class="wf-audio-duration">0:00</span>
+      </div>
+    </div>
+
+    <audio class="wf-audio" src="wf_grand_anthem.mp3"></audio>
+  </div>
+
+  <!-- TACTICAL ANTHEM -->
+  <div class="audio-card wf-audio-card">
+    <div class="audio-label">
+      <span class="icon">▶</span>
+      WF-A02 // Tactical Deployment Anthem
+    </div>
+    <p class="muted">
+      Tactical field theme for mission briefings, gear checks and dramatic corridor walk-ins.
+    </p>
+
+    <div class="wf-audio-ui">
+      <button class="wf-audio-play" type="button" aria-label="Play Tactical Deployment Anthem">
+        ▶
+      </button>
+      <div class="wf-audio-track">
+        <div class="wf-audio-progress"></div>
+      </div>
+      <div class="wf-audio-time">
+        <span class="wf-audio-current">0:00</span>
+        <span class="wf-audio-duration">0:00</span>
+      </div>
+    </div>
+
+    <audio class="wf-audio" src="wf_tactical_anthem.mp3"></audio>
+  </div>
+</div>
+
           </section>
 
           <!-- PANEL 6: INCIDENTS -->
@@ -2363,6 +2572,69 @@ html, body {
               <li><strong>Level 2 – Treat Distribution:</strong> Autorisierte Snack-Handler only.</li>
               <li><strong>Level 3 – Secret Snack Stashes:</strong> Nur für K-9 Personnel und sehr vertrauenswürdige Humans.</li>
             </ul>
+            <h3>Offizielle Hymnen</h3>
+<p class="muted">
+  Von der WRAFF FORCE freigegebene Themes für Zeremonien, Briefings und dramatische Treat-Momente.
+</p>
+
+<div class="audio-header">CLASSIFIED AUDIO // CLEARANCE LEVEL 2+</div>
+
+<div class="audio-grid">
+  <!-- GRAND ANTHEM -->
+  <div class="audio-card wf-audio-card">
+    <div class="audio-label">
+      <span class="icon">▶</span>
+      WF-A01 // Grand Unit Anthem
+    </div>
+    <p class="muted">
+      Zeremonielle Haupt-Hymne für Flaggenmomente, Beförderungsprotokolle und genehmigte Slow-Motion-Morale-Sequenzen.
+    </p>
+
+    <div class="wf-audio-ui">
+      <button class="wf-audio-play" type="button" aria-label="Play Grand Unit Anthem">
+        ▶
+      </button>
+      <div class="wf-audio-track">
+        <div class="wf-audio-progress"></div>
+      </div>
+      <div class="wf-audio-time">
+        <span class="wf-audio-current">0:00</span>
+        <span class="wf-audio-duration">0:00</span>
+      </div>
+    </div>
+
+    <!-- echtes Audio-Element, aber hidden gesteuert -->
+    <audio class="wf-audio" src="wf_grand_anthem.mp3"></audio>
+  </div>
+
+  <!-- TACTICAL ANTHEM -->
+  <div class="audio-card wf-audio-card">
+    <div class="audio-label">
+      <span class="icon">▶</span>
+      WF-A02 // Tactical Deployment Anthem
+    </div>
+    <p class="muted">
+      Taktisches Field-Theme für Einsatzbesprechungen, Gear-Checks und strategische Hero-Walks im Flur.
+    </p>
+
+    <div class="wf-audio-ui">
+      <button class="wf-audio-play" type="button" aria-label="Play Tactical Deployment Anthem">
+        ▶
+      </button>
+      <div class="wf-audio-track">
+        <div class="wf-audio-progress"></div>
+      </div>
+      <div class="wf-audio-time">
+        <span class="wf-audio-current">0:00</span>
+        <span class="wf-audio-duration">0:00</span>
+      </div>
+    </div>
+
+    <audio class="wf-audio" src="wf_tactical_anthem.mp3"></audio>
+  </div>
+</div>
+
+
           </section>
 
           <!-- PANEL 6: INCIDENTS -->
@@ -2766,6 +3038,83 @@ html, body {
     <button type="button" id="manual-overlay-close">Understood</button>
   </div>
 </div>
+
+<script>
+  (function() {
+    const cards = document.querySelectorAll('.wf-audio-card');
+    const allAudios = [];
+
+    function formatTime(sec) {
+      if (!isFinite(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      let s = Math.floor(sec % 60);
+      if (s < 10) s = "0" + s;
+      return m + ":" + s;
+    }
+
+    // Erstes Setup
+    cards.forEach(card => {
+      const audio = card.querySelector('.wf-audio');
+      const btn = card.querySelector('.wf-audio-play');
+      const track = card.querySelector('.wf-audio-track');
+      const progress = card.querySelector('.wf-audio-progress');
+      const curEl = card.querySelector('.wf-audio-current');
+      const durEl = card.querySelector('.wf-audio-duration');
+
+      if (!audio || !btn || !track || !progress) return;
+      allAudios.push(audio);
+
+      audio.addEventListener('loadedmetadata', () => {
+        durEl.textContent = formatTime(audio.duration);
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        const pct = audio.currentTime / (audio.duration || 1);
+        progress.style.width = (pct * 100) + "%";
+        curEl.textContent = formatTime(audio.currentTime);
+      });
+
+      audio.addEventListener('play', () => {
+        // alle anderen stoppen
+        allAudios.forEach(a => {
+          if (a !== audio) {
+            a.pause();
+          }
+        });
+        cards.forEach(c => c.classList.remove('playing'));
+        card.classList.add('playing');
+        btn.textContent = "❚❚";
+      });
+
+      audio.addEventListener('pause', () => {
+        card.classList.remove('playing');
+        btn.textContent = "▶";
+      });
+
+      audio.addEventListener('ended', () => {
+        card.classList.remove('playing');
+        btn.textContent = "▶";
+        progress.style.width = "0%";
+        curEl.textContent = "0:00";
+      });
+
+      btn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+
+      track.addEventListener('click', (ev) => {
+        const rect = track.getBoundingClientRect();
+        const x = ev.clientX - rect.left;
+        const pct = x / rect.width;
+        audio.currentTime = pct * (audio.duration || 0);
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
