@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WRAFF FORCE – Central Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg-main: #05070a;
+      --bg-panel: rgba(15, 20, 30, 0.96);
+      --accent: #42c7ff;
+      --accent-soft: #2a9bd1;
+      --accent-danger: #ff4f6a;
+      --text-main: #d7e7ff;
+      --text-muted: #7e8ba3;
+      --border-soft: #1c2738;
+      --radius-panel: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #101626 0, #05070a 40%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 32px;
+    }
+
+    .page-wrap {
+      width: 100%;
+      max-width: 1100px;
+      background: radial-gradient(circle at top left, #151b28 0, #090c12 55%, #05070a 100%);
+      border-radius: 14px;
+      border: 1px solid #151e2b;
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.5),
+        0 40px 80px rgba(0,0,0,0.7);
+      padding: 20px 22px 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(66,199,255,0.14), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .page-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* TOP HUD */
+    .top-hud {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff15 0, #111827 48%, #020308 100%);
+      border: 1px solid #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo img {
+      width: 90%;
+      height: auto;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.7));
+    }
+
+    .title-block h1 {
+      font-size: 18px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #a9d5ff;
+    }
+
+    .title-block p {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      padding: 2px;
+      background: #050811;
+      gap: 2px;
+    }
+
+    .lang-toggle button {
+      border: none;
+      border-radius: 999px;
+      padding: 5px 11px 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: 0.15s;
+    }
+
+    .lang-toggle button.active {
+      background: linear-gradient(135deg, #2b3d5b, #192436);
+      color: #e5f3ff;
+      box-shadow: 0 0 0 1px rgba(66,199,255,0.35), 0 0 16px rgba(20,180,255,0.4);
+    }
+
+    /* Back link */
+    .back-link {
+      margin-bottom: 14px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .back-link span {
+      font-size: 13px;
+      transform: translateY(0.5px);
+    }
+
+    .back-link:hover {
+      color: #cfe5ff;
+    }
+
+    /* Sections */
+    .lang {
+      display: none;
+    }
+    .lang.active {
+      display: block;
+    }
+
+    .section {
+      margin-top: 18px;
+      margin-bottom: 18px;
+      border-radius: var(--radius-panel);
+      border: 1px solid var(--border-soft);
+      background: var(--bg-panel);
+      padding: 16px 18px 18px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .section-tag {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .section p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    .section p.muted {
+      color: var(--text-muted);
+    }
+
+    .section + .section {
+      margin-top: 16px;
+    }
+
+    /* Layout helpers */
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 16px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .page-wrap {
+        padding: 18px 14px 24px;
+      }
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .top-hud {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-left {
+        width: 100%;
+      }
+    }
+
+    .list-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 800px) {
+      .list-grid--two {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+    }
+
+    .chip-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      margin-bottom: 4px;
+    }
+
+    .highlight {
+      color: #f7fbff;
+      font-weight: 500;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    ul li + li {
+      margin-top: 4px;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    /* Anthem cards */
+    .audio-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 800px) {
+      .audio-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+    }
+
+    .audio-card {
+      border-radius: 9px;
+      border: 1px solid #1d2633;
+      background: radial-gradient(circle at top left, #151b28 0, #090c12 55%, #05070a 100%);
+      padding: 10px 12px 12px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+    }
+
+    .audio-title {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #8cc7ff;
+      margin-bottom: 4px;
+    }
+
+    .audio-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .wf-audio-ui {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wf-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid #2a3a55;
+      background: #0e141f;
+      color: #e5f2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .wf-btn:hover {
+      background: #162233;
+      box-shadow: 0 0 10px rgba(66,199,255,0.5);
+    }
+
+    .wf-bar-wrap {
+      flex: 1;
+      height: 6px;
+      border-radius: 4px;
+      background: #1a2536;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .wf-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #42c7ff, #b9ff4f);
+      transition: width 0.1s linear;
+    }
+
+    .audio-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    /* Treat Alert */
+    .alert-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 720px) {
+      .alert-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .alert-card {
+      border-radius: 8px;
+      border: 1px solid #1d2633;
+      background: #05070e;
+      padding: 8px 10px 9px;
+    }
+
+    .alert-level {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      margin-bottom: 3px;
+    }
+
+    .alert-text {
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .alert-card--high {
+      border-color: #ff4f6a;
+      box-shadow: 0 0 0 1px rgba(255,79,106,0.35);
+    }
+
+    .alert-card--high .alert-level {
+      color: #ffabb8;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 16px;
+      font-size: 10px;
+      text-align: right;
+      color: var(--text-muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="page-inner">
+      <header class="top-hud">
+        <div class="top-left">
+          <div class="logo">
+            <img src="Logo_trs.png" alt="WRAFF FORCE Logo">
+          </div>
+          <div class="title-block">
+            <h1>WRAFF FORCE CENTRAL TERMINAL</h1>
+            <p>TACTICAL K-9 AGENCY OVERVIEW</p>
+          </div>
+        </div>
+
+        <div class="lang-toggle">
+          <button type="button" data-lang="en" class="active">EN</button>
+          <button type="button" data-lang="de">DE</button>
+        </div>
+      </header>
+
+      <a class="back-link" href="dossier.html">
+        <span>⟵</span>
+        <span>BACK TO OPERATOR DOSSIER</span>
+      </a>
+
+      <!-- ENGLISH VERSION -->
+      <div id="lang-en" class="lang active">
+        <!-- Agency History -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">AGENCY HISTORY</div>
+            <div class="section-tag">OVERVIEW</div>
+          </div>
+          <p>
+            WRAFF FORCE was established as a fictional K-9 task agency to address a growing gap
+            in global snack security and morale operations. Early field tests showed a significant
+            correlation between stable treat supply and mission success – as well as tail-wag
+            frequency.
+          </p>
+          <p style="margin-top:8px;">
+            Over time, WRAFF FORCE expanded from living-room perimeter patrols to full hallway
+            coverage, couch-border control and high-priority cuddle zones. Today, the agency
+            operates wherever snacks are stored under suspiciously flimsy protection.
+          </p>
+        </section>
+
+        <!-- Divisions + Operatives -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">STRUCTURE & PERSONNEL</div>
+            <div class="section-tag">DIVISIONS · OPERATIVES</div>
+          </div>
+
+          <div class="two-col">
+            <!-- Divisions -->
+            <div>
+              <div class="chip-label">Operational Divisions</div>
+              <ul>
+                <li>
+                  <strong>Recon Unit – “Eyes on the Floor”</strong><br>
+                  Silent hallway patrols, couch-edge surveillance and early detection of falling crumbs.
+                </li>
+                <li>
+                  <strong>Snack Ops – “Treat Response Team”</strong><br>
+                  Rapid deployment to unsecured food sources, counter-snack operations and controlled sit–stay maneuvers.
+                </li>
+                <li>
+                  <strong>Treat Logistics – “Supply &amp; Distribution”</strong><br>
+                  Handling, transport and fair allocation of treats. Monitors stock levels and investigates mysteriously empty packages.
+                </li>
+                <li>
+                  <strong>Cuddle Command – “Morale Core”</strong><br>
+                  Responsible for tactical cuddling, emotional de-escalation and scheduled belly-rub sessions.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Operatives -->
+            <div>
+              <div class="chip-label">Registered K-9 Operatives</div>
+              <ul>
+                <li>
+                  <strong>09-K9-OPS – Paw-tenant “Puppy Treatz”</strong><br>
+                  Primary field operative and face of the WRAFF FORCE program. Specializes in high-visibility presence,
+                  tactical engagement in social environments and cross-unit morale boosting. Clearance:
+                  <span class="highlight">WRAFF-ALPHA-CLASSIFIED</span>.
+                </li>
+                <li>
+                  <strong>Agent Biscuit – Recon &amp; Crumb Intelligence</strong><br>
+                  Expert in locating micro-snack fragments under furniture and along baseboards.
+                </li>
+                <li>
+                  <strong>Sergeant Zoomie – Rapid Response &amp; Corridor Patrol</strong><br>
+                  Handles high-speed deployments, hallway sprints and circular zoomie maneuvers on short notice.
+                </li>
+                <li>
+                  <strong>Captain Wiggle – Tail-Based Communication Officer</strong><br>
+                  Responsible for wag-based status signaling and group hype protocols.
+                </li>
+                <li>
+                  <strong>Lieutenant Snorf – Pillow Security &amp; Nap Operations</strong><br>
+                  Oversees soft-surface security and coordinated nap drills during low-alert phases.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Treat Alert System -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">TREAT ALERT SYSTEM</div>
+            <div class="section-tag">THREAT LEVELS</div>
+          </div>
+          <p class="muted">
+            The Treat Alert System indicates the current strategic relevance of snacks within the
+            operational area.
+          </p>
+
+          <div class="alert-grid">
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 0 – DORMANT CRUMBS</div>
+              <div class="alert-text">
+                No active treats detected. Routine patrols only.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 1 – VISIBLE SNACK ACTIVITY</div>
+              <div class="alert-text">
+                Open snack packages observed in human custody. Increased vigilance recommended.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 2 – UNATTENDED TREAT SCENARIO</div>
+              <div class="alert-text">
+                Snacks temporarily left without direct supervision. High temptation, strict protocol required.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 3 – FLOOR-LEVEL IMPACT EVENT</div>
+              <div class="alert-text">
+                Treat has reached ground level. Immediate response authorized under sit–stay conditions.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 4 – MULTI-TREAT SPILL</div>
+              <div class="alert-text">
+                Multiple units scattered. Coordinated retrieval operations in effect.
+              </div>
+            </div>
+            <div class="alert-card alert-card--high">
+              <div class="alert-level">LEVEL 5 – FULL BAG COMPROMISE</div>
+              <div class="alert-text">
+                Entire treat container breached. All units on deck. Self-control at maximum priority.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- HQ Regulations -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">HQ REGULATIONS</div>
+            <div class="section-tag">INTERNAL PROTOCOLS</div>
+          </div>
+
+          <ul>
+            <li>
+              <strong>Regulation 01 – Corridor Conduct</strong><br>
+              Uncontrolled zoomies are restricted to designated zoomie lanes. Collisions with humans
+              carrying hot beverages are to be avoided at all costs.
+            </li>
+            <li>
+              <strong>Regulation 02 – Treat Handling Protocol</strong><br>
+              No operative may self-approve treat access. All snacks require human authorization,
+              even if clearly mislaid on the coffee table.
+            </li>
+            <li>
+              <strong>Regulation 03 – Vocalization Policy</strong><br>
+              Barking is permitted for security-relevant events only: doorbells, suspicious noises and
+              the sound of treat bags. Excessive commentary on passing leaves or imaginary threats
+              is discouraged.
+            </li>
+            <li>
+              <strong>Regulation 04 – Couch Occupation Rights</strong><br>
+              Shared couch usage must follow the “One Paw Width” rule. Gradual expansion into human
+              territory is allowed if no objection is raised.
+            </li>
+            <li>
+              <strong>Regulation 05 – Cuddle Priority</strong><br>
+              During low-alert phases, cuddle requests from trusted humans have priority status.
+              Operations may be temporarily paused for belly-rub objectives.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Anthem Hall -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">ANTHEM HALL</div>
+            <div class="section-tag">OFFICIAL AUDIO FILES</div>
+          </div>
+          <p class="muted">
+            The following audio files are classified as officially recognized WRAFF FORCE anthems.
+            Use during ceremonies, briefings and dramatic slow-motion corridor walks only.
+          </p>
+
+          <div class="audio-grid">
+            <div class="audio-card">
+              <div class="audio-title">WF-A01 // GRAND UNIT ANTHEM</div>
+              <div class="audio-desc">
+                Ceremonial main theme for flag moments, promotions and epic slow-motion tail sways.
+              </div>
+              <audio id="grand-en" src="wf_grand_anthem.mp3"></audio>
+              <div class="wf-audio-ui" data-audio="grand-en">
+                <button type="button" class="wf-btn">▶</button>
+                <div class="wf-bar-wrap">
+                  <div class="wf-bar"></div>
+                </div>
+              </div>
+              <div class="audio-meta">Classification: Clearance Level 2+</div>
+            </div>
+
+            <div class="audio-card">
+              <div class="audio-title">WF-A02 // TACTICAL DEPLOYMENT ANTHEM</div>
+              <div class="audio-desc">
+                Field theme for mission briefings, gear checks and synchronized team strides through
+                narrow hallways.
+              </div>
+              <audio id="tactical-en" src="wf_tactical_anthem.mp3"></audio>
+              <div class="wf-audio-ui" data-audio="tactical-en">
+                <button type="button" class="wf-btn">▶</button>
+                <div class="wf-bar-wrap">
+                  <div class="wf-bar"></div>
+                </div>
+              </div>
+              <div class="audio-meta">Classification: Clearance Level 2+</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Link back to dossier -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">LINKED RECORDS</div>
+            <div class="section-tag">OPERATOR DOSSIER</div>
+          </div>
+          <p>
+            This terminal is linked to the active dossier of operative 09-K9-OPS. For detailed
+            behavioral analysis, mission logs and incident reports, access the personal file via:
+          </p>
+          <p style="margin-top:10px;">
+            <a href="dossier.html" class="back-link">
+              <span>⟵</span>
+              <span>OPEN OPERATOR DOSSIER 09-K9-OPS</span>
+            </a>
+          </p>
+        </section>
+      </div>
+
+      <!-- GERMAN VERSION -->
+      <div id="lang-de" class="lang">
+        <!-- Agency History -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">AGENTURGESCHICHTE</div>
+            <div class="section-tag">ÜBERBLICK</div>
+          </div>
+          <p>
+            Die WRAFF FORCE wurde als fiktive K-9 Task Force gegründet, um eine wachsende Lücke in
+            der globalen Snack-Sicherheit und den Moral-Operationen zu schließen. Erste Feldtests
+            zeigten einen deutlichen Zusammenhang zwischen stabiler Leckerli-Versorgung und
+            Missions­erfolg – sowie der Frequenz des Schwanzwedelns.
+          </p>
+          <p style="margin-top:8px;">
+            Mit der Zeit dehnte die WRAFF FORCE ihren Einsatzbereich von der Wohnzimmer-Perimeter­
+            überwachung auf vollständige Flurkontrolle, Sofa-Grenzschutz und hochpriorisierte
+            Kuschelzonen aus. Heute operiert die Einheit überall dort, wo Snacks unter verdächtig
+            lockerer Sicherung gelagert werden.
+          </p>
+        </section>
+
+        <!-- Divisions + Operatives -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">STRUKTUR & PERSONAL</div>
+            <div class="section-tag">DIVISIONEN · OPERATIVES</div>
+          </div>
+
+          <div class="two-col">
+            <!-- Divisions -->
+            <div>
+              <div class="chip-label">Einsatzdivisionen</div>
+              <ul>
+                <li>
+                  <strong>Recon Unit – „Eyes on the Floor“</strong><br>
+                  Lautlose Flurpatrouillen, Sofa-Kanten-Überwachung und Früherkennung von
+                  herunterfallenden Krümeln.
+                </li>
+                <li>
+                  <strong>Snack Ops – „Treat Response Team“</strong><br>
+                  Schnelle Verlegung zu ungesicherten Nahrungsquellen, Gegen-Snack-Operationen und
+                  kontrollierte Sitz–Platz-Manöver.
+                </li>
+                <li>
+                  <strong>Treat Logistics – „Supply &amp; Distribution“</strong><br>
+                  Annahme, Transport und gerechte Verteilung von Leckerlis. Überwacht Bestände und
+                  untersucht mysteriös geleerte Verpackungen.
+                </li>
+                <li>
+                  <strong>Cuddle Command – „Morale Core“</strong><br>
+                  Zuständig für taktisches Kuscheln, emotionale Deeskalation und planmäßige
+                  Bauchrubbel-Sessions.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Operatives -->
+            <div>
+              <div class="chip-label">Registrierte K-9 Operatives</div>
+              <ul>
+                <li>
+                  <strong>09-K9-OPS – Paw-tenant „Puppy Treatz“</strong><br>
+                  Primärer Feldeinsatz-Operative und sichtbares Gesicht des WRAFF FORCE Programms.
+                  Spezialisiert auf hochsichtbare Präsenz, taktische Einbindung in sozialen Umgebungen
+                  und einheitenübergreifende Moralanhebung. Clearance:
+                  <span class="highlight">WRAFF-ALPHA-CLASSIFIED</span>.
+                </li>
+                <li>
+                  <strong>Agent Biscuit – Recon &amp; Crumb Intelligence</strong><br>
+                  Spezialist für das Aufspüren von Mikro-Snackfragmenten unter Möbeln und entlang
+                  von Fußleisten.
+                </li>
+                <li>
+                  <strong>Sergeant Zoomie – Rapid Response &amp; Corridor Patrol</strong><br>
+                  Zuständig für Hochgeschwindigkeits-Einsätze, Flur-Sprints und spontane
+                  Zoomie-Manöver.
+                </li>
+                <li>
+                  <strong>Captain Wiggle – Tail-Based Communication Officer</strong><br>
+                  Verantwortlich für nonverbale Schwanz-Wedel-Signale und gruppenweite
+                  Hype-Protokolle.
+                </li>
+                <li>
+                  <strong>Lieutenant Snorf – Pillow Security &amp; Nap Operations</strong><br>
+                  Überwacht die Sicherheit weicher Unterlagen und koordiniert Nickerchen-Drills in
+                  Phasen niedriger Alarmstufe.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Treat Alert System -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">TREAT-ALARMSTUFEN</div>
+            <div class="section-tag">BEDROHUNGSLAGE</div>
+          </div>
+          <p class="muted">
+            Das Treat-Alarmstufensystem zeigt die aktuelle strategische Relevanz von Snacks im
+            Einsatzgebiet an.
+          </p>
+
+          <div class="alert-grid">
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 0 – RUHENDE KRÜMEL</div>
+              <div class="alert-text">
+                Keine aktiven Treats detektiert. Nur Routinepatrouillen.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 1 – SICHTBARE SNACK-AKTIVITÄT</div>
+              <div class="alert-text">
+                Geöffnete Snack-Verpackungen in Menschenhand. Erhöhte Wachsamkeit empfohlen.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 2 – UNBEAUFSICHTIGTES TREAT-SZENARIO</div>
+              <div class="alert-text">
+                Snacks wurden vorübergehend ohne direkte Aufsicht zurückgelassen. Hohe Versuchung,
+                strenge Protokolle erforderlich.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 3 – BODENKONTAKT-EREIGNIS</div>
+              <div class="alert-text">
+                Treat hat Bodenniveau erreicht. Sofortige Reaktion unter Sitz–Bleib-Bedingungen
+                autorisiert.
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-level">LEVEL 4 – MULTI-TREAT-STREUUNG</div>
+              <div class="alert-text">
+                Mehrere Einheiten verteilt. Koordinierte Rückholoperationen aktiv.
+              </div>
+            </div>
+            <div class="alert-card alert-card--high">
+              <div class="alert-level">LEVEL 5 – VOLLSTÄNDIGE BEUTELKOMPROMITTIERUNG</div>
+              <div class="alert-text">
+                Kompletter Snackbehälter kompromittiert. Alle Einheiten auf Position.
+                Selbstbeherrschung höchste Priorität.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- HQ Regulations -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">HQ-REGULARIEN</div>
+            <div class="section-tag">INTERNES PROTOKOLL</div>
+          </div>
+
+          <ul>
+            <li>
+              <strong>Regel 01 – Flurverhalten</strong><br>
+              Unkontrollierte Zoomies sind auf ausgewiesene Zoomie-Spuren beschränkt. Kollisionen mit
+              Menschen, die heiße Getränke tragen, sind unter allen Umständen zu vermeiden.
+            </li>
+            <li>
+              <strong>Regel 02 – Treat-Handling-Protokoll</strong><br>
+              Kein Operative darf Treat-Zugriff eigenständig freigeben. Alle Snacks erfordern eine
+              menschliche Autorisierung – selbst wenn sie offensichtlich unbeaufsichtigt auf dem
+              Couchtisch liegen.
+            </li>
+            <li>
+              <strong>Regel 03 – Vokalisierungsrichtlinie</strong><br>
+              Bellen ist nur bei sicherheitsrelevanten Ereignissen zugelassen: Türklingeln,
+              verdächtige Geräusche und das Rascheln von Treat-Tüten. Übermäßiger Kommentar zu
+              vorbeifliegenden Blättern oder imaginären Bedrohungen ist unerwünscht.
+            </li>
+            <li>
+              <strong>Regel 04 – Sofa-Belegungsrecht</strong><br>
+              Gemeinsame Sofanutzung erfolgt nach der „Eine-Pfote-Abstand“-Regel. Eine schrittweise
+              Expansion in den menschlichen Bereich ist zulässig, sofern kein Widerspruch erfolgt.
+            </li>
+            <li>
+              <strong>Regel 05 – Cuddle-Priorität</strong><br>
+              In Phasen niedriger Alarmstufe haben Kuschelanfragen vertrauenswürdiger Menschen
+              Priorität. Laufende Operationen dürfen zugunsten von Bauchrubbel-Zielen kurzfristig
+              unterbrochen werden.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Anthem Hall -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">ANTHEM-HALLE</div>
+            <div class="section-tag">OFFIZIELLE AUDIOS</div>
+          </div>
+          <p class="muted">
+            Die folgenden Audiodateien sind als offiziell anerkannte Hymnen der WRAFF FORCE
+            klassifiziert. Einsatz nur bei Zeremonien, Briefings und dramatischen
+            Slow-Motion-Flurwalks.
+          </p>
+
+          <div class="audio-grid">
+            <div class="audio-card">
+              <div class="audio-title">WF-A01 // GRAND UNIT ANTHEM</div>
+              <div class="audio-desc">
+                Zeremonielle Haupthymne für Flaggenmomente, Beförderungen und episches
+                Schwanzwedeln in Zeitlupe.
+              </div>
+              <audio id="grand-de" src="wf_grand_anthem.mp3"></audio>
+              <div class="wf-audio-ui" data-audio="grand-de">
+                <button type="button" class="wf-btn">▶</button>
+                <div class="wf-bar-wrap">
+                  <div class="wf-bar"></div>
+                </div>
+              </div>
+              <div class="audio-meta">Klassifizierung: Clearance Level 2+</div>
+            </div>
+
+            <div class="audio-card">
+              <div class="audio-title">WF-A02 // TACTICAL DEPLOYMENT ANTHEM</div>
+              <div class="audio-desc">
+                Einsatz-Theme für Einsatzbesprechungen, Gear-Checks und synchronisierte
+                Team-Schritte durch enge Flure.
+              </div>
+              <audio id="tactical-de" src="wf_tactical_anthem.mp3"></audio>
+              <div class="wf-audio-ui" data-audio="tactical-de">
+                <button type="button" class="wf-btn">▶</button>
+                <div class="wf-bar-wrap">
+                  <div class="wf-bar"></div>
+                </div>
+              </div>
+              <div class="audio-meta">Klassifizierung: Clearance Level 2+</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Link back to dossier -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title">ZUGRIFF & VERKNÜPFTE AKTEN</div>
+            <div class="section-tag">OPERATOR-DOSSIER</div>
+          </div>
+          <p>
+            Dieses Terminal ist mit der aktiven Akte des Operatives 09-K9-OPS verknüpft. Für
+            detaillierte Verhaltensanalysen, Missionsprotokolle und Vorkommensberichte rufe die
+            Personalakte auf über:
+          </p>
+          <p style="margin-top:10px;">
+            <a href="dossier.html" class="back-link">
+              <span>⟵</span>
+              <span>OPERATOR-DOSSIER 09-K9-OPS ÖFFNEN</span>
+            </a>
+          </p>
+        </section>
+      </div>
+
+      <div class="footer">
+        WRAFF FORCE · CENTRAL TERMINAL · CLASSIFIED
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Language toggle with auto detection
+    const langButtons = document.querySelectorAll('.lang-toggle button');
+    const langContainers = {
+      en: document.getElementById('lang-en'),
+      de: document.getElementById('lang-de')
+    };
+
+    function setLanguage(lang) {
+      if (!langContainers[lang]) {
+        lang = 'en';
+      }
+      Object.entries(langContainers).forEach(([key, el]) => {
+        if (!el) return;
+        el.classList.toggle('active', key === lang);
+      });
+      langButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      try {
+        localStorage.setItem('wraff_central_lang', lang);
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+      });
+    });
+
+    // Initial language: storage or browser
+    (function initLang() {
+      let initial = 'en';
+      try {
+        const stored = localStorage.getItem('wraff_central_lang');
+        if (stored === 'en' || stored === 'de') {
+          initial = stored;
+        } else {
+          const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+          initial = navLang.startsWith('de') ? 'de' : 'en';
+        }
+      } catch (e) {
+        // ignore, keep default
+      }
+      setLanguage(initial);
+    })();
+
+    // Custom audio player logic (shared for EN + DE)
+    const audioUIs = document.querySelectorAll('.wf-audio-ui');
+
+    audioUIs.forEach(ui => {
+      const audioId = ui.dataset.audio;
+      const audio = document.getElementById(audioId);
+      if (!audio) return;
+
+      const btn = ui.querySelector('.wf-btn');
+      const barWrap = ui.querySelector('.wf-bar-wrap');
+      const bar = ui.querySelector('.wf-bar');
+
+      btn.addEventListener('click', () => {
+        if (audio.paused) {
+          // stop other players
+          document.querySelectorAll('audio').forEach(a => {
+            if (a !== audio) {
+              a.pause();
+              const otherUi = document.querySelector('.wf-audio-ui[data-audio=\"' + a.id + '\"] .wf-btn');
+              if (otherUi) otherUi.textContent = '▶';
+            }
+          });
+          audio.play();
+          btn.textContent = '⏸';
+        } else {
+          audio.pause();
+          btn.textContent = '▶';
+        }
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        if (!audio.duration) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        bar.style.width = pct + '%';
+      });
+
+      barWrap.addEventListener('click', (e) => {
+        const rect = barWrap.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pos * audio.duration;
+      });
+
+      audio.addEventListener('ended', () => {
+        btn.textContent = '▶';
+        bar.style.width = '0%';
+      });
+    });
+  </script>
+</body>
+</html>

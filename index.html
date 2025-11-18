@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TREATZ – SWAT K-9 Dossier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <title>WRAFF FORCE – Credential Verification Node</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WRAFF FORCE K-9 Division Credential Verification Node – QR based operator validation.">
   <style>
     :root {
-      --bg-main: #05070a;
-      --bg-panel: rgba(15, 20, 30, 0.95);
-      --bg-panel-soft: rgba(10, 14, 22, 0.9);
-      --accent: #42c7ff;
-      --accent-soft: #2a9bd1;
-      --accent-lime: #b9ff4f;
-      --accent-danger: #ff4f6a;
-      --border-subtle: rgba(255,255,255,0.08);
-      --text-main: #e6f1ff;
-      --text-muted: #8ea0c0;
-      --shadow-soft: 0 0 30px rgba(0,0,0,0.6);
+      --bg-main: #05070c;
+      --bg-panel: #0d111a;
+      --bg-panel-soft: #111725;
+      --accent: #39b6ff;
+      --accent-soft: rgba(57, 182, 255, 0.6);
+      --accent-strong: #18e0ff;
+      --danger: #ff4b81;
+      --success: #31f28c;
+      --text-main: #e3f0ff;
+      --text-muted: #7c8ba5;
+      --border-soft: #1a2333;
+      --shadow-soft: 0 0 40px rgba(0, 0, 0, 0.65);
       --radius-lg: 18px;
-      --radius-md: 12px;
-      --transition-fast: 0.18s ease-out;
-      --transition-med: 0.3s ease-out;
+      --radius-sm: 8px;
+      --transition-fast: 0.2s ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     * {
@@ -30,493 +31,159 @@
       padding: 0;
     }
 
-/* === WRAFF FORCE INTRO OVERLAY === */
-
-#intro-overlay {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at top, #141924 0, #050609 55%, #000 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  overflow: hidden;
-  transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
-}
-
-#intro-overlay.intro-hide {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.intro-inner {
-  position: relative;
-  text-align: center;
-  color: #e5f2ff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-/* Fake Scanline */
-.intro-scanline {
-  position: absolute;
-  top: -20%;
-  left: 0;
-  width: 100vw;
-  height: 8px;
-  background: linear-gradient(to right, transparent, #42c7ff, transparent);
-  opacity: 0.9;
-  filter: blur(0.5px);
-  animation: intro-scan 1.4s ease-out forwards;
-}
-
-@keyframes intro-scan {
-  0% { transform: translateY(-40vh); opacity: 0; }
-  15% { opacity: 0.9; }
-  100% { transform: translateY(60vh); opacity: 0; }
-}
-
-.intro-logo-wrapper {
-  margin-bottom: 18px;
-  animation: intro-logo-pop 0.8s ease-out 0.3s forwards;
-  opacity: 0;
-  transform: scale(0.85);
-}
-
-.intro-logo {
-  max-width: 180px;        /* Obergrenze Desktop */
-  width: 42vw;             /* skaliert mit Bildschirmbreite */
-  height: auto;            /* Schild bleibt im richtigen Verhältnis */
-  filter: drop-shadow(0 0 18px rgba(66, 199, 255, 0.6));
-}
-
-@media (max-width: 480px) {
-  .intro-inner {
-    padding: 0 16px;
-  }
-
-  .intro-logo {
-    max-width: 130px;
-    width: 50vw;
-  }
-
-  .intro-text-block {
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-  }
-
-  .intro-line-small {
-    font-size: 0.68rem;
-  }
-}
-
-
-@keyframes intro-logo-pop {
-  0% { opacity: 0; transform: scale(0.8); }
-  60% { opacity: 1; transform: scale(1.02); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-.intro-text-block {
-  font-size: 0.9rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  animation: intro-text-fade 0.5s ease-out 0.9s forwards;
-  opacity: 0;
-}
-
-@keyframes intro-text-fade {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.intro-line {
-  margin: 4px 0;
-}
-
-.intro-line-main {
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.intro-line-small {
-  font-size: 0.7rem;
-}
-
-.muted {
-  opacity: 0.7;
-}
-
-.accent {
-  color: #42c7ff;
-}
-
-/* Blinking cursor */
-.intro-cursor {
-  display: inline-block;
-  margin-left: 4px;
-  animation: intro-cursor-blink 0.8s steps(1, end) infinite;
-}
-
-@keyframes intro-cursor-blink {
-  0%, 50% { opacity: 1; }
-  50.1%, 100% { opacity: 0; }
-}
-
-/* Optional: leichte Zoom-Out-Wirkung für gesamtes Intro */
-#intro-overlay.intro-finish .intro-inner {
-  animation: intro-zoom-out 0.6s ease-out forwards;
-}
-
-@keyframes intro-zoom-out {
-  from { transform: scale(1); opacity: 1; }
-  to { transform: scale(0.96); opacity: 0.4; }
-}
-
+    html, body {
+      height: 100%;
+    }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #101626 0, #05070a 40%, #000 100%);
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top, #152033 0, #05070c 55%, #020308 100%);
       color: var(--text-main);
-      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1120px;
+      margin: 24px;
       display: flex;
       flex-direction: column;
+      gap: 18px;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; }
+    /* HEADER / TOPBAR */
 
-    /* STATUS BAR */
-
-    #status-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    .topbar {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 10px 18px;
-      background: linear-gradient(90deg, rgba(5,7,10,0.98), rgba(8,16,30,0.98));
-      border-bottom: 1px solid var(--border-subtle);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.55);
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(10, 17, 32, 0.9), rgba(7, 10, 20, 0.98));
+      border: 1px solid rgba(57, 182, 255, 0.32);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
     }
 
-    #status-bar.hud-flash {
-      box-shadow: 0 0 26px rgba(56,189,248,0.7);
-      transition: box-shadow var(--transition-fast);
-    }
-
-    #status-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #status-left span.badge {
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--accent-soft);
-      color: var(--accent);
-      font-size: 0.7rem;
-    }
-
-    #status-right {
+    .topbar-left {
       display: flex;
       align-items: center;
       gap: 14px;
+      min-width: 0;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
+    .logo-wrap {
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
-      background: var(--accent-lime);
-      box-shadow: 0 0 10px var(--accent-lime);
-      animation: pulse 1.8s infinite ease-out;
+      background: radial-gradient(circle at 30% 20%, #ffffff 0, #39b6ff 22%, #05070c 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px rgba(24, 224, 255, 0.65);
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-  .hud-group {
-    display: flex;
-    gap: 8px;
-    align-items: stretch;
-  }
+    .logo-wrap img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.9));
+    }
 
-  .hud-chip {
-    min-width: 80px;
-    border-radius: 999px;
-    padding: 4px 9px;
-    border: 1px solid rgba(148,163,184,0.4);
-    background:
-      radial-gradient(circle at top, rgba(15,23,42,0.98), rgba(15,23,42,0.9));
-    box-shadow: 0 0 12px rgba(15,23,42,0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+    .topbar-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
 
-  .hud-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
+    .topbar-title-main {
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
 
-  .hud-value {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--accent-soft);
-  }
+    .topbar-title-sub {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  .hud-chip.hud-mood .hud-value {
-    color: var(--accent-lime);
-  }
-
-  @media (max-width: 640px) {
-    #status-bar {
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       flex-wrap: wrap;
-      row-gap: 4px;
+      justify-content: flex-end;
     }
 
-    #status-right {
-      width: 100%;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .hud-group {
-      flex: 1;
-    }
-
-    .hud-chip {
-      flex: 1;
-    }
-  }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.6); opacity: 0.35; }
-      100% { transform: scale(1); opacity: 1; }
+    .session-pill {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(49, 242, 140, 0.75);
+      color: var(--success);
+      background: radial-gradient(circle, rgba(49, 242, 140, 0.15), transparent 70%);
     }
 
     .lang-toggle {
       display: inline-flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .lang-toggle-label {
-      font-size: 0.7rem;
-      opacity: 0.7;
-    }
-
-    .lang-toggle button {
       border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15,23,42,0.9);
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      padding: 3px 9px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform 0.08s ease-out;
-    }
-
-    .lang-toggle button.active {
-      background: radial-gradient(circle at top, rgba(66,199,255,0.45), rgba(15,23,42,1));
-      color: var(--text-main);
-      border-color: rgba(66,199,255,0.9);
-      box-shadow: 0 0 15px rgba(66,199,255,0.5);
-      transform: translateY(-1px);
-    }
-
-    /* LAYOUT WRAPPER */
-
-    #layout {
-      padding: 16px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      flex: 1;
-    }
-
-    .layout-grid {
-      display: grid;
-      grid-template-columns: 250px minmax(0, 1fr);
-      gap: 0;
-    }
-
-    @media (max-width: 900px) {
-      .layout-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-        row-gap: 12px;
-      }
-    }
-
-    /* LANGUAGE CONTAINERS */
-
-    .lang {
-      display: none;
-    }
-    .lang.active {
-      display: block;
-    }
-
-    /* SIDE NAV */
-
-    .side-nav {
-      background: radial-gradient(circle at top, #111827 0, #05070a 55%);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-soft);
-      padding: 16px 12px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .side-nav-header {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 0 4px 8px 4px;
-      border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: 6px;
-    }
-
-    .side-nav-header h1 {
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      color: var(--accent);
-    }
-
-    .side-nav-header p {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    .side-nav ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .side-nav li {
-      font-size: 0.8rem;
-      padding: 8px 10px;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      border: 1px solid transparent;
-      position: relative;
+      border: 1px solid rgba(57, 182, 255, 0.5);
       overflow: hidden;
-      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform 0.08s ease-out;
     }
 
-    .side-nav li::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(66,199,255,0.08), transparent);
-      opacity: 0;
-      transition: opacity var(--transition-fast);
+    .lang-btn {
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: background var(--transition-fast), color var(--transition-fast);
     }
 
-    .side-nav li span.label {
-      position: relative;
-      z-index: 1;
+    .lang-btn.active {
+      background: linear-gradient(135deg, rgba(24, 224, 255, 0.25), rgba(57, 182, 255, 0.12));
+      color: var(--accent-strong);
     }
 
-    .side-nav li span.code {
-      position: relative;
-      z-index: 1;
-      font-size: 0.68rem;
-      opacity: 0.6;
-      font-family: ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    /* MAIN GRID */
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
     }
 
-    .side-nav li:hover {
-      background: rgba(15,23,42,0.9);
-      color: var(--accent);
-      border-color: rgba(66,199,255,0.45);
-      transform: translateY(-1px);
-    }
-
-    .side-nav li:hover::before { opacity: 1; }
-
-    .side-nav li.active {
-      background: linear-gradient(135deg, rgba(66,199,255,0.16), rgba(8,47,73,0.9));
-      color: var(--text-main);
-      border-color: rgba(66,199,255,0.8);
-      box-shadow: 0 0 20px rgba(66,199,255,0.25);
-    }
-
-    .side-nav li.active span.code {
-      opacity: 1;
-      color: var(--accent-lime);
-    }
-
-  .side-nav li .label {
-    transition: transform 0.12s ease, text-shadow 0.12s ease;
-  }
-
-  .side-nav li:hover .label {
-    text-shadow:
-      1px -1px rgba(56,189,248,0.7),
-      -1px 1px rgba(236,72,153,0.6);
-    animation: navGlitch 0.22s steps(2, end);
-  }
-
-  @keyframes navGlitch {
-    0%   { transform: translate(0,0); }
-    25%  { transform: translate(-1px,-1px); }
-    50%  { transform: translate(1px,1px); }
-    75%  { transform: translate(-1px,1px); }
-    100% { transform: translate(0,0); }
-  }
-
-
-    /* DOSSIER CONTENT */
-
-    .dossier {
-      padding-left: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      max-height: calc(100vh - 130px);
-      overflow-y: auto;
-      padding-right: 6px;
-    }
-
-    @media (max-width: 900px) {
-      .dossier {
-        padding-left: 0;
-        max-height: none;
-        overflow: visible;
-        padding-right: 0;
+    @media (max-width: 880px) {
+      .main-grid {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
     .panel {
-      background: var(--bg-panel);
+      background: radial-gradient(circle at top left, #1c2738 0, #05070c 65%);
       border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-soft);
       box-shadow: var(--shadow-soft);
-      padding: 18px 18px 20px;
-      display: none;
+      padding: 18px 18px 16px;
       position: relative;
       overflow: hidden;
     }
@@ -524,2597 +191,651 @@
     .panel::before {
       content: "";
       position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      background:
-        linear-gradient(120deg, rgba(66,199,255,0.2), transparent 40%, transparent 60%, rgba(66,199,255,0.12) 100%);
-      opacity: 0.15;
-      mix-blend-mode: screen;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(57, 182, 255, 0.16) 0, transparent 55%);
+      opacity: 0.7;
       pointer-events: none;
     }
 
-    .panel::after {
-      content: "";
-      position: absolute;
-      inset: 12%;
-      background: url('Logo_trs.png') center/contain no-repeat;
-      opacity: 0.045;
-      filter: drop-shadow(0 0 12px rgba(15,23,42,0.9));
-      mix-blend-mode: screen;
-      pointer-events: none;
+    .panel-header {
+      position: relative;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .panel > * {
+    .panel-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+    }
+
+    .panel-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(57, 182, 255, 0.4);
+      color: var(--accent-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* SCAN CONSOLE */
+
+    .scan-console {
       position: relative;
       z-index: 1;
-    }
-
-    .panel.active {
-      display: block;
-      animation: panelIn var(--transition-med);
-    }
-
-    @keyframes panelIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .panel h1,
-    .panel h2,
-    .panel h3,
-    .panel h4 {
-      font-weight: 600;
-    }
-
-    .panel h1 {
-      font-size: 1.4rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .panel h2 {
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      margin-bottom: 10px;
-      color: var(--accent);
-    }
-
-    .panel h3 {
-      font-size: 0.95rem;
-      margin-top: 12px;
-      margin-bottom: 6px;
-      color: var(--accent-soft);
-    }
-
-    .panel h4 {
-      font-size: 0.9rem;
-      margin-top: 10px;
-      margin-bottom: 4px;
-      color: var(--accent);
-    }
-
-    .panel p {
-      font-size: 0.88rem;
-      line-height: 1.5;
-      color: var(--text-main);
-      margin-bottom: 6px;
-    }
-
-    .panel p.muted {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
-
-    .panel ul {
-      list-style: none;
-      padding-left: 0;
-      margin-left: 0;
-      margin-top: 6px;
-    }
-
-    .panel ul li {
-      padding: 4px 0 4px 0;
-      font-size: 0.86rem;
-      color: var(--text-main);
-      position: relative;
-    }
-
-    .panel ul li::before {
-      content: "▌";
-      color: var(--accent-soft);
-      font-size: 0.7rem;
-      margin-right: 6px;
-      opacity: 0.9;
-    }
-
-    .small {
-      font-size: 0.75rem;
-    }
-
-/* --- TREAT METER (SNACK INTELLIGENCE) --- */
-
-.treat-meter {
-  margin-top: 12px;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(148,163,184,0.6);
-  padding: 10px 12px;
-  background: radial-gradient(circle at top,
-    rgba(15,23,42,0.98),
-    rgba(8,18,32,0.98));
-}
-
-.treat-meter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.treat-meter-badge {
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(34,197,94,0.7);
-  color: var(--accent-lime);
-  font-size: 0.7rem;
-}
-
-.treat-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 5px;
-  font-size: 0.78rem;
-}
-
-.treat-row-label {
-  flex: 0 0 80px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-}
-
-.treat-row-bar {
-  flex: 1;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(15,23,42,1);
-  overflow: hidden;
-}
-
-.treat-row-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-  box-shadow: 0 0 10px rgba(56,189,248,0.8);
-}
-
-.treat-row-value {
-  width: 50px;
-  text-align: right;
-  font-feature-settings: "tnum" 1;
-}
-
-/* COVER PANEL – für EN & DE */
-
-.panel[id^="panel-cover"] {
-  text-align: left;
-  padding-top: 22px;
-  padding-bottom: 22px;
-}
-
-.panel[id^="panel-cover"] .badge-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--text-muted);
-}
-
-.panel[id^="panel-cover"] .badge-row span {
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: rgba(10,16,24,0.9);
-}
-
-.panel[id^="panel-cover"] .cover-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
-  gap: 18px;
-  margin-top: 10px;
-  align-items: center;
-}
-
-@media (max-width: 800px) {
-  .panel[id^="panel-cover"] .cover-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.panel[id^="panel-cover"] .cover-logo {
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(66,199,255,0.35);
-  background:
-    radial-gradient(circle at top, rgba(66,199,255,0.25), transparent 55%),
-    linear-gradient(135deg, rgba(15,23,42,0.95), rgba(8,13,24,0.98));
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 0 40px rgba(3, 105, 161, 0.45);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Neues Logo im Cover */
-.panel[id^="panel-cover"] .cover-logo-emblem {
-  max-width: 120px;
-  width: 55%;
-  height: auto;
-  margin-bottom: 4px;
-  filter: drop-shadow(0 0 16px rgba(66,199,255,0.55));
-}
-
-.panel[id^="panel-cover"] .cover-logo h2 {
-  margin-bottom: 0;
-}
-
-.panel[id^="panel-cover"] .cover-logo p {
-  margin-bottom: 0;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* Scan-/Glanz-Effekt */
-.panel[id^="panel-cover"] .cover-logo::after {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: linear-gradient(
-    120deg,
-    transparent 20%,
-    rgba(255,255,255,0.12) 50%,
-    transparent 80%
-  );
-  transform: translateX(-60%);
-  opacity: 0.5;
-  animation: scan 4.5s infinite linear;
-  pointer-events: none;
-}
-
-@keyframes scan {
-  0%   { transform: translateX(-60%); }
-  100% { transform: translateX(60%); }
-}
-
-.panel[id^="panel-cover"] .cover-text p {
-  margin-bottom: 10px;
-}
-
-
-    /* PROFILE */
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 18px;
-      margin-top: 6px;
-      align-items: flex-start;
-    }
-
-    @media (max-width: 780px) {
-      .profile-grid { grid-template-columns: 1fr; }
-    }
-
-    .profile-photo {
-      background: var(--bg-panel-soft);
-      border-radius: var(--radius-md);
-      border: 1px dashed rgba(148,163,184,0.5);
-      min-height: 210px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
-      padding: 10px;
+      gap: 12px;
     }
 
-    .profile-photo img {
-      max-width: 100%;
-      border-radius: 12px;
-      margin-bottom: 6px;
-      box-shadow: 0 0 18px rgba(0,0,0,0.6);
-    }
-
-  .pawscan-card {
-    margin-top: 10px;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(148,163,184,0.5);
-    padding: 10px 12px;
-    background: radial-gradient(circle at top,
-      rgba(15,23,42,0.98),
-      rgba(8,18,32,0.98));
-  }
-
-  .pawscan-surface {
-    position: relative;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(148,163,184,0.5);
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at top, rgba(15,23,42,1), #020617);
-  }
-
-  .pawscan-laser {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--accent-lime),
-      transparent
-    );
-    opacity: 0.9;
-    animation: pawscan-laser 3s linear infinite;
-  }
-
-  .pawscan-icon {
-    font-size: 2rem;
-  }
-
-  .pawscan-caption {
-    margin-top: 6px;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--text-muted);
-  }
-
-  @keyframes pawscan-laser {
-    0%   { transform: translateY(-140%); }
-    50%  { transform: translateY(0); }
-    100% { transform: translateY(140%); }
-  }
-
-
-    /* BEHAVIOR */
-
-    .behavior-metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin-top: 8px;
-      margin-bottom: 10px;
-    }
-
-    .metric-card {
-      background: var(--bg-panel-soft);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-      padding: 8px 10px;
-    }
-
-    .metric-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .metric-bar {
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .metric-bar-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent-soft), var(--accent-lime));
-      width: 80%;
-      box-shadow: 0 0 10px rgba(66,199,255,0.8);
-    }
-
-    .metric-value {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* MISSION LOG */
-
-    .mission-timeline {
-      margin-top: 6px;
-      border-left: 2px solid rgba(148,163,184,0.35);
-      padding-left: 16px;
-    }
-
-    .decorations-grid {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
-    }
-
-    .decoration-card {
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-panel-soft);
-      padding: 8px 10px;
-      font-size: 0.8rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .decoration-ribbon {
-      position: absolute;
-      top: -14px;
-      right: -40px;
-      width: 80px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      opacity: 0.35;
-      transform: rotate(18deg);
-      pointer-events: none;
-    }
-
-    .decoration-meta {
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
-
-    .decoration-title {
-      font-weight: 600;
-      font-size: 0.86rem;
-      margin-bottom: 3px;
-    }
-
-    .decoration-notes {
+    .scan-terminal {
+      background: radial-gradient(circle at 20% 0, #111827 0, #05070c 75%);
+      border-radius: var(--radius-sm);
+      border: 1px solid #1f2a3d;
+      padding: 12px 12px 10px;
+      font-family: "Consolas", "SF Mono", ui-monospace, Menlo, Monaco, monospace;
       font-size: 0.78rem;
-    }
-
-    .mission-timeline li {
-      margin-bottom: 12px;
+      color: #e2f7ff;
+      min-height: 170px;
+      max-height: 240px;
+      overflow-y: auto;
       position: relative;
     }
 
-    .mission-timeline li::before {
-      content: "";
-      position: absolute;
-      left: -18px;
-      top: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent-soft);
-      box-shadow: 0 0 10px rgba(66,199,255,0.8);
+    .scan-terminal::-webkit-scrollbar {
+      width: 6px;
     }
 
-    .incident {
-      background: var(--bg-panel-soft);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-      padding: 10px 12px;
-      margin-top: 8px;
+    .scan-terminal::-webkit-scrollbar-thumb {
+      background: #222f44;
+      border-radius: 999px;
     }
 
-    .incident h3 { margin-bottom: 4px; }
-
-  .case-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .case-card {
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-subtle);
-    background: var(--bg-panel-soft);
-    padding: 8px 10px;
-    font-size: 0.8rem;
-  }
-
-  .case-card-code {
-    font-size: 0.7rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 2px;
-  }
-
-  .case-card-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  .case-card-note {
-    color: var(--text-muted);
-  }
-
-  .classified-block {
-    margin-top: 10px;
-    border-radius: var(--radius-md);
-    border: 1px dashed rgba(148,163,184,0.6);
-    padding: 10px 12px;
-    background: radial-gradient(circle at top,
-      rgba(15,23,42,0.98),
-      rgba(15,23,42,0.9));
-    position: relative;
-    overflow: hidden;
-  }
-
-  .classified-tag {
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent-danger);
-    opacity: 0.9;
-  }
-
-  .classified-toggle {
-    border-radius: 999px;
-    border: 1px solid var(--accent-soft);
-    background: transparent;
-    color: var(--accent-soft);
-    padding: 5px 12px;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
-
-  .classified-toggle.open {
-    border-color: var(--accent-lime);
-    color: var(--accent-lime);
-    background: radial-gradient(circle at top,
-      rgba(22,163,74,0.15),
-      transparent);
-  }
-
-  .classified-content {
-    margin-top: 8px;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition:
-      max-height 0.35s ease,
-      opacity 0.3s ease;
-  }
-
-  .classified-content.open {
-    max-height: 500px;
-    opacity: 1;
-  }
-
-
-    .redacted {
-      background: linear-gradient(0deg, rgba(15,23,42,1), rgba(15,23,42,1));
-      color: transparent;
-      border-radius: 4px;
-      padding: 0 4px;
-      display: inline-block;
-      margin: 0 2px;
-      line-height: 1.1;
-      min-width: 40px;
+    .scan-line {
+      margin-bottom: 4px;
+      white-space: nowrap;
     }
 
-  .contact-card {
-    margin-top: 12px;
-    padding: 12px 14px;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(148,163,184,0.45);
-    background: radial-gradient(circle at top left,
-      rgba(15,23,42,0.98),
-      rgba(8,18,32,0.98));
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
+    .scan-line .prompt {
+      color: var(--accent-soft);
+    }
 
-  .contact-card-main {
-    font-size: 0.82rem;
-  }
+    .scan-line .value-ok {
+      color: var(--success);
+    }
 
-  .contact-card-main strong {
-    color: var(--accent-soft);
-  }
+    .scan-line .value-warn {
+      color: #ffd86b;
+    }
 
-  .contact-cta {
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.78rem;
-    color: var(--accent-soft);
-  }
+    .scan-line .value-fail {
+      color: var(--danger);
+    }
 
-  .contact-cta-handle {
-    font-weight: 600;
-  }
+    .scan-terminal-footer {
+      margin-top: 4px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-  .contact-cta-tag {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-  }
+    .scan-bar-wrapper {
+      margin-top: 4px;
+      height: 5px;
+      border-radius: 999px;
+      background: #05070c;
+      overflow: hidden;
+      border: 1px solid #1a2333;
+    }
 
-  .contact-cta::before {
-    content: "IG";
-    font-size: 0.65rem;
-    padding: 2px 6px;
-    border-radius: 999px;
-    border: 1px solid rgba(148,163,184,0.6);
-    margin-bottom: 2px;
-  }
+    .scan-bar {
+      height: 100%;
+      width: 35%;
+      background: linear-gradient(90deg, #18e0ff, #31f28c);
+      transform: translateX(-100%);
+      animation: scanBarIdle 3s ease-in-out infinite;
+    }
 
-  .contact-cta:hover {
-    color: var(--accent);
-  }
+    .scan-bar.active {
+      animation: scanBarActive 1.4s ease-in-out infinite;
+    }
 
-  .contact-cta:hover::before {
-    border-color: var(--accent);
-  }
+    @keyframes scanBarIdle {
+      0%   { transform: translateX(-100%); opacity: 0.3; }
+      50%  { transform: translateX(10%); opacity: 0.7; }
+      100% { transform: translateX(120%); opacity: 0.3; }
+    }
 
-  @media (max-width: 640px) {
-    .contact-card {
+    @keyframes scanBarActive {
+      0%   { transform: translateX(-100%); opacity: 0.4; }
+      50%  { transform: translateX(60%); opacity: 1; }
+      100% { transform: translateX(120%); opacity: 0.4; }
+    }
+
+    /* RESULT PANEL */
+
+    .result-panel {
+      position: relative;
+      z-index: 1;
+      display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      gap: 12px;
     }
 
-    .contact-cta {
-      align-items: flex-start;
+    .match-heading {
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--success);
     }
-  }
 
+    .match-subline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
 
-/* MOBILE TWEAKS – bis 480px Breite */
+    .match-heading-icon {
+      display: inline-block;
+      margin-right: 6px;
+      font-size: 0.96rem;
+    }
 
-@media (max-width: 480px) {
-  #layout {
-    padding: 10px;
-  }
+    .mini-profile {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      background: radial-gradient(circle at top left, rgba(49, 242, 140, 0.12), rgba(5, 7, 12, 0.95));
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(49, 242, 140, 0.45);
+      padding: 10px 12px;
+    }
 
-  .layout-grid {
-    gap: 10px;
-  }
+    @media (max-width: 460px) {
+      .mini-profile {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
 
-  .side-nav {
-    padding: 10px;
-  }
+    .mini-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      border: 1px solid rgba(57, 182, 255, 0.7);
+      background: radial-gradient(circle at 20% 10%, #ffffff 0, #39b6ff 20%, #05070c 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px rgba(57, 182, 255, 0.5);
+      overflow: hidden;
+    }
 
-  .side-nav-header h1 {
-    font-size: 1rem;
-  }
+    .mini-avatar img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
 
-  .side-nav-header p {
-    font-size: 0.8rem;
-  }
+    .mini-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px 12px;
+      font-size: 0.8rem;
+    }
 
-  .panel {
-    padding: 10px;
-  }
+    @media (max-width: 520px) {
+      .mini-meta {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
 
-  .panel h1 {
-    font-size: 1.1rem;
-    letter-spacing: 0.16em;
-  }
+    .meta-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
 
-  .panel h2 {
-    font-size: 1rem;
-    letter-spacing: 0.14em;
-  }
+    .meta-value {
+      color: var(--text-main);
+      font-weight: 500;
+    }
 
-  .panel p {
-    font-size: 0.84rem;
-  }
+    .meta-row {
+      display: flex;
+      flex-direction: column;
+    }
 
-  .behavior-metrics {
-    grid-template-columns: 1fr;
-  }
-}
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
 
-  #manual-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15,23,42,0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-  }
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(57, 182, 255, 0.7);
+      background: radial-gradient(circle at top, rgba(57, 182, 255, 0.15), rgba(5, 7, 12, 0.9));
+      color: var(--accent-strong);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      text-decoration: none;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
+    }
 
-  #manual-overlay.visible {
-    opacity: 1;
-    pointer-events: auto;
-  }
+    .btn:hover {
+      box-shadow: 0 0 18px rgba(57, 182, 255, 0.65);
+      transform: translateY(-1px);
+      border-color: var(--accent-strong);
+    }
 
-  .manual-dialog {
-    width: min(340px, 90vw);
-    border-radius: var(--radius-lg);
-    padding: 16px 18px;
-    background: radial-gradient(circle at top,
-      rgba(15,23,42,1),
-      rgba(15,23,42,0.96));
-    border: 1px solid var(--accent-danger);
-    box-shadow: 0 0 40px rgba(220,38,38,0.55);
-  }
+    .btn-primary {
+      background: radial-gradient(circle at top, rgba(49, 242, 140, 0.24), rgba(5, 7, 12, 0.9));
+      border-color: rgba(49, 242, 140, 0.8);
+      color: var(--success);
+    }
 
-  .manual-dialog h3 {
-    margin: 0 0 6px;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--accent-danger);
-  }
+    .btn-secondary {
+      opacity: 0.86;
+    }
 
-  .manual-dialog p {
-    font-size: 0.82rem;
-    margin-bottom: 6px;
-  }
+    .btn-label {
+      white-space: nowrap;
+    }
 
-  .manual-dialog .small {
-    font-size: 0.74rem;
-  }
+    .btn-icon {
+      font-size: 0.95rem;
+    }
 
-  .manual-dialog button {
-    margin-top: 8px;
-    border-radius: 999px;
-    border: none;
-    padding: 6px 14px;
-    background: var(--accent-danger);
-    color: #0b1120;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
+    /* FOOTER */
 
-  .manual-dialog button:hover {
-    filter: brightness(1.1);
-  }
+    .footer {
+      margin-top: 2px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      text-align: center;
+      opacity: 0.8;
+    }
 
-  .btn-field-manual {
-    border-radius: 999px;
-    border: 1px solid var(--accent-soft);
-    background: transparent;
-    color: var(--accent-soft);
-    padding: 6px 14px;
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
+    /* STATES */
 
-  .btn-field-manual::after {
-    content: "⬇";
-    font-size: 0.7rem;
-  }
+    .hidden {
+      display: none !important;
+    }
 
-  .btn-field-manual:hover {
-    background: radial-gradient(circle at top,
-      rgba(56,189,248,0.15),
-      transparent);
-  }
-
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-#status-left,
-#status-right {
-  min-width: 0;
-}
-
-@media (max-width: 640px) {
-  #status-bar {
-    flex-wrap: wrap;
-  }
-
-  /* verhindert, dass der lange Text rechts alles nach außen schiebt */
-  #status-left span:last-child {
-    font-size: 0.7rem;
-  }
-
-  .hud-group {
-    flex-wrap: wrap;
-  }
-}
-
-#intro-overlay {
-  width: 100%;
-}
-
-.intro-scanline {
-  width: 100%;
-}
-
-/* === WRAFF FORCE CUSTOM AUDIO PLAYER === */
-
-.audio-header {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: #6fb8ff88;
-  border-bottom: 1px solid #1d2633;
-  padding-bottom: 4px;
-  margin-top: 10px;
-  margin-bottom: 12px;
-}
-
-.audio-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
-  margin-top: 4px;
-}
-
-@media (min-width: 900px) {
-  .audio-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.audio-card.wf-audio-card {
-  border-radius: 10px;
-  border: 1px solid #1d2633;
-  padding: 10px 12px 12px;
-  background: radial-gradient(circle at top left, #151b28 0, #090c12 55%, #05070a 100%);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
-}
-
-.audio-card.wf-audio-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(61,169,255,0.12), transparent 60%);
-  opacity: 0.4;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-.audio-card.wf-audio-card.playing {
-  border-color: #3da9ff;
-  box-shadow: 0 0 14px rgba(61,169,255,0.45);
-  transform: translateY(-1px);
-}
-
-.audio-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: #6fb8ff;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.audio-label .icon {
-  opacity: 0.6;
-  font-size: 11px;
-}
-
-.audio-card.wf-audio-card p.muted {
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-
-.wf-audio-ui {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 10px;
-  row-gap: 4px;
-  align-items: center;
-}
-
-.wf-audio-play {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  border: 1px solid #3da9ff;
-  background: radial-gradient(circle at 30% 30%, #3da9ff33, #05070a 60%);
-  color: #e9f2ff;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-}
-
-.wf-audio-play:hover {
-  box-shadow: 0 0 10px rgba(61,169,255,0.6);
-  transform: translateY(-1px);
-}
-
-.wf-audio-play:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.wf-audio-track {
-  grid-column: 2 / 3;
-  width: 100%;
-  height: 6px;
-  border-radius: 999px;
-  background: #111623;
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
-}
-
-.wf-audio-progress {
-  position: absolute;
-  inset: 0;
-  width: 0%;
-  background: linear-gradient(90deg, #3da9ff, #8ce3ff);
-  box-shadow: 0 0 10px rgba(61,169,255,0.7);
-  transition: width 0.1s linear;
-}
-
-.wf-audio-time {
-  grid-column: 2 / 3;
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: #a2a9bc;
-  opacity: 0.9;
-}
-
-.wf-audio {
-  /* echtes Audio-Element verstecken, aber im DOM lassen */
-  width: 0;
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-
-
+    .scan-complete {
+      border-color: rgba(49, 242, 140, 0.9) !important;
+      box-shadow: 0 0 22px rgba(49, 242, 140, 0.6);
+    }
   </style>
 </head>
 <body>
-<!-- WRAFF FORCE Intro Overlay -->
-<div id="intro-overlay">
-  <div class="intro-inner">
-    <div class="intro-scanline"></div>
-
-    <div class="intro-logo-wrapper">
-      <img src="Logo_trs.png" alt="WRAFF FORCE Emblem" class="intro-logo">
-    </div>
-
-    <div class="intro-text-block">
-      <div class="intro-line intro-line-small">WRAFF FORCE // K-9 UNIT</div>
-      <div class="intro-line intro-line-main">
-        ACCESS LEVEL: <span class="accent">TOP TREAT</span><span class="intro-cursor">▌</span>
-      </div>
-      <div class="intro-line intro-line-small muted">
-        subject: PUPPY TREATZ · status: online
-      </div>
-    </div>
-  </div>
-</div>
-
-
-  <!-- TOP STATUS BAR -->
-<header id="status-bar">
-  <div id="status-left">
-    <span class="badge">WRAFF FORCE</span>
-    <span>SWAT K-9 DOSSIER INTERFACE</span>
-  </div>
-  
-  <div id="status-right">
-    <div class="hud-group">
-      <div class="hud-chip">
-        <span class="hud-label">ACCESS</span>
-        <span class="hud-value" id="hud-access">TOP TREAT</span>
-      </div>
-      <div class="hud-chip">
-        <span class="hud-label">MODE</span>
-        <span class="hud-value" id="hud-mode">LIVE VIEW</span>
-      </div>
-      <div class="hud-chip hud-mood">
-        <span class="hud-label">MOOD</span>
-        <span class="hud-value" id="hud-mood">GOOD BOI</span>
-      </div>
-    </div>
-
-    <div class="lang-toggle">
-      <span class="lang-toggle-label">LANG</span>
-      <button type="button" data-lang="en" class="active">EN</button>
-      <button type="button" data-lang="de">DE</button>
-    </div>
-
-    <span class="status-dot"></span>
-  </div>
-</header>
-
-  <div id="layout">
-
-    <!-- ENGLISH VERSION -->
-    <div id="lang-en" class="lang active">
-      <div class="layout-grid">
-        <!-- SIDE NAV EN -->
-        <nav class="side-nav">
-          <div class="side-nav-header">
-            <h1>TREATZ DOSSIER</h1>
-            <p>Interactive K-9 operator file for the fictional SWAT pup “Puppy Treatz”.</p>
-          </div>
-          <ul>
-            <li class="active">
-              <span class="label">Cover / Access</span><span class="code">WF-00</span>
-            </li>
-            <li>
-              <span class="label">Operator Profile</span><span class="code">WF-01</span>
-            </li>
-            <li>
-              <span class="label">Behavioral Analysis</span><span class="code">WF-02</span>
-            </li>
-            <li>
-              <span class="label">Mission Log</span><span class="code">WF-03</span>
-            </li>
-            <li>
-              <span class="label">Gear & Loadout</span><span class="code">WF-04</span>
-            </li>
-            <li>
-              <span class="label">WRAFF FORCE Network</span><span class="code">WF-05</span>
-            </li>
-            <li>
-              <span class="label">Incident Reports</span><span class="code">WF-06</span>
-            </li>
-            <li>
-              <span class="label">Contact & Links</span><span class="code">WF-07</span>
-            </li>
-            <li>
-              <span class="label">Snack Intelligence</span><span class="code">WF-08</span>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- DOSSIER CONTENT EN -->
-        <main class="dossier">
-          <!-- PANEL 0: COVER -->
-          <section class="panel active" id="panel-cover-en">
-            <div class="badge-row">
-              <span>CLASSIFIED FILE</span>
-              <span>SUBJECT: PUPPY TREATZ</span>
-              <span>K-9 DIVISION</span>
-              <span>FLUFF LEVEL: HIGH</span>
-            </div>
-
-            <h1>TREATZ – SWAT K-9 DOSSIER</h1>
-            <p class="muted">
-              WRAFF FORCE internal interface. Unauthorized access will be rewarded with one (1) judgmental head tilt and possible boop.
-            </p>
-
-            <div class="classified-block">
-              <div class="classified-tag">L4 TREAT-CLASSIFIED</div>
-              <button
-                type="button"
-                class="classified-toggle"
-                data-target="classified-en-ops"
-                data-label-closed="Unlock additional briefing"
-                data-label-open="Hide classified briefing"
-              >
-                Unlock additional briefing
-              </button>
-              <div id="classified-en-ops" class="classified-content">
-                <p>
-                  <strong>Internal Note:</strong> Subject shows above-average
-                  resistance to boring briefings. All mission explanations must
-                  include at least one (1) pizza reference and a clear treat
-                  compensation plan.
-                </p>
-                <p class="muted">
-                  Side effect: humans tend to stay for the briefing as well.
-                </p>
-              </div>
-            </div>
-
-
-            <div class="cover-grid">
-              <div class="cover-logo">
-  <img src="Logo_trs.png"
-       alt="WRAFF FORCE Emblem"
-       class="cover-logo-emblem">
-  <h2>PUPPY TREATZ</h2>
-  <p>Shiba / Border Collie Hybrid – SWAT K-9 Operative</p>
-</div>
-
-              <div class="cover-text">
-                <p>
-                  Welcome to the fully fictional, lore-heavy K-9 operator file of “Puppy Treatz” – a tactical fluff unit
-                  trained in snack retrieval, couch defense and advanced zoomie operations.
-                </p>
-                <p>
-                  This dossier imitates serious agency vibes but contains exactly zero real-world authority
-                  and 100% pup-powered comedy. Ideal for NFC ID cards, QR codes and dramatic “let me show you my official K-9 file” moments.
-                </p>
-                <p>
-                  If you arrived here by scanning an ID: congratulations, you now have snack-level clearance. Use it wisely.
-                </p>
-
-                <button type="button" class="enter-dossier">
-                  <span>ACCESS DOSSIER</span><span class="chevron">▶</span>
-                </button>
-
-                <p class="muted" style="margin-top:10px;">
-                  Note: All data is fictional. No connection to real persons, agencies or law enforcement.
-                  Only treats, lore and an alarming amount of tail wagging.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- PANEL 1: PROFILE -->
-
-<section class="panel" id="panel-profile-en">
-  <h2>Operator Profile</h2>
-  <p class="muted">
-    Primary identity and baseline data of the K-9 asset known as “Puppy Treatz”.
-  </p>
-
-  <div class="profile-grid">
-    <!-- LINKES PANEL: FOTO + PAWSCAN -->
-    <div class="profile-photo">
-      <img src="Treatz.png" alt="Portrait of Puppy Treatz – SWAT K-9 Operative">
-      <p>Official WRAFF FORCE portrait. Tactical fluff level: confirmed.</p>
-
-      <div class="pawscan-card">
-        <div class="pawscan-surface">
-          <div class="pawscan-laser"></div>
-          <div class="pawscan-icon">🐾</div>
+  <div class="page-shell">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo-wrap">
+          <!-- Passe den Pfad an dein Logo an -->
+          <img src="Treatz.png" alt="WRAFF FORCE Logo">
         </div>
-        <p class="pawscan-caption">
-          PAWPRINT ID: T-09 • STATUS: ACTIVE DUTY
-        </p>
-      </div>
-    </div>
-
-    <!-- RECHTS: TEXTBLOCK -->
-    <div class="profile-meta">
-      <h3>Call Sign: PUPPY TREATZ</h3>
-      <p><strong>Designation:</strong> SWAT K-9 Operative</p>
-      <p><strong>Breed:</strong> Shiba / Border Collie hybrid</p>
-      <p><strong>Unit:</strong> WRAFF FORCE // K-9 Division</p>
-      <p><strong>Status:</strong> On Duty // Treat-Ready</p>
-
-      <h4>Short Bio</h4>
-      <p>
-        Field-tested in urban couch environments, trained in advanced snack retrieval and tactical cuddling.
-        Known for high cuteness output under pressure and a tendency to occupy exactly the one spot
-        needed for human traffic flow.
-      </p>
-      <p>
-        Officially classified as “support unit”, internal paperwork lists the subject as
-        “primary morale booster”, “walking floof grenade” and “unauthorized emotional support K-9”.
-      </p>
-
-      <h4>Service Traits</h4>
-      <ul>
-        <li>Can switch from “serious operator look” to “big round anime eyes” in under 0.3 seconds.</li>
-        <li>Understands complex commands like “stay”, “wait”, and “do not eat that” – compliance not guaranteed.</li>
-        <li>Special talent: locating the one human in the room who secretly needs a hug.</li>
-      </ul>
-
-      <h4>Recognized Commands</h4>
-      <p class="muted">
-        <strong>“Treat”</strong> – immediate teleport to handler.  
-        <strong>“Walk”</strong> – tail rotor engaged.  
-        <strong>“Bath”</strong> – connection lost, subject suddenly cannot hear.
-      </p>
-    </div>
-  </div>
-</section>
-
-          <!-- PANEL 2: BEHAVIOR -->
-          <section class="panel" id="panel-behavior-en">
-            <h2>Behavioral Analysis</h2>
-            <p class="muted">
-              Non-clinical temperament scan based on treat exposure, cuddle density and zoomie frequency.
-            </p>
-
-            <div class="behavior-metrics">
-              <div class="metric-card">
-                <div class="metric-label">Loyalty</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 96%;"></div>
-                </div>
-                <div class="metric-value">“Will follow handler into battle. Or kitchen.”</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Cuteness Output</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 100%;"></div>
-                </div>
-                <div class="metric-value">“Considered biologically weaponized.”</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Chaos Level</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 78%;"></div>
-                </div>
-                <div class="metric-value">“Stable at idle. Spikes after 21:00.”</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Food-Drive</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 92%;"></div>
-                </div>
-                <div class="metric-value">“Responds to ‘treat’ faster than to own name.”</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Zoomie Potential</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 88%;"></div>
-                </div>
-                <div class="metric-value">“Hallway sprint protocol ready at all times.”</div>
-              </div>
-            </div>
-
-            <h3>Psych Evaluation (Non-Clinical)</h3>
-            <p>
-              Subject displays extreme responsiveness to auditory cues containing the words
-              “treat”, “walk” and “good boy”. High zoomie potential detected after 21:00 local time,
-              especially in narrow corridor environments and freshly cleaned floors.
-            </p>
-            <p>
-              Risk of distraction by squeaky objects: elevated. Recommended counter-measures include
-              controlled squeak exposure, chew-compatible de-escalation tools and post-operation blanket burritos.
-            </p>
-            <p>
-              Overall assessment: safe to deploy in high-stress cuddle situations.  
-              Caution advised near unattended pizza boxes and open dishwashers.
-            </p>
-
-            <h3>Known Triggers & Weaknesses</h3>
-            <ul>
-              <li><strong>Trigger Words:</strong> “treat”, “snack”, “walkies”, any crinkling bag sound.</li>
-              <li><strong>Weak Spots:</strong> behind the ears, base of tail, exactly one specific spot on the chest only trusted handlers know.</li>
-              <li><strong>Instant Mood Boost:</strong> “Who’s a good pup?” with appropriate voice pitch.</li>
-            </ul>
-          </section>
-
-          <!-- PANEL 3: MISSION LOG -->
-          <section class="panel" id="panel-missions-en">
-            <h2>Mission Log</h2>
-            <p class="muted">
-              Non-exhaustive selection of relevant field operations. Some details redacted for maximum drama.
-            </p>
-
-            <ul class="mission-timeline">
-              <li>
-                <h3>Operation Sofa Patrol</h3>
-                <p><strong>Location:</strong> Domestic Living Room Sector</p>
-                <p><strong>Outcome:</strong> All suspicious crumbs secured. Couch perimeter thoroughly cuddled.</p>
-              </li>
-              <li>
-                <h3>Midnight Snack Heist</h3>
-                <p><strong>Location:</strong> Kitchen AO</p>
-                <p><strong>Outcome:</strong> Classified. (Cookies missing, no pawprints found.)</p>
-              </li>
-              <li>
-                <h3>Zoomie Protocol Alpha</h3>
-                <p><strong>Location:</strong> Hallway Runway</p>
-                <p><strong>Outcome:</strong> Maximum speed achieved. Carpet integrity compromised.</p>
-              </li>
-              <li>
-                <h3>Operation Blanket Burrito</h3>
-                <p><strong>Location:</strong> Couch Command Center</p>
-                <p><strong>Outcome:</strong> Subject successfully wrapped in blanket. Handler immobilized by cuteness.</p>
-              </li>
-              <li>
-                <h3>Patio Pigeon Standoff</h3>
-                <p><strong>Location:</strong> Balcony AO</p>
-                <p><strong>Outcome:</strong> Pigeon retreated. Bark volume exceeded safe indoor levels.</p>
-              </li>
-            </ul>
-
-            <h3>Decorations &amp; Commendations</h3>
-            <p class="muted">
-              Filed under “extremely good pup behaviour” and snack-adjacent heroics.
-            </p>
-            <div class="decorations-grid">
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">RIBBON • WF-GOODBOI-01</div>
-                <div class="decoration-title">Order of the Eternal Tail Wag</div>
-                <p class="decoration-notes">
-                  Awarded for keeping morale above 95&nbsp;% during prolonged couch sieges and series marathons.
-                </p>
-              </div>
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">BADGE • WF-SNACK-ALPHA</div>
-                <div class="decoration-title">Golden Treat Sensor</div>
-                <p class="decoration-notes">
-                  For locating hidden snack caches in under 3,5 seconds – including the “sealed drawer incident”.
-                </p>
-              </div>
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">MEDAL • WF-ZOOM-DELTA</div>
-                <div class="decoration-title">Cross of Controlled Chaos</div>
-                <p class="decoration-notes">
-                  Granted after successfully navigating full-speed hallway zoomies without direct human collision.
-                </p>
-              </div>
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">CITATION • WF-CUDDLE-∞</div>
-                <div class="decoration-title">Lifetime Cuddle Clearance</div>
-                <p class="decoration-notes">
-                  Recognizes ongoing commitment to unsolicited comfort during stressful human workdays.
-                </p>
-              </div>
-            </div>
-
-            <h3>Handler Notes</h3>
-            <p class="muted">
-              “Mission success is not measured in objectives completed but in snacks consumed and tails wagged.”
-            </p>
-          </section>
-
-          <!-- PANEL 4: GEAR -->
-          <section class="panel" id="panel-gear-en">
-            <h2>Gear & Loadout</h2>
-            <p class="muted">
-              Standardized equipment layout for on-duty deployments, conventions and spontaneous cuddle raids.
-            </p>
-
-            <h3>Standard Loadout</h3>
-            <ul>
-              <li>Tactical Vest – reinforced for style, snuggles and extra velcro patches.</li>
-              <li>Unit Patches – WRAFF FORCE insignia & name tag for instant “who’s a good pup?” identification.</li>
-              <li>Treat Pouch – high-priority cargo compartment. Inventory level must never drop below 30%.</li>
-              <li>Leash Interface – for handler-guided navigation and controlled zoomie deployment.</li>
-            </ul>
-
-            <h3>Party Mode Attachments</h3>
-            <ul>
-              <li>LED Accent Harness – visual superiority in low-light cuddle zones and dance floors.</li>
-              <li>Bonus Treat Holster – for extended operations during meetups and walks.</li>
-              <li>Tagline Patch – interchangeable panels such as “READY 4 TREATS”, “WORKING DOG (ON SNACK BREAK)”.</li>
-            </ul>
-
-            <h3>Experimental Gear (Prototype)</h3>
-            <ul>
-              <li>Auto-Refill Treat Dispenser – currently fails field tests due to “immediate self-emptying”.</li>
-              <li>Noise-Cancelling Ears – rejected by subject, described as “vibe kill”.</li>
-              <li>Integrated Belly-Rub Meter – stuck permanently at 99% “could use more”.</li>
-            </ul>
-          </section>
-
-          <!-- PANEL 5: NETWORK -->
-          <section class="panel" id="panel-network-en">
-            <h2>WRAFF FORCE Network</h2>
-            <p class="muted">
-              Internal overview of the fictional agency responsible for snack security and morale operations.
-            </p>
-
-            <p>
-              WRAFF FORCE is a fully fictional K-9 task force specializing in snack security,
-              cuddle operations and morale uplift in high-stress environments. Its agents operate wherever
-              treats are stored under suspiciously flimsy protection.
-            </p>
-
-            <h3>Agency Motto</h3>
-            <p>“In Treatz We Trust.”</p>
-
-            <h3>Backronym (Unofficial)</h3>
-            <p class="muted">
-              <strong>WRAFF</strong> – “Worldwide Reactive Agency For Floof”.
-            </p>
-
-            <h3>Known K-9 Operatives</h3>
-            <ul>
-              <li>Agent Biscuit – Recon & Crumb Intelligence.</li>
-              <li>Sergeant Zoomie – Rapid Response & Corridor Patrol.</li>
-              <li>Captain Wiggle – Tail-Based Communication Officer.</li>
-              <li>Lieutenant Snorf – Pillow Security & Nap Operations.</li>
-            </ul>
-
-            <h3>Clearance Levels</h3>
-            <ul>
-              <li><strong>Level 1 – Basic Belly Rubs:</strong> Open to the public, no NDA required.</li>
-              <li><strong>Level 2 – Treat Distribution:</strong> Authorized snack handlers only.</li>
-              <li><strong>Level 3 – Secret Snack Stashes:</strong> Restricted to K-9 personnel and trusted humans.</li>
-            </ul>
-      <h3>Official Anthems</h3>
-<p class="muted">
-  Authorized WRAFF FORCE themes for ceremonies, briefings and high-drama treat situations.
-</p>
-
-<div class="audio-header">CLASSIFIED AUDIO // CLEARANCE LEVEL 2+</div>
-
-<div class="audio-grid">
-  <!-- GRAND ANTHEM -->
-  <div class="audio-card wf-audio-card">
-    <div class="audio-label">
-      <span class="icon">▶</span>
-      WF-A01 // Grand Unit Anthem
-    </div>
-    <p class="muted">
-      Primary ceremonial anthem for flag moments, promotion rituals and approved slow-motion morale sequences.
-    </p>
-
-    <div class="wf-audio-ui">
-      <button class="wf-audio-play" type="button" aria-label="Play Grand Unit Anthem">
-        ▶
-      </button>
-      <div class="wf-audio-track">
-        <div class="wf-audio-progress"></div>
-      </div>
-      <div class="wf-audio-time">
-        <span class="wf-audio-current">0:00</span>
-        <span class="wf-audio-duration">0:00</span>
-      </div>
-    </div>
-
-    <audio class="wf-audio" src="wf_grand_anthem.mp3"></audio>
-  </div>
-
-  <!-- TACTICAL ANTHEM -->
-  <div class="audio-card wf-audio-card">
-    <div class="audio-label">
-      <span class="icon">▶</span>
-      WF-A02 // Tactical Deployment Anthem
-    </div>
-    <p class="muted">
-      Tactical field theme for mission briefings, gear checks and dramatic corridor walk-ins.
-    </p>
-
-    <div class="wf-audio-ui">
-      <button class="wf-audio-play" type="button" aria-label="Play Tactical Deployment Anthem">
-        ▶
-      </button>
-      <div class="wf-audio-track">
-        <div class="wf-audio-progress"></div>
-      </div>
-      <div class="wf-audio-time">
-        <span class="wf-audio-current">0:00</span>
-        <span class="wf-audio-duration">0:00</span>
-      </div>
-    </div>
-
-    <audio class="wf-audio" src="wf_tactical_anthem.mp3"></audio>
-  </div>
-</div>
-
-          </section>
-
-          <!-- PANEL 6: INCIDENTS -->
-          <section class="panel" id="panel-incidents-en">
-            <h2>Incident Reports (Redacted)</h2>
-            <p class="muted">
-              Selected case files with sensitive details removed for snack-security reasons.
-            </p>
-            <div class="case-grid">
-              <div class="case-card">
-                <div class="case-card-code">WF-01-COUCH</div>
-                <div class="case-card-title">Couch Perimeter Drift</div>
-                <p class="case-card-note">
-                  Subject slowly expands personal space until entire sofa counts as
-                  “assigned sleeping area”.
-                </p>
-              </div>
-              <div class="case-card">
-                <div class="case-card-code">WF-02-DOOR</div>
-                <div class="case-card-title">Door Breach (Nose)</div>
-                <p class="case-card-note">
-                  Repeated gentle boops to closed doors. Classified as “emotional
-                  breaching charge”.
-                </p>
-              </div>
-              <div class="case-card">
-                <div class="case-card-code">WF-03-BOWL</div>
-                <div class="case-card-title">Empty Bowl Protocol</div>
-                <p class="case-card-note">
-                  Intense eye contact initiated until refill completed.
-                </p>
-              </div>
-            </div>
-
-            <article class="incident">
-              <h3>Case #WF-09-🐾</h3>
-              <p>
-                <span class="redacted">[REDACTED]</span> was observed at approximately
-                <span class="redacted">[REDACTED]</span> hours performing unauthorized zoomies
-                in the restricted <span class="redacted">[REDACTED]</span> zone.
-              </p>
-              <p>
-                Result: one (1) broken flower pot, multiple witnesses reporting
-                “very good boy” behavior despite collateral damage.
-              </p>
-            </article>
-
-            <article class="incident">
-              <h3>Case #WF-12-TREATZ</h3>
-              <p>
-                Subject gained access to <span class="redacted">[REDACTED]</span> snack container.
-                Full details sealed under Treat-Level clearance.
-              </p>
-            </article>
-
-            <article class="incident">
-              <h3>Case #WF-21-SOFA</h3>
-              <p>
-                Extended occupation of the central sofa zone by subject and associated plush toy unit.
-                Human seating capacity reduced to 0.5 persons.
-              </p>
-              <p>
-                Recommended mitigation: negotiate shared seating. Bribery via treats permitted.
-              </p>
-            </article>
-
-            <h3>Pattern Alerts</h3>
-           <ul>
-  <li><strong>Doorbell vs. Bark Volume:</strong> Direct correlation. 100% of doorbell events result in immediate vocal escalation.</li>
-  <li><strong>Snack-Disappearance Window:</strong> Highest risk between 19:00–22:00, especially when chip bags are unattended.</li>
-  <li><strong>Shoe-Relocation Index:</strong> Single shoes are 64% more likely to be “relocated for inspection” into cozy corners.</li>
-</ul>
-
-          </section>
-
-          <!-- PANEL 7: CONTACT -->
-          <section class="panel" id="panel-contact-en">
-            <h2>Contact & Links</h2>
-            <p>
-              This dossier describes a fully fictional K-9 character. No real law enforcement affiliation –
-              just vibes, lore and tactical fluff.
-            </p>
-
-<p>For mission updates, field selfies and SWAT-pup aesthetics:</p>
-
-<div class="contact-card">
-  <div class="contact-card-main">
-    <strong>Primary Mission Channel</strong><br>
-    Live ops, field selfies and SWAT-pup lore in real time.
-  </div>
-  <a href="https://www.instagram.com/puppy_treatz" target="_blank" class="contact-cta">
-    <span class="contact-cta-handle">@puppy_treatz</span>
-    <span class="contact-cta-tag">Instagram • Live Feed</span>
-  </a>
-</div>
-
-<p style="margin-top: 14px;">
-  <button type="button" class="btn-field-manual" data-lang="en">
-    Download Full Field Manual (PDF)
-  </button>
-</p>
-
-            <p class="muted" style="margin-top:10px;">
-              Accessed via NFC ID: if you’re reading this, you officially have sufficient snack clearance.
-            </p>
-          </section>
-
-          <!-- PANEL 8: SNACK INTEL -->
-          <section class="panel" id="panel-snacks-en">
-            <h2>Snack Intelligence Briefing</h2>
-            <p class="muted">
-              Internal snack priority analysis for subject “Puppy Treatz”. Use this data responsibly.
-            </p>
-
-            <h3>Priority Snack Ranking</h3>
-            <ul>
-              <li><strong>S-Tier:</strong> Cheese bits, soft training treats, anything that “accidentally” falls off a pizza.</li>
-              <li><strong>A-Tier:</strong> Standard dog treats, crunchy biscuits, suspiciously shaped snacks in crinkly bags.</li>
-              <li><strong>B-Tier:</strong> Dry kibble (acceptable when dramatically presented by hand).</li>
-              <li><strong>C-Tier:</strong> Healthy options labeled “light” or “diet”. Highly suspicious.</li>
-            </ul>
-
-            <h3>Known Weaknesses</h3>
-            <ul>
-              <li>Will sit, stay and offer paw at the same time if treat is visible.</li>
-              <li>Cannot resist the sound of a slicing pizza wheel.</li>
-              <li>Eye contact intensity increases by 300% when human is eating on the couch.</li>
-            </ul>
-
-            <h3>Operational Guidelines</h3>
-            <p>
-              For best cooperation, snacks should be:
-            </p>
-            <ul>
-              <li>Presented with appropriate hype voice (“Treat timeee!”).</li>
-              <li>Delivered at consistent intervals during prolonged cuddle sessions.</li>
-              <li>Accompanied by head pats and verbal confirmation of “good pup” status.</li>
-            </ul>
-
-            <div class="treat-meter">
-              <div class="treat-meter-header">
-                <span>TREAT LEVEL MONITOR</span>
-                <span class="treat-meter-badge">LIVE · STABLE</span>
-              </div>
-
-              <div class="treat-row">
-                <span class="treat-row-label">CHEESE</span>
-                <div class="treat-row-bar">
-                  <div class="treat-row-bar-fill" style="width: 96%;"></div>
-                </div>
-                <span class="treat-row-value">96%</span>
-              </div>
-
-              <div class="treat-row">
-                <span class="treat-row-label">PIZZA</span>
-                <div class="treat-row-bar">
-                  <div class="treat-row-bar-fill" style="width: 99%;"></div>
-                </div>
-                <span class="treat-row-value">99%</span>
-              </div>
-
-              <div class="treat-row">
-                <span class="treat-row-label">VEGGIES</span>
-                <div class="treat-row-bar">
-                  <div class="treat-row-bar-fill" style="width: 18%;"></div>
-                </div>
-                <span class="treat-row-value">18%</span>
-              </div>
-
-              <p class="muted small" style="margin-top:6px;">
-                Values may spike when cupboard doors open within a 5&nbsp;m radius.
-              </p>
-            </div>
-
-            <p class="muted">
-              Note: Overfeeding is not authorized by WRAFF FORCE. Over-spoiling, however, is currently under review.
-            </p>
-          </section>
-        </main>
-      </div>
-    </div>
-
-    <!-- GERMAN VERSION -->
-    <div id="lang-de" class="lang">
-      <div class="layout-grid">
-        <!-- SIDE NAV DE -->
-        <nav class="side-nav">
-          <div class="side-nav-header">
-            <h1>TREATZ-AKTE</h1>
-            <p>Interaktive K-9 Operatorsakte für den fiktiven SWAT-Pup „Puppy Treatz“.</p>
-          </div>
-          <ul>
-            <li class="active">
-              <span class="label">Cover / Zugriff</span><span class="code">WF-00</span>
-            </li>
-            <li>
-              <span class="label">Operator-Profil</span><span class="code">WF-01</span>
-            </li>
-            <li>
-              <span class="label">Verhaltensanalyse</span><span class="code">WF-02</span>
-            </li>
-            <li>
-              <span class="label">Einsatzprotokoll</span><span class="code">WF-03</span>
-            </li>
-            <li>
-              <span class="label">Ausrüstung & Loadout</span><span class="code">WF-04</span>
-            </li>
-            <li>
-              <span class="label">WRAFF FORCE Netzwerk</span><span class="code">WF-05</span>
-            </li>
-            <li>
-              <span class="label">Vorkommnisberichte</span><span class="code">WF-06</span>
-            </li>
-            <li>
-              <span class="label">Kontakt & Links</span><span class="code">WF-07</span>
-            </li>
-            <li>
-              <span class="label">Snack-Intelligenz</span><span class="code">WF-08</span>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- DOSSIER CONTENT DE -->
-        <main class="dossier">
-          <!-- PANEL 0: COVER -->
-          <section class="panel active" id="panel-cover-de">
-            <div class="badge-row">
-              <span>GEHEIME AKTE</span>
-              <span>SUBJEKT: PUPPY TREATZ</span>
-              <span>K-9 EINHEIT</span>
-              <span>FLUFF-LEVEL: HOCH</span>
-            </div>
-
-            <h1>TREATZ – SWAT K-9 DOSSIER</h1>
-            <p class="muted">
-              Interne WRAFF FORCE Oberfläche. Unbefugter Zugriff wird mit einem (1) streng-jugendlichen Kopfneigen und optionalem Boop quittiert.
-            </p>
-
-            <div class="cover-grid">
-              <div class="cover-logo">
-  <img src="Logo_trs.png"
-       alt="WRAFF FORCE Emblem"
-       class="cover-logo-emblem">
-  <h2>PUPPY TREATZ</h2>
-  <p>Shiba / Border Collie Hybrid – SWAT K-9 Operator</p>
-</div>
-              <div class="cover-text">
-                <p>
-                  Willkommen in der vollständig fiktiven, lore-lastigen K-9 Operatorsakte von „Puppy Treatz“ –
-                  einer taktischen Flausch-Einheit mit Schwerpunkt Snack-Bergung, Sofa-Verteidigung
-                  und fortgeschrittene Zoomie-Operationen.
-                </p>
-                <p>
-                  Diese Akte imitiert sehr ernsthafte Behörden-Vibes, enthält aber exakt null echte Befugnisse
-                  und 100&nbsp;% Pup-Comedy. Perfekt für NFC-ID-Karten, QR-Scans und dramatische
-                  „Schau mal, das bin ich als SWAT-K-9“-Momente.
-                </p>
-                <p>
-                  Wenn du über eine ID gescannt hast: Glückwunsch, du besitzt jetzt offiziell Snack-Clearance.
-                  Verantwortungsbewusster Einsatz wird empfohlen, aber nicht streng überwacht.
-                </p>
-
-                <button type="button" class="enter-dossier">
-                  <span>AKTE ÖFFNEN</span><span class="chevron">▶</span>
-                </button>
-
-                <p class="muted" style="margin-top:10px;">
-                  Hinweis: Alle Daten sind fiktiv. Keine Verbindung zu realen Personen, Behörden
-                  oder Einsatzkräften. Nur Treats, Lore und auffälliges Schwanzwedeln.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- PANEL 1: PROFILE -->
-          
-<section class="panel" id="panel-profile-de">
-  <h2>Operator-Profil</h2>
-  <p class="muted">
-    Primäre Identität und Basisdaten des K-9 Assets „Puppy Treatz“.
-  </p>
-
-  <div class="profile-grid">
-    <!-- LINKES PANEL -->
-    <div class="profile-photo">
-      <img src="Treatz.png" alt="Portrait von Puppy Treatz – SWAT K-9 Operator">
-      <p>Offizielles WRAFF FORCE Portrait. Taktischer Flausch-Level: bestätigt.</p>
-
-      <div class="pawscan-card">
-        <div class="pawscan-surface">
-          <div class="pawscan-laser"></div>
-          <div class="pawscan-icon">🐾</div>
+        <div class="topbar-title">
+          <div class="topbar-title-main">WRAFF FORCE</div>
+          <div class="topbar-title-sub" data-i18n="topbar_sub">K-9 DIVISION · CREDENTIAL VERIFICATION NODE</div>
         </div>
-        <p class="pawscan-caption">
-          PAWPRINT ID: T-09 • STATUS: ACTIVE DUTY
-        </p>
       </div>
-    </div>
+      <div class="topbar-right">
+        <div class="session-pill" id="session-pill">SESSION: K9-SESSION-0000</div>
+        <div class="lang-toggle" aria-label="Language selection">
+          <button class="lang-btn active" data-lang="de">DE</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </div>
+    </header>
 
-    <!-- RECHTES PANEL -->
-    <div class="profile-meta">
-      <h3>Call Sign: PUPPY TREATZ</h3>
-      <p><strong>Rufbezeichnung:</strong> SWAT K-9 Operator</p>
-      <p><strong>Rasse:</strong> Shiba / Border Collie Hybrid</p>
-      <p><strong>Einheit:</strong> WRAFF FORCE // K-9 Division</p>
-      <p><strong>Status:</strong> On Duty // Treat-Ready</p>
-
-      <h4>Kurzprofil</h4>
-      <p>
-        Erprobt in urbanen Sofa-Zonen, ausgebildet in fortgeschrittener Snack-Bergung
-        und taktischem Kuscheln. Bekannt für hohen Cuteness-Output unter Druck
-        und die Fähigkeit, sich genau dort hinzulegen, wo Menschen eigentlich langlaufen wollen.
-      </p>
-      <p>
-        Offiziell als „Support Unit“ gelistet, intern jedoch geführt als
-        „Primärer Moral-Booster“, „laufende Flauschgranate“ und
-        „inoffizieller Emotional-Support-K-9“.
-      </p>
-
-      <h4>Service Traits</h4>
-      <ul>
-        <li>Kann in unter 0,3 Sekunden von „seriösem Operator-Blick“ auf „große Kulleraugen“ wechseln.</li>
-        <li>Versteht komplexe Kommandos wie „Bleib“, „Warte“ und „Das ist nicht für dich“ – Befolgung nicht garantiert.</li>
-        <li>Spezialtalent: findet zuverlässig den einen Menschen im Raum, der gerade dringend gekuschelt werden muss.</li>
-      </ul>
-
-      <h4>Bekannte Kommandos</h4>
-      <p class="muted">
-        <strong>„Leckerli“</strong> – sofortige Teleportation zum Handler.  
-        <strong>„Gassi“</strong> – Schwanzrotor aktiviert.  
-        <strong>„Badewanne“</strong> – Verbindung unterbrochen, Subjekt kann plötzlich nichts mehr hören.
-      </p>
-    </div>
-  </div>
-</section>
-
-
-          <!-- PANEL 2: BEHAVIOR -->
-          <section class="panel" id="panel-behavior-de">
-            <h2>Verhaltensanalyse</h2>
-            <p class="muted">
-              Nicht-klinischer Temperamentscan auf Basis von Treat-Exposition, Kuscheldichte und Zoomie-Frequenz.
-            </p>
-
-            <div class="behavior-metrics">
-              <div class="metric-card">
-                <div class="metric-label">Loyalität</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 96%;"></div>
-                </div>
-                <div class="metric-value">„Folgt dem Handler in jede Schlacht. Oder Küche.“</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Cuteness-Level</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 100%;"></div>
-                </div>
-                <div class="metric-value">„Als biologisch bedenkliche Waffe eingestuft.“</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Chaos-Faktor</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 78%;"></div>
-                </div>
-                <div class="metric-value">„Im Ruhezustand stabil. Steigt nach 21:00 Uhr.“</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Snack-Drive</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 92%;"></div>
-                </div>
-                <div class="metric-value">„Reagiert auf ‘Leckerli’ schneller als auf den eigenen Namen.“</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Zoomie-Potenzial</div>
-                <div class="metric-bar">
-                  <div class="metric-bar-fill" style="width: 88%;"></div>
-                </div>
-                <div class="metric-value">„Flur-Runway jederzeit einsatzbereit.“</div>
-              </div>
+    <!-- MAIN CONTENT -->
+    <main class="main-grid">
+      <!-- LEFT: SCAN CONSOLE -->
+      <section class="panel scan-console" id="scan-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title" data-i18n="scan_title">Credential Scan</div>
+            <div class="panel-subtitle" data-i18n="scan_subtitle">
+              QR input received. Initializing secure K-9 link…
             </div>
+          </div>
+          <span class="badge" data-i18n="scan_badge">STATUS: ACTIVE</span>
+        </div>
 
-            <h3>Psycho-Check (nicht klinisch)</h3>
-            <p>
-              Subjekt zeigt stark erhöhte Reaktionsbereitschaft auf akustische Reize mit den Begriffen
-              „Leckerli“, „Gassi“ und „Wer ist ein guter Pup?“. Deutlich erhöhte Zoomie-Gefahr nach 21:00 Uhr,
-              insbesondere in länglichen Fluren und auf frisch gewischten Böden.
-            </p>
-            <p>
-              Ablenkungsrisiko durch Quietschobjekte: deutlich erhöht. Empfohlene Gegenmaßnahmen:
-              kontrollierte Quietsch-Exposition, kaubare Deeskalationsmittel und anschließende Decken-Burritos.
-            </p>
-            <p>
-              Gesamtbewertung: Sicher einsetzbar in hochstressigen Kuschelsituationen.  
-              Vorsicht in der Nähe unbeaufsichtigter Pizzakartons und offener Geschirrspüler.
-            </p>
+        <div class="scan-terminal" id="scan-terminal" aria-live="polite">
+          <!-- Scan lines will be appended here -->
+        </div>
 
-            <h3>Trigger & Schwachstellen</h3>
-            <ul>
-              <li><strong>Trigger-Wörter:</strong> „Leckerli“, „Snack“, „Gassi“, sämtliche Knistergeräusche von Tüten.</li>
-              <li><strong>Weak Spots:</strong> hinter den Ohren, am Schwanzansatz, eine streng geheime Stelle auf der Brust.</li>
-              <li><strong>Sofort-Stimmungsboost:</strong> „Wer ist ein guter Pup?“ mit korrekter Stimmlage.</li>
-            </ul>
-          </section>
+        <div class="scan-bar-wrapper">
+          <div class="scan-bar" id="scan-bar"></div>
+        </div>
 
-          <!-- PANEL 3: MISSION LOG -->
-          <section class="panel" id="panel-missions-de">
-            <h2>Einsatzprotokoll</h2>
-            <p class="muted">
-              Nicht vollständige Auswahl relevanter Feldoperationen. Einige Details wurden zur Dramasteigerung geschwärzt.
-            </p>
+        <div class="scan-terminal-footer">
+          <span data-i18n="scan_footer_left">This node performs a local verification only. No data is transmitted.</span>
+          <span data-i18n="scan_footer_right">WRAFF FORCE · Internal Use Only</span>
+        </div>
+      </section>
 
-            <ul class="mission-timeline">
-              <li>
-                <h3>Operation Sofa Patrol</h3>
-                <p><strong>Ort:</strong> Sektor Wohnzimmer</p>
-                <p><strong>Ergebnis:</strong> Verdächtige Krümel gesichert. Sofaperimeter intensiv bekuschelt.</p>
-              </li>
-              <li>
-                <h3>Midnight Snack Heist</h3>
-                <p><strong>Ort:</strong> Küchen-AO</p>
-                <p><strong>Ergebnis:</strong> Akte klassifiziert. (Kekse verschwunden, keine Pfotenabdrücke gefunden.)</p>
-              </li>
-              <li>
-                <h3>Zoomie-Protokoll Alpha</h3>
-                <p><strong>Ort:</strong> Flur-Runway</p>
-                <p><strong>Ergebnis:</strong> Maximale Geschwindigkeit erreicht. Teppichintegrität kompromittiert.</p>
-              </li>
-              <li>
-                <h3>Operation Blanket Burrito</h3>
-                <p><strong>Ort:</strong> Sofa-Kommandzentrale</p>
-                <p><strong>Ergebnis:</strong> Subjekt erfolgreich in Decke eingewickelt. Handler durch Cuteness immobilisiert.</p>
-              </li>
-              <li>
-                <h3>Patio-Pigeon Standoff</h3>
-                <p><strong>Ort:</strong> Balkon-AO</p>
-                <p><strong>Ergebnis:</strong> Taube abgedreht, Bell-Lautstärke über empfohlene Innenraumwerte gestiegen.</p>
-              </li>
-            </ul>
-
-            <h3>Auszeichnungen &amp; Würdigungen</h3>
-            <p class="muted">
-              Abgelegt in der Rubrik „extrem gutes Pup-Verhalten“ und snack-adjacenten Heldentaten.
-            </p>
-            <div class="decorations-grid">
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">RIBBON • WF-GOODBOI-01</div>
-                <div class="decoration-title">Orden des ewigen Wedelns</div>
-                <p class="decoration-notes">
-                  Verliehen für dauerhaft hohe Laune im Team während längerer Sofa-Belagerungen und Serien-Marathons.
-                </p>
-              </div>
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">BADGE • WF-SNACK-ALPHA</div>
-                <div class="decoration-title">Goldener Snack-Sensor</div>
-                <p class="decoration-notes">
-                  Für das Auffinden versteckter Treat-Depots in unter 3,5 Sekunden – inklusive des „versiegelte Schublade“-Vorfalls.
-                </p>
-              </div>
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">MEDAL • WF-ZOOM-DELTA</div>
-                <div class="decoration-title">Kreuz der kontrollierten Chaos-Zoomies</div>
-                <p class="decoration-notes">
-                  Verliehen nach erfolgreich absolvierten Flur-Zoomies im Vollspeed ohne direkten Zusammenstoß mit Humans.
-                </p>
-              </div>
-              <div class="decoration-card">
-                <div class="decoration-ribbon"></div>
-                <div class="decoration-meta">CITATION • WF-CUDDLE-∞</div>
-                <div class="decoration-title">Lifetime-Cuddle-Clearance</div>
-                <p class="decoration-notes">
-                  Anerkennung für dauerhaftes, spontanes Comfort-Providing in stressigen Human-Arbeitstagen.
-                </p>
-              </div>
+      <!-- RIGHT: RESULT PANEL -->
+      <section class="panel result-panel hidden" id="result-panel">
+        <div class="panel-header">
+          <div>
+            <div class="match-heading">
+              <span class="match-heading-icon">✔</span>
+              <span data-i18n="match_heading">MATCH FOUND – ACTIVE OPERATIVE VERIFIED</span>
             </div>
-
-            <h3>Handler Notes</h3>
-            <p class="muted">
-              „Missionserfolg wird nicht in erledigten Aufgaben gemessen, sondern in verputzten Snacks und gewedelten Schwänzen.“
-            </p>
-          </section>
-
-          <!-- PANEL 4: GEAR -->
-          <section class="panel" id="panel-gear-de">
-            <h2>Ausrüstung & Loadout</h2>
-            <p class="muted">
-              Standard-Setup für On-Duty, Cons, CSDs und spontane Kuschel-Raids.
-            </p>
-
-            <h3>Standard Loadout</h3>
-            <ul>
-              <li>Taktische Weste – verstärkt für Style, Kuscheln und extra Velcro-Patches.</li>
-              <li>Unit Patches – WRAFF FORCE Abzeichen & Namens-Patch für sofortiges „Wer ist ein guter Pup?“-Matching.</li>
-              <li>Treat-Pouch – Hochprioritätsfach. Füllstand darf niemals unter 30&nbsp;% fallen.</li>
-              <li>Leash-Interface – für Handler-Navigation und kontrollierten Zoomie-Einsatz.</li>
-            </ul>
-
-            <h3>Party-Mode Attachments</h3>
-            <ul>
-              <li>LED-Harness – visuelle Überlegenheit in Low-Light-Kuschelzonen und auf der Tanzfläche.</li>
-              <li>Extra Treat-Holster – für verlängerte Operationen bei Cons, Walks & CSDs.</li>
-              <li>Patch-Sprüche – z. B. „READY 4 TREATS“, „WORKING DOG (ON SNACK BREAK)“.</li>
-            </ul>
-
-            <h3>Experimentelle Gear (Prototyp)</h3>
-            <ul>
-              <li>Auto-Refill Treat Dispenser – scheitert bisher an „sofortiger Eigenentleerung“.</li>
-              <li>Noise-Cancelling Ears – vom Subjekt als „Vibe-Killer“ abgelehnt.</li>
-              <li>Integrierter Bauchrubbel-Meter – dauerhaft bei 99&nbsp;% „könnte mehr sein“ hängen geblieben.</li>
-            </ul>
-          </section>
-
-          <!-- PANEL 5: NETWORK -->
-          <section class="panel" id="panel-network-de">
-            <h2>WRAFF FORCE Netzwerk</h2>
-            <p class="muted">
-              Interner Überblick über die fiktive Agency für Snack-Security und Morale-Operations.
-            </p>
-
-            <p>
-              WRAFF FORCE ist eine vollständig fiktive K-9 Task Force mit Spezialisierung auf Snack-Sicherheit,
-              Kuschel-Operationen und Stimmungsaufhellung in stressigen Umgebungen. Die Agents operieren überall dort,
-              wo Leckerlis verdächtig schlecht gesichert sind.
-            </p>
-
-            <h3>Unit-Motto</h3>
-            <p>„In Treatz We Trust.“</p>
-
-            <h3>Backronym (inoffiziell)</h3>
-            <p class="muted">
-              <strong>WRAFF</strong> – „Worldwide Reactive Agency For Floof“.
-            </p>
-
-            <h3>Bekannte K-9 Operatives</h3>
-            <ul>
-              <li>Agent Biscuit – Recon & Crumb Intelligence.</li>
-              <li>Sergeant Zoomie – Rapid Response & Flur-Patrouille.</li>
-              <li>Captain Wiggle – Tail-Based Communication Officer.</li>
-              <li>Lieutenant Snorf – Kissen-Security & Nap-Operations.</li>
-            </ul>
-
-            <h3>Clearance-Level</h3>
-            <ul>
-              <li><strong>Level 1 – Basic Belly Rubs:</strong> Öffentlich, kein NDA erforderlich.</li>
-              <li><strong>Level 2 – Treat Distribution:</strong> Autorisierte Snack-Handler only.</li>
-              <li><strong>Level 3 – Secret Snack Stashes:</strong> Nur für K-9 Personnel und sehr vertrauenswürdige Humans.</li>
-            </ul>
-            <h3>Offizielle Hymnen</h3>
-<p class="muted">
-  Von der WRAFF FORCE freigegebene Themes für Zeremonien, Briefings und dramatische Treat-Momente.
-</p>
-
-<div class="audio-header">CLASSIFIED AUDIO // CLEARANCE LEVEL 2+</div>
-
-<div class="audio-grid">
-  <!-- GRAND ANTHEM -->
-  <div class="audio-card wf-audio-card">
-    <div class="audio-label">
-      <span class="icon">▶</span>
-      WF-A01 // Grand Unit Anthem
-    </div>
-    <p class="muted">
-      Zeremonielle Haupt-Hymne für Flaggenmomente, Beförderungsprotokolle und genehmigte Slow-Motion-Morale-Sequenzen.
-    </p>
-
-    <div class="wf-audio-ui">
-      <button class="wf-audio-play" type="button" aria-label="Play Grand Unit Anthem">
-        ▶
-      </button>
-      <div class="wf-audio-track">
-        <div class="wf-audio-progress"></div>
-      </div>
-      <div class="wf-audio-time">
-        <span class="wf-audio-current">0:00</span>
-        <span class="wf-audio-duration">0:00</span>
-      </div>
-    </div>
-
-    <!-- echtes Audio-Element, aber hidden gesteuert -->
-    <audio class="wf-audio" src="wf_grand_anthem.mp3"></audio>
-  </div>
-
-  <!-- TACTICAL ANTHEM -->
-  <div class="audio-card wf-audio-card">
-    <div class="audio-label">
-      <span class="icon">▶</span>
-      WF-A02 // Tactical Deployment Anthem
-    </div>
-    <p class="muted">
-      Taktisches Field-Theme für Einsatzbesprechungen, Gear-Checks und strategische Hero-Walks im Flur.
-    </p>
-
-    <div class="wf-audio-ui">
-      <button class="wf-audio-play" type="button" aria-label="Play Tactical Deployment Anthem">
-        ▶
-      </button>
-      <div class="wf-audio-track">
-        <div class="wf-audio-progress"></div>
-      </div>
-      <div class="wf-audio-time">
-        <span class="wf-audio-current">0:00</span>
-        <span class="wf-audio-duration">0:00</span>
-      </div>
-    </div>
-
-    <audio class="wf-audio" src="wf_tactical_anthem.mp3"></audio>
-  </div>
-</div>
-
-
-          </section>
-
-          <!-- PANEL 6: INCIDENTS -->
-         <section class="panel" id="panel-incidents-de">
-  <h2>Vorkommnisberichte (Redacted)</h2>
-  <p class="muted">
-    Ausgewählte Fallakten mit zu Demonstrationszwecken geschwärzten Details. Snack-Sicherheit hat höchste Priorität.
-  </p>
-
-  <div class="case-grid">
-    <div class="case-card">
-      <div class="case-card-code">WF-01-SOFA</div>
-      <div class="case-card-title">Sofa-Perimeter-Drift</div>
-      <p class="case-card-note">
-        Subjekt erweitert langsam den eigenen Zuständigkeitsbereich, bis das gesamte Sofa
-        als „zugewiesene Schlafzone“ gilt.
-      </p>
-    </div>
-
-    <div class="case-card">
-      <div class="case-card-code">WF-02-TÜR</div>
-      <div class="case-card-title">Tür-Breach (Nase)</div>
-      <p class="case-card-note">
-        Wiederholtes sanftes Anstupsen geschlossener Türen. Klassifiziert als „emotionale Brechladung“.
-      </p>
-    </div>
-
-    <div class="case-card">
-      <div class="case-card-code">WF-03-NAPF</div>
-      <div class="case-card-title">Leerer-Napf-Protokoll</div>
-      <p class="case-card-note">
-        Intensiver Blickkontakt, bis der Napf wieder gefüllt wurde.
-      </p>
-    </div>
-  </div>
-
-  <article class="incident">
-    <h3>Fall #WF-09-🐾</h3>
-    <p>
-      <span class="redacted">[GESCHWÄRZT]</span> wurde um ca.
-      <span class="redacted">[GESCHWÄRZT]</span> Uhr beim Ausführen nicht autorisierter Zoomies
-      in der eingeschränkten Zone <span class="redacted">[GESCHWÄRZT]</span> beobachtet.
-    </p>
-    <p>
-      Ergebnis: ein (1) zerstörter Blumentopf, mehrere Zeug*innen berichten dennoch
-      von „extrem gutem Boy“-Verhalten trotz Kollateralschäden.
-    </p>
-  </article>
-
-  <article class="incident">
-    <h3>Fall #WF-12-TREATZ</h3>
-    <p>
-      Subjekt erlangte Zugriff auf einen <span class="redacted">[GESCHWÄRZT]</span>-Snackbehälter.
-      Vollständige Details unterliegen Treat-Level-Clearance.
-    </p>
-  </article>
-
-  <article class="incident">
-    <h3>Fall #WF-21-SOFA</h3>
-    <p>
-      Verlängerte Besetzung der zentralen Sofa-Zone durch Subjekt und zugehörige Plüsch-Einheit.
-      Menschliche Sitzkapazität reduziert auf 0,5 Personen.
-    </p>
-    <p>
-      Empfohlene Maßnahme: Sitzplatzverhandlungen einleiten. Bestechung mit Snacks zulässig.
-    </p>
-  </article>
-
-  <h3>Mustererkennungen</h3>
-  <ul>
-    <li><strong>Klingel vs. Bell-Lautstärke:</strong> Direkte Korrelation. 100 % aller Klingelereignisse führen zu spontaner Lautstärkeerhöhung.</li>
-    <li><strong>Snack-Verschwindefenster:</strong> Höchstes Risiko zwischen 19:00–22:00, besonders bei unbeaufsichtigten Chipstüten.</li>
-    <li><strong>Schuh-Relocation-Index:</strong> Einzelne Schuhe werden zu 64 % häufiger in gemütliche Ecken „zur Analyse“ transportiert.</li>
-  </ul>
-</section>
-
-
-          <!-- PANEL 7: CONTACT -->
-          <section class="panel" id="panel-contact-de">
-            <h2>Kontakt & Links</h2>
-            <p>
-              Diese Akte beschreibt einen rein fiktiven K-9 Charakter. Keine echte Zugehörigkeit zu Behörden,
-              Polizei, Militär oder anderen Organisationen – nur Vibes, Lore und taktischer Flausch.
-            </p>
-
-<p>Für Missions-Updates, Field-Selfies und SWAT-Pup-Ästhetik:</p>
-
-<div class="contact-card">
-  <div class="contact-card-main">
-    <strong>Primary Mission Channel</strong><br>
-    Live-Einsätze, Field-Selfies und SWAT-Pup-Lore in Echtzeit.
-  </div>
-  <a href="https://www.instagram.com/puppy_treatz" target="_blank" class="contact-cta">
-    <span class="contact-cta-handle">@puppy_treatz</span>
-    <span class="contact-cta-tag">Instagram • Live Feed</span>
-  </a>
-</div>
-
-<p style="margin-top: 14px;">
-  <button type="button" class="btn-field-manual" data-lang="de">
-    Field Manual (PDF) anfordern
-  </button>
-</p>
-
-
-            <p class="muted" style="margin-top:10px;">
-              Zugriff via NFC-ID: Wenn du das hier liest, verfügst du offiziell über ausreichende Snack-Clearance.
-            </p>
-          </section>
-
-          <!-- PANEL 8: SNACK INTEL -->
-          <section class="panel" id="panel-snacks-de">
-            <h2>Snack-Intelligenz</h2>
-            <p class="muted">
-              Interne Snack-Prioritätenanalyse für Subjekt „Puppy Treatz“. Verantwortungsbewusst einsetzen.
-            </p>
-
-            <h3>Snack-Ranking</h3>
-            <ul>
-              <li><strong>S-Tier:</strong> Käsewürfel, Soft-Leckerlis, alles was „aus Versehen“ von einer Pizza fällt.</li>
-              <li><strong>A-Tier:</strong> Standard-Hundekekse, knusprige Biscuits, verdächtig geformte Snacks in Knistertüten.</li>
-              <li><strong>B-Tier:</strong> Trockenfutter (steigt im Ranking, wenn es dramatisch aus der Hand gefüttert wird).</li>
-              <li><strong>C-Tier:</strong> „Light“- oder „Diät“-Snacks. Hochgradig verdächtig.</li>
-            </ul>
-
-            <h3>Bekannte Schwächen</h3>
-            <ul>
-              <li>Sitzt, bleibt und gibt Pfote gleichzeitig, wenn das Leckerli sichtbar ist.</li>
-              <li>Kann dem Geräusch eines Pizzaschneiders nicht widerstehen.</li>
-              <li>Blickkontakt-Intensität steigt um 300&nbsp;%, sobald ein Mensch auf dem Sofa etwas isst.</li>
-            </ul>
-
-            <h3>Einsatzleitfaden</h3>
-            <p>Für maximale Kooperation sollten Snacks:</p>
-            <ul>
-              <li>Mit der passenden Hype-Stimme präsentiert werden („Leckerli-Zeit!“).</li>
-              <li>In sinnvollen Abständen während längerer Kuschelsessions ausgeteilt werden.</li>
-              <li>Mit Kopfkraulen und der klaren Bestätigung „du bist ein guter Pup“ kombiniert werden.</li>
-            </ul>
-
-            <div class="treat-meter">
-              <div class="treat-meter-header">
-                <span>TREAT LEVEL MONITOR</span>
-                <span class="treat-meter-badge">LIVE · STABIL</span>
-              </div>
-
-              <div class="treat-row">
-                <span class="treat-row-label">KÄSE</span>
-                <div class="treat-row-bar">
-                  <div class="treat-row-bar-fill" style="width: 96%;"></div>
-                </div>
-                <span class="treat-row-value">96%</span>
-              </div>
-
-              <div class="treat-row">
-                <span class="treat-row-label">PIZZA</span>
-                <div class="treat-row-bar">
-                  <div class="treat-row-bar-fill" style="width: 99%;"></div>
-                </div>
-                <span class="treat-row-value">99%</span>
-              </div>
-
-              <div class="treat-row">
-                <span class="treat-row-label">GEMÜSE</span>
-                <div class="treat-row-bar">
-                  <div class="treat-row-bar-fill" style="width: 18%;"></div>
-                </div>
-                <span class="treat-row-value">18%</span>
-              </div>
-
-              <p class="muted small" style="margin-top:6px;">
-                Werte können ansteigen, wenn sich Schranktüren im Umkreis von 5&nbsp;m öffnen.
-              </p>
+            <div class="match-subline" data-i18n="match_subline">
+              Identity hash matches WRAFF FORCE K-9 registry. Operative cleared for dossier access.
             </div>
+          </div>
+        </div>
 
-            <p class="muted">
-              Hinweis: Überfütterung ist nicht von WRAFF FORCE autorisiert. Übermäßiges Verwöhnen befindet sich noch in der Prüfung.
-            </p>
-          </section>
-        </main>
-      </div>
-    </div>
+        <div class="mini-profile">
+          <div class="mini-avatar">
+            <!-- Optional: anderes Logo oder Operator-Icon -->
+            <img src="Treatz.png" alt="Operative Avatar">
+          </div>
+          <div class="mini-meta">
+            <div class="meta-row">
+              <span class="meta-label" data-i18n="codename_label">CODENAME</span>
+              <span class="meta-value">09-K9-OPS</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label" data-i18n="alias_label">CIVILIAN ALIAS</span>
+              <span class="meta-value">Puppy Treatz</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label" data-i18n="rank_label">RANK</span>
+              <span class="meta-value" data-i18n="rank_value">Paw-tenant (K-9 Field Operative)</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label" data-i18n="division_label">DIVISION</span>
+              <span class="meta-value" data-i18n="division_value">Snack Retrieval Unit · K-9</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label" data-i18n="clearance_label">CLEARANCE</span>
+              <span class="meta-value" data-i18n="clearance_value">WRAFF-3 · High Treat Access</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label" data-i18n="status_label">STATUS</span>
+              <span class="meta-value" data-i18n="status_value">ON DUTY · PROBABLY NEAR THE SNACK JAR</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <a href="dossier.html" class="btn btn-primary">
+            <span class="btn-icon">⟶</span>
+            <span class="btn-label" data-i18n="btn_dossier">Open Operator Dossier</span>
+          </a>
+          <a href="wraff_force_central.html" class="btn btn-secondary">
+            <span class="btn-icon">◎</span>
+            <span class="btn-label" data-i18n="btn_central">Access WRAFF FORCE Central</span>
+          </a>
+          <!-- Optionale Zusatzzugänge, falls Dateien existieren -->
+          <a href="treat_alert_levels.html" class="btn btn-secondary">
+            <span class="btn-icon">⚠</span>
+            <span class="btn-label" data-i18n="btn_treat_levels">Treat Alert Levels</span>
+          </a>
+          <a href="agency_regulations.html" class="btn btn-secondary">
+            <span class="btn-icon">§</span>
+            <span class="btn-label" data-i18n="btn_regulations">Agency Regulations</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span data-i18n="footer_line">
+        INTERNAL USE ONLY · UNAUTHORIZED SNACKS WILL BE CONFISCATED BY THE K-9 UNIT.
+      </span>
+    </footer>
   </div>
 
   <script>
-    // Language toggle
-    const langButtons = document.querySelectorAll('.lang-toggle button');
-    const langContainers = {
-      en: document.getElementById('lang-en'),
-      de: document.getElementById('lang-de')
+    // --- i18n DICTIONARY ----------------------------------------------------
+    const i18n = {
+      en: {
+        topbar_sub: "K-9 DIVISION · CREDENTIAL VERIFICATION NODE",
+        scan_title: "Credential Scan",
+        scan_subtitle: "QR input received. Initializing secure K-9 link…",
+        scan_badge: "STATUS: ACTIVE",
+        scan_footer_left: "This node performs a local verification only. No data is transmitted.",
+        scan_footer_right: "WRAFF FORCE · Internal Use Only",
+        match_heading: "MATCH FOUND – ACTIVE OPERATIVE VERIFIED",
+        match_subline: "Identity hash matches WRAFF FORCE K-9 registry. Operative cleared for dossier access.",
+        codename_label: "CODENAME",
+        alias_label: "CIVILIAN ALIAS",
+        rank_label: "RANK",
+        rank_value: "Paw-tenant (K-9 Field Operative)",
+        division_label: "DIVISION",
+        division_value: "Snack Retrieval Unit · K-9",
+        clearance_label: "CLEARANCE",
+        clearance_value: "WRAFF-3 · High Treat Access",
+        status_label: "STATUS",
+        status_value: "ON DUTY · PROBABLY NEAR THE SNACK JAR",
+        btn_dossier: "Open Operator Dossier",
+        btn_central: "Access WRAFF FORCE Central",
+        btn_treat_levels: "Treat Alert Levels",
+        btn_regulations: "Agency Regulations",
+        footer_line: "INTERNAL USE ONLY · UNAUTHORIZED SNACKS WILL BE CONFISCATED BY THE K-9 UNIT."
+      },
+      de: {
+        topbar_sub: "K-9 EINHEIT · ZUGANGS-VERIFIKATIONSNODE",
+        scan_title: "Zugangsprüfung",
+        scan_subtitle: "QR-Eingang registriert. Sichere K-9-Verbindung wird initialisiert…",
+        scan_badge: "STATUS: AKTIV",
+        scan_footer_left: "Diese Node führt nur eine lokale Verifizierung durch. Es werden keine Daten übertragen.",
+        scan_footer_right: "WRAFF FORCE · Nur für den internen Gebrauch",
+        match_heading: "TREFFER – AKTIVER OPERATIV-AGENT BESTÄTIGT",
+        match_subline: "Identitäts-Hash stimmt mit dem WRAFF-FORCE-K-9-Register überein. Zugriff auf Dossier freigegeben.",
+        codename_label: "CODENAME",
+        alias_label: "BÜRGERLICHER NAME",
+        rank_label: "RANG",
+        rank_value: "Paw-tenant (K-9 Feldeinsatz)",
+        division_label: "EINHEIT",
+        division_value: "Snack Retrieval Unit · K-9",
+        clearance_label: "FREIGABELEVEL",
+        clearance_value: "WRAFF-3 · Hoher Snack-Zugriff",
+        status_label: "STATUS",
+        status_value: "IM EINSATZ · VERMUTLICH IN DER NÄHE DER LECKERLIDOSIS",
+        btn_dossier: "Operator-Akte öffnen",
+        btn_central: "WRAFF FORCE Central öffnen",
+        btn_treat_levels: "Treat Alert Levels",
+        btn_regulations: "Agency Regulations",
+        footer_line: "NUR FÜR DEN INTERNEN GEBRAUCH · UNERLAUBTE SNACKS WERDEN VON DER K-9 EINHEIT EINKASSIERT."
+      }
     };
 
-    const hudAccess = document.getElementById('hud-access');
-    const hudMode   = document.getElementById('hud-mode');
-    const hudMood   = document.getElementById('hud-mood');
-    const statusBar = document.getElementById('status-bar');
+    // Scan steps (per language)
+    const scanSteps = {
+      en: [
+        "> INITIALIZING NODE…",
+        "> HANDSHAKE WITH K-9 REGISTRY…",
+        "> DECODING QR SIGNATURE…",
+        "> VERIFYING HASH AGAINST WRAFF DATABASE…",
+        "> CROSSCHECKING OPERATIVE STATUS…",
+        "> CONFIRMING SNACK-CLEARANCE LEVEL…",
+        "> FINALIZING AUTH TOKEN…",
+        "> RESULT: MATCH FOUND · OPERATIVE 09-K9-OPS"
+      ],
+      de: [
+        "> NODE WIRD INITIALISIERT…",
+        "> HANDSHAKE MIT K-9-REGISTER…",
+        "> QR-SIGNATUR WIRD ENTSCHLÜSSELT…",
+        "> HASH-ABGLEICH MIT WRAFF-DATENBANK…",
+        "> OPERATIV-STATUS WIRD GEPRÜFT…",
+        "> SNACK-FREIGABELEVEL WIRD BESTÄTIGT…",
+        "> AUTH-TOKEN WIRD FINALISIERT…",
+        "> ERGEBNIS: TREFFER · OPERATIVE 09-K9-OPS"
+      ]
+    };
 
-    const hudPresetsEn = [
-      { access: 'COVER VIEW',         mode: 'LIVE VIEW',      mood: 'GOOD BOI' },
-      { access: 'PUP PROFILE',        mode: 'FILE OPEN',      mood: 'FOCUSED FLOOF' },
-      { access: 'BEHAVIOR SCAN',      mode: 'ANALYSIS',       mood: 'CURIOUS' },
-      { access: 'MISSION LOG',        mode: 'DEBRIEF',        mood: 'PROUD PUP' },
-      { access: 'LOADOUT LOCKER',     mode: 'GEAR CHECK',     mood: 'READY' },
-      { access: 'NETWORK GRID',       mode: 'LINK OVERVIEW',  mood: 'SOCIAL' },
-      { access: 'INCIDENT FILES',     mode: 'RESTRICTED',     mood: 'INNOCENT™' },
-      { access: 'COMMS CHANNEL',      mode: 'CONTACT',        mood: 'POLITE WOOF' },
-      { access: 'SNACK INTEL',        mode: 'CRITICAL DATA',  mood: 'HUNGRY' }
-    ];
+    let currentLang = "en";
 
-    const hudPresetsDe = [
-      { access: 'ZUGANGSANSICHT',     mode: 'LIVE VIEW',      mood: 'GUTER PUP' },
-      { access: 'PUP-PROFIL',         mode: 'AKTE OFFEN',     mood: 'KONZENTRIERT' },
-      { access: 'VERHALTENSSCAN',     mode: 'ANALYSE',        mood: 'NEUGIERIG' },
-      { access: 'EINSATZPROTOKOLL',   mode: 'DEBRIEF',        mood: 'STOLZ' },
-      { access: 'AUSRÜSTUNG',         mode: 'GEAR CHECK',     mood: 'BEREIT' },
-      { access: 'NETZWERK',           mode: 'LINK-OVERVIEW',  mood: 'SOZIAL' },
-      { access: 'VORKOMMNISSE',       mode: 'RESTRICTED',     mood: 'UNSCHULDIG™' },
-      { access: 'KONTAKTKANAL',       mode: 'KONTAKT',        mood: 'HÖFLICHES WOOF' },
-      { access: 'SNACK-INTEL',        mode: 'KRITISCHE DATEN',mood: 'HUNGRIG' }
-    ];
-
-    function flashStatusBar() {
-      if (!statusBar) return;
-      statusBar.classList.add('hud-flash');
-      setTimeout(() => statusBar.classList.remove('hud-flash'), 380);
+    function detectInitialLanguage() {
+      const navLang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
+      if (navLang.startsWith("de")) return "de";
+      return "en";
     }
 
-    function updateHud(lang, index) {
-      if (!hudAccess || !hudMode || !hudMood) return;
-      const presets = lang === 'de' ? hudPresetsDe : hudPresetsEn;
-      const slot = presets[index] || presets[0];
-      hudAccess.textContent = slot.access;
-      hudMode.textContent = slot.mode;
-      hudMood.textContent = slot.mood;
-      flashStatusBar();
+    function applyLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      const dict = i18n[lang] || i18n.en;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+
+      // Toggle buttons
+      document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
     }
 
-    function setLanguage(lang) {
-      if (!langContainers[lang]) {
-        lang = 'en';
-      }
-      Object.entries(langContainers).forEach(([key, el]) => {
-        if (!el) return;
-        el.classList.toggle('active', key === lang);
+    function initLanguageToggle() {
+      document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const lang = btn.getAttribute("data-lang");
+          applyLanguage(lang);
+          // reset and restart scan when language changes? Optional: no
+          // Here we keep current scan state.
+        });
       });
-      langButtons.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-      try {
-        localStorage.setItem('wraff_lang', lang);
-      } catch (e) {
-        // ignore
-      }
-      // default HUD to cover panel of selected language
-      updateHud(lang, 0);
     }
 
-    langButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        setLanguage(btn.dataset.lang);
-      });
-    });
+    // --- Scan animation -----------------------------------------------------
 
-    // Determine initial language from storage or browser
-    let initialLang = 'en';
-    try {
-      const stored = localStorage.getItem('wraff_lang');
-      if (stored === 'en' || stored === 'de') {
-        initialLang = stored;
+    function appendScanLine(text, type = "normal") {
+      const terminal = document.getElementById("scan-terminal");
+      const line = document.createElement("div");
+      line.className = "scan-line";
+
+      const spanPrompt = document.createElement("span");
+      spanPrompt.className = "prompt";
+      const spanValue = document.createElement("span");
+
+      if (type === "ok") spanValue.className = "value-ok";
+      else if (type === "warn") spanValue.className = "value-warn";
+      else if (type === "fail") spanValue.className = "value-fail";
+
+      // Simple split: assume '> ' as prompt
+      const idx = text.indexOf(">");
+      if (idx !== -1) {
+        spanPrompt.textContent = text.slice(0, idx + 1) + " ";
+        spanValue.textContent = text.slice(idx + 1).trim();
       } else {
-        const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-        initialLang = navLang.startsWith('de') ? 'de' : 'en';
-      }
-    } catch (e) {
-      // fallback already set
-    }
-    setLanguage(initialLang);
-
-    // Per-language nav + panels
-    function initLanguageUI(containerId) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-
-      const lang = containerId === 'lang-de' ? 'de' : 'en';
-      const navItems = container.querySelectorAll('.side-nav li');
-      const panels = container.querySelectorAll('.panel');
-      const enterButton = container.querySelector('.enter-dossier');
-
-      if (!navItems.length || !panels.length) return;
-
-      function showPanelByIndex(index) {
-        panels.forEach((p, i) => {
-          p.classList.toggle('active', i === index);
-        });
-        navItems.forEach((li, i) => {
-          li.classList.toggle('active', i === index);
-        });
-        updateHud(lang, index);
+        spanValue.textContent = text;
       }
 
-      navItems.forEach((li, index) => {
-        li.addEventListener('click', () => showPanelByIndex(index));
-      });
-
-      if (enterButton) {
-        // index 1 = profile panel (because order: cover, profile, behavior, missions, gear, network, incidents, contact, snacks)
-        enterButton.addEventListener('click', () => showPanelByIndex(1));
-      }
+      line.appendChild(spanPrompt);
+      line.appendChild(spanValue);
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
     }
 
-    initLanguageUI('lang-en');
-    initLanguageUI('lang-de');
+    function generateSessionId() {
+      const chars = "0123456789ABCDEF";
+      let id = "";
+      for (let i = 0; i < 4; i++) {
+        id += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return `K9-SESSION-${id}`;
+    }
+
+    function startScanAnimation() {
+      const bar = document.getElementById("scan-bar");
+      const scanPanel = document.getElementById("scan-panel");
+      const resultPanel = document.getElementById("result-panel");
+      const terminal = document.getElementById("scan-terminal");
+
+      // Clear terminal
+      terminal.innerHTML = "";
+
+      // Start bar animation
+      bar.classList.add("active");
+      scanPanel.classList.remove("scan-complete");
+      resultPanel.classList.add("hidden");
+
+      const steps = scanSteps[currentLang] || scanSteps.en;
+      let idx = 0;
+
+      function nextStep() {
+        if (idx < steps.length) {
+          const text = steps[idx];
+          let type = "normal";
+          if (idx === steps.length - 1) type = "ok";
+          appendScanLine(text, type);
+          idx++;
+          const delay = idx === steps.length ? 900 : 650;
+          setTimeout(nextStep, delay);
+        } else {
+          // Finish
+          bar.classList.remove("active");
+          scanPanel.classList.add("scan-complete");
+          resultPanel.classList.remove("hidden");
+        }
+      }
+
+      // Small intro delay
+      setTimeout(nextStep, 500);
+    }
+
+    // --- INIT ---------------------------------------------------------------
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Session ID
+      const sessionId = generateSessionId();
+      const pill = document.getElementById("session-pill");
+      if (pill) {
+        pill.textContent = `SESSION: ${sessionId}`;
+      }
+
+      // Language
+      const initialLang = detectInitialLanguage();
+      applyLanguage(initialLang);
+      initLanguageToggle();
+
+      // Start scan animation
+      startScanAnimation();
+    });
   </script>
-<script>
-  window.addEventListener('load', function () {
-    const overlay = document.getElementById('intro-overlay');
-    if (!overlay) return;
-
-    // Dauer des Intros in Millisekunden (z.B. 2600–3200)
-    const INTRO_DURATION = 3500;
-
-    setTimeout(function () {
-      overlay.classList.add('intro-finish');
-
-      // leicht verzögert ausblenden, damit der Zoom-Out sichtbar ist
-      setTimeout(function () {
-        overlay.classList.add('intro-hide');
-      }, 300);
-    }, INTRO_DURATION);
-  });
-
-    // Classified toggle
-    document.querySelectorAll('.classified-toggle').forEach((btn) => {
-      const closedLabel = btn.dataset.labelClosed || btn.textContent;
-      const openLabel = btn.dataset.labelOpen || btn.textContent;
-
-      btn.addEventListener('click', () => {
-        const targetId = btn.dataset.target;
-        const content = document.getElementById(targetId);
-        if (!content) return;
-
-        const isOpen = content.classList.toggle('open');
-        btn.classList.toggle('open', isOpen);
-        btn.textContent = isOpen ? openLabel : closedLabel;
-      });
-    });
-
-    // Fake Field Manual overlay – robuste Version
-    document.addEventListener('DOMContentLoaded', function () {
-      const overlay = document.getElementById('manual-overlay');
-      const text = document.getElementById('manual-overlay-text');
-      const sub = document.getElementById('manual-overlay-subtext');
-      const closeBtn = document.getElementById('manual-overlay-close');
-
-      if (!overlay || !text || !sub || !closeBtn) return;
-
-      // Event Delegation für alle PDF-Buttons (EN & DE)
-      document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.btn-field-manual');
-        if (!btn) return;
-
-        const lang = btn.dataset.lang || 'en';
-
-        if (lang === 'de') {
-          text.textContent =
-            'Sorry, Cadet. Das vollständige Field Manual ist höheren Clearance-Leveln vorbehalten.';
-          sub.textContent =
-            'Tipp: Live-Updates auf @puppy_treatz sind im Grunde schon das inoffizielle Handbuch.';
-          closeBtn.textContent = 'Verstanden';
-        } else {
-          text.textContent =
-            'Sorry, cadet. The full field manual is restricted to higher clearance levels.';
-          sub.textContent =
-            'Hint: following @puppy_treatz for live mission updates is basically the manual anyway.';
-          closeBtn.textContent = 'Understood';
-        }
-
-        overlay.classList.add('visible');
-      });
-
-      const hide = () => overlay.classList.remove('visible');
-
-      closeBtn.addEventListener('click', hide);
-
-      overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) hide();
-      });
-    });
-
-
-</script>
-<div id="manual-overlay">
-  <div class="manual-dialog">
-    <h3>ACCESS DENIED</h3>
-    <p id="manual-overlay-text">
-      Sorry, cadet. The full field manual is restricted to higher clearance levels.
-    </p>
-    <p class="muted small" id="manual-overlay-subtext">
-      Hint: following @puppy_treatz for live mission updates is basically the manual anyway.
-    </p>
-    <button type="button" id="manual-overlay-close">Understood</button>
-  </div>
-</div>
-
-<script>
-  (function() {
-    const cards = document.querySelectorAll('.wf-audio-card');
-    const allAudios = [];
-
-    function formatTime(sec) {
-      if (!isFinite(sec)) return "0:00";
-      const m = Math.floor(sec / 60);
-      let s = Math.floor(sec % 60);
-      if (s < 10) s = "0" + s;
-      return m + ":" + s;
-    }
-
-    // Erstes Setup
-    cards.forEach(card => {
-      const audio = card.querySelector('.wf-audio');
-      const btn = card.querySelector('.wf-audio-play');
-      const track = card.querySelector('.wf-audio-track');
-      const progress = card.querySelector('.wf-audio-progress');
-      const curEl = card.querySelector('.wf-audio-current');
-      const durEl = card.querySelector('.wf-audio-duration');
-
-      if (!audio || !btn || !track || !progress) return;
-      allAudios.push(audio);
-
-      audio.addEventListener('loadedmetadata', () => {
-        durEl.textContent = formatTime(audio.duration);
-      });
-
-      audio.addEventListener('timeupdate', () => {
-        const pct = audio.currentTime / (audio.duration || 1);
-        progress.style.width = (pct * 100) + "%";
-        curEl.textContent = formatTime(audio.currentTime);
-      });
-
-      audio.addEventListener('play', () => {
-        // alle anderen stoppen
-        allAudios.forEach(a => {
-          if (a !== audio) {
-            a.pause();
-          }
-        });
-        cards.forEach(c => c.classList.remove('playing'));
-        card.classList.add('playing');
-        btn.textContent = "❚❚";
-      });
-
-      audio.addEventListener('pause', () => {
-        card.classList.remove('playing');
-        btn.textContent = "▶";
-      });
-
-      audio.addEventListener('ended', () => {
-        card.classList.remove('playing');
-        btn.textContent = "▶";
-        progress.style.width = "0%";
-        curEl.textContent = "0:00";
-      });
-
-      btn.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play();
-        } else {
-          audio.pause();
-        }
-      });
-
-      track.addEventListener('click', (ev) => {
-        const rect = track.getBoundingClientRect();
-        const x = ev.clientX - rect.left;
-        const pct = x / rect.width;
-        audio.currentTime = pct * (audio.duration || 0);
-      });
-    });
-  })();
-</script>
-
 </body>
 </html>
