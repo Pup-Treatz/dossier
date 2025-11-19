@@ -611,6 +611,83 @@
       border-color: rgba(49, 242, 140, 0.9) !important;
       box-shadow: 0 0 22px rgba(49, 242, 140, 0.6);
     }
+
+/* === CCTV Animation Upgrade (WRAFF-CAM v1.2) ===================== */
+
+.wf-cam-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wf-cam-inner {
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  animation: wfCamDrift 14s ease-in-out infinite,
+             wfCamFlicker 2.8s infinite ease-in-out;
+}
+
+.wf-cam-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.88) contrast(1.12) saturate(0.85);
+  display: block;
+}
+
+/* flicker + micro-glitch */
+@keyframes wfCamFlicker {
+  0%,100% { opacity: 0.96; filter: brightness(0.9) contrast(1.12); }
+  48%     { opacity: 1;    filter: brightness(1.0) contrast(1.18); }
+  50%     { opacity: 0.7;  filter: brightness(0.75) contrast(0.9); }
+  52%     { opacity: 1;    filter: brightness(0.92) contrast(1.1); }
+}
+
+/* drift movement für echten CCTV Look */
+@keyframes wfCamDrift {
+  0%   { transform: scale(1.02) translate(0,0); }
+  20%  { transform: scale(1.025) translate(-1%, 0.6%); }
+  55%  { transform: scale(1.02) translate(1%, -0.8%); }
+  80%  { transform: scale(1.03) translate(-0.4%, 0.4%); }
+  100% { transform: scale(1.02) translate(0,0); }
+}
+
+/* Noise-Layer */
+.wf-cam-noise-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  mix-blend-mode: soft-light;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(17, 25, 45, 0.45) 0px,
+      rgba(17, 25, 45, 0.45) 1px,
+      rgba(5, 7, 12, 0.9) 1px,
+      rgba(5, 7, 12, 0.9) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(17, 25, 45, 0.55) 0px,
+      rgba(17, 25, 45, 0.55) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  animation: wfCamNoise 0.45s steps(3, end) infinite;
+}
+
+@keyframes wfCamNoise {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-1px,-1px); }
+  50%  { transform: translate(1px,0); }
+  75%  { transform: translate(0,1px); }
+  100% { transform: translate(0,0); }
+}
+
+
   </style>
 </head>
 <body>
@@ -722,9 +799,17 @@
               <span class="surv-rec">● REC</span>
               <span>WF-CAM-01 · 09-K9-OPS</span>
             </div>
-            <img src="img/hq_cam_kitchen.jpg"
-                 alt="HQ kitchen perimeter surveillance still">
-            <div class="surv-overlay surv-overlay--footer">
+            <div class="wf-cam-container">
+  <div class="wf-cam-inner">
+    <img src="hq_cam_kitchen.png"
+         alt="HQ kitchen perimeter surveillance">
+  </div>
+
+  <div class="wf-cam-noise-layer"></div>
+</div>
+
+<div class="surv-overlay surv-overlay--footer">
+
               <span>SNACK ACCESS · FRIDGE ZONE</span>
               <span>CLASSIFIED // WF-ALPHA</span>
             </div>
