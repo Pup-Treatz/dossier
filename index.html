@@ -422,6 +422,30 @@
       flex-direction: column;
     }
 
+    /* OPS HINT */
+
+    .ops-hint {
+      margin-top: 6px;
+      background: radial-gradient(circle at top, rgba(57, 182, 255, 0.12), rgba(5, 7, 12, 0.96));
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(57, 182, 255, 0.35);
+      padding: 8px 11px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .ops-hint-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+      margin-bottom: 4px;
+    }
+
+    .ops-hint-text {
+      line-height: 1.4;
+    }
+
     .btn-row {
       display: flex;
       flex-wrap: wrap;
@@ -595,6 +619,17 @@
           </div>
         </div>
 
+        <!-- K-9 OPS HINT -->
+        <div class="ops-hint">
+          <div class="ops-hint-title" data-i18n="ops_hint_title">
+            K-9 OPS REMINDER
+          </div>
+          <div class="ops-hint-text" data-i18n="ops_hint_text">
+            AUTH complete. Operative 09-K9-OPS is cleared for snack-adjacent operations.
+            Please secure all treats, wag responsibly and follow standard K-9 behavior protocols.
+          </div>
+        </div>
+
         <div class="btn-row">
           <a href="dossier.html" class="btn btn-primary">
             <span class="btn-icon">⟶</span>
@@ -603,15 +638,6 @@
           <a href="wraff_force_central.html" class="btn btn-secondary">
             <span class="btn-icon">◎</span>
             <span class="btn-label" data-i18n="btn_central">Access WRAFF FORCE Central</span>
-          </a>
-          <!-- Optionale Zusatzzugänge, falls Dateien existieren -->
-          <a href="treat_alert_levels.html" class="btn btn-secondary">
-            <span class="btn-icon">⚠</span>
-            <span class="btn-label" data-i18n="btn_treat_levels">Treat Alert Levels</span>
-          </a>
-          <a href="agency_regulations.html" class="btn btn-secondary">
-            <span class="btn-icon">§</span>
-            <span class="btn-label" data-i18n="btn_regulations">Agency Regulations</span>
           </a>
         </div>
       </section>
@@ -647,10 +673,10 @@
         clearance_value: "WRAFF-3 · High Treat Access",
         status_label: "STATUS",
         status_value: "ON DUTY · PROBABLY NEAR THE SNACK JAR",
+        ops_hint_title: "K-9 OPS REMINDER",
+        ops_hint_text: "AUTH complete. Operative 09-K9-OPS is cleared for snack-adjacent operations. Please secure all treats, wag responsibly and follow standard K-9 behavior protocols.",
         btn_dossier: "Open Operator Dossier",
         btn_central: "Access WRAFF FORCE Central",
-        btn_treat_levels: "Treat Alert Levels",
-        btn_regulations: "Agency Regulations",
         footer_line: "INTERNAL USE ONLY · UNAUTHORIZED SNACKS WILL BE CONFISCATED BY THE K-9 UNIT."
       },
       de: {
@@ -672,10 +698,10 @@
         clearance_value: "WRAFF-3 · Hoher Snack-Zugriff",
         status_label: "STATUS",
         status_value: "IM EINSATZ · VERMUTLICH IN DER NÄHE DER LECKERLIDOSIS",
+        ops_hint_title: "K-9 OPS HINWEIS",
+        ops_hint_text: "AUTH abgeschlossen. Operative 09-K9-OPS ist für snack-nahe Einsätze freigeschaltet. Bitte alle Leckerlis sichern, verantwortungsvoll wedeln und die standardisierten K-9-Verhaltensprotokolle beachten.",
         btn_dossier: "Operator-Akte öffnen",
         btn_central: "WRAFF FORCE Central öffnen",
-        btn_treat_levels: "Treat Alert Levels",
-        btn_regulations: "Agency Regulations",
         footer_line: "NUR FÜR DEN INTERNEN GEBRAUCH · UNERLAUBTE SNACKS WERDEN VON DER K-9 EINHEIT EINKASSIERT."
       }
     };
@@ -735,8 +761,6 @@
         btn.addEventListener("click", () => {
           const lang = btn.getAttribute("data-lang");
           applyLanguage(lang);
-          // reset and restart scan when language changes? Optional: no
-          // Here we keep current scan state.
         });
       });
     }
