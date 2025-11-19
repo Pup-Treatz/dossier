@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WRAFF FORCE • Classified Dossier</title>
+
+<style>
+/* === GLOBAL RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+body {
+  background: #0a0f16;
+  color: #d4e2ff;
+  padding: 20px;
+}
+
+.page-wrap {
+  max-width: 880px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(10, 15, 22, 0.8);
+  border: 1px solid #16202d;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.section h2 {
+  font-size: 18px;
+  color: #6fb8ff;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.separator {
+  height: 1px;
+  background: linear-gradient(90deg, #28405d, transparent);
+  margin: 12px 0 20px;
+}
+
+/* === HEADER === */
+.header {
+  text-align: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #1a2838;
+  margin-bottom: 24px;
+}
+
+.header img {
+  width: 120px;
+  opacity: 0.9;
+}
+
+.header h1 {
+  margin-top: 16px;
+  font-size: 26px;
+  letter-spacing: 0.14em;
+  color: #90caff;
+  text-transform: uppercase;
+}
+
+.header p {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 0.18em;
+}
+
+/* === PROFILE PANEL === */
+.profile-panel {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 20px;
+  padding: 20px;
+  background: radial-gradient(circle at top left, #151b28 0, #090c12 55%, #05070a 100%);
+  border: 1px solid #1d2633;
+  border-radius: 8px;
+}
+
+.profile-panel img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #1f3045;
+}
+
+.profile-fields p {
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+/* === AUDIO PLAYER CUSTOM === */
+.audio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 700px) {
+  .audio-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.audio-card {
+  padding: 18px 20px;
+  border-radius: 10px;
+  border: 1px solid #1d2633;
+  background: radial-gradient(circle at top left, #151b28 0, #090c12 55%, #05070a 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+}
+
+.audio-title {
+  font-size: 13px;
+  color: #6fb8ff;
+  margin-bottom: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Custom UI */
+.wf-audio-ui {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #2a3a55;
+  background: #0e141f;
+  color: #90caff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.15s;
+}
+.wf-btn:hover {
+  background: #162233;
+}
+
+.wf-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: #1b2738;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.wf-bar {
+  height: 100%;
+  background: #6fb8ff;
+  width: 0;
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+/* === DATA SECTIONS === */
+.data-block {
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #1d2633;
+  background: rgba(12,18,30,0.7);
+}
+
+.data-block ul {
+  margin-left: 18px;
+  line-height: 1.55;
+}
+.data-block li {
+  margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.6;
+  letter-spacing: 0.14em;
+}
+</style>
+
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img src="Logo_trs.png" alt="WRAFF FORCE Logo" />
+    <h1>WRAFF FORCE DOSSIER</h1>
+    <p>CLASSIFIED • EYES ONLY</p>
+  </div>
+
+  <!-- PROFILE PANEL -->
+  <div class="section">
+    <h2>Operator Overview</h2>
+    <div class="separator"></div>
+
+    <div class="profile-panel">
+      <img src="Treatz.png" alt="Operator Photo" />
+
+      <div class="profile-fields">
+        <p><strong>Codename:</strong> 09-K9-OPS</p>
+        <p><strong>Rank:</strong> Paw-tenant</p>
+        <p><strong>Clearance:</strong> WRAFF-ALPHA-CLASSIFIED</p>
+        <p><strong>Status:</strong> Active Deployment</p>
+        <p><strong>Origin:</strong> WRAFF FORCE Tactical Division</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANTHEMS -->
+  <div class="section">
+    <h2>Unit Anthems</h2>
+    <div class="separator"></div>
+
+    <div class="audio-grid">
+
+      <!-- PLAYER 1 -->
+      <div class="audio-card">
+        <div class="audio-title">Grand Anthem</div>
+        <audio id="audio1" src="wf_grand_anthem.mp3"></audio>
+
+        <div class="wf-audio-ui" data-audio="audio1">
+          <div class="wf-btn">▶</div>
+          <div class="wf-bar-wrap"><div class="wf-bar"></div></div>
+        </div>
+      </div>
+
+      <!-- PLAYER 2 -->
+      <div class="audio-card">
+        <div class="audio-title">Ceremonial Anthem</div>
+        <audio id="audio2" src="wf_ceremonial_anthem.mp3"></audio>
+
+        <div class="wf-audio-ui" data-audio="audio2">
+          <div class="wf-btn">▶</div>
+          <div class="wf-bar-wrap"><div class="wf-bar"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BEHAVIORAL NOTES -->
+  <div class="section">
+    <h2>Behavioral Notes</h2>
+    <div class="separator"></div>
+
+    <div class="data-block">
+      <ul>
+        <li>Displays heightened alertness within proximity of snack-like stimuli.</li>
+        <li>Responds to the command "WRAFF ONE" with immediate focus.</li>
+        <li>Shows controlled enthusiasm during tactical operations.</li>
+        <li>Motivational levels increase when team cohesion is high.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MISSION LOGS -->
+  <div class="section">
+    <h2>Mission Logs</h2>
+    <div class="separator"></div>
+
+    <div class="data-block">
+      <ul>
+        <li><strong>A-07:</strong> Successful retrieval of dropped equipment ("treat").</li>
+        <li><strong>C-19:</strong> Investigated suspicious tail movement. No threat detected.</li>
+        <li><strong>F-02:</strong> Intercepted postal carrier approach; bark deterrence successful.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EQUIPMENT -->
+  <div class="section">
+    <h2>Equipment Loadout</h2>
+    <div class="separator"></div>
+
+    <div class="data-block">
+      <ul>
+        <li>MK-II Tactical Vest</li>
+        <li>Compact Treat Dispenser</li>
+        <li>Noise-Responsive Alert Module</li>
+        <li>Reinforced Paw Protection</li>
+        <li>Standard Field Identification Patch</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PSYNO -->
+  <div class="section">
+    <h2>Psychological Profile</h2>
+    <div class="separator"></div>
+
+    <div class="data-block">
+      <p>Subject maintains consistent loyalty to unit members.</p>
+      <p>Reward-based motivation patterns observed during field operations.</p>
+      <p>Stress levels decrease notably during structured petting intervals.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    WRAFF FORCE © CLASSIFIED FILE • V2 RELEASE
+  </div>
+</div>
+
+<!-- === CUSTOM AUDIO PLAYER SCRIPT === -->
+<script>
+// === Custom Audio Player Logic ===
+const players = document.querySelectorAll('.wf-audio-ui');
+
+players.forEach(ui => {
+  const audioId = ui.getAttribute('data-audio');
+  const audio = document.getElementById(audioId);
+  const btn = ui.querySelector('.wf-btn');
+  const barWrap = ui.querySelector('.wf-bar-wrap');
+  const bar = ui.querySelector('.wf-bar');
+
+  // PLAY / PAUSE
+  btn.addEventListener('click', () => {
+    if (audio.paused) {
+      // Stop all others first
+      document.querySelectorAll('audio').forEach(a => {
+        if (a !== audio) {
+          a.pause();
+          const otherUI = document.querySelector(`.wf-audio-ui[data-audio="${a.id}"] .wf-btn`);
+          if (otherUI) otherUI.textContent = "▶";
+        }
+      });
+
+      audio.play();
+      btn.textContent = "⏸";
+    } else {
+      audio.pause();
+      btn.textContent = "▶";
+    }
+  });
+
+  // UPDATE PROGRESS BAR
+  audio.addEventListener('timeupdate', () => {
+    const pct = (audio.currentTime / audio.duration) * 100;
+    bar.style.width = pct + "%";
+  });
+
+  // SEEK BAR CLICK
+  barWrap.addEventListener('click', e => {
+    const rect = barWrap.getBoundingClientRect();
+    const pos = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = pos * audio.duration;
+  });
+
+  // RESET AFTER END
+  audio.addEventListener('ended', () => {
+    btn.textContent = "▶";
+    bar.style.width = "0%";
+  });
+});
+</script>
+
+</body>
+</html>
+
