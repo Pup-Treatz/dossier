@@ -728,8 +728,8 @@
 .panel[id^="panel-cover"] .cover-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
-  gap: 18px;
-  margin-top: 10px;
+  gap: 30px;              /* mehr Abstand zwischen Logo-Box und Text */
+  margin-top: 14px;       /* etwas mehr Luft zum Titel */
   align-items: center;
 }
 
@@ -745,12 +745,13 @@
   background:
     radial-gradient(circle at top, rgba(66,199,255,0.25), transparent 55%),
     linear-gradient(135deg, rgba(15,23,42,0.95), rgba(8,13,24,0.98));
-  min-height: 140px;
+  min-height: 180px;      /* höher = weniger gequetscht */
+  padding: 24px 16px;     /* Innenabstand oben/unten + seitlich */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   box-shadow: 0 0 40px rgba(3, 105, 161, 0.45);
   position: relative;
   overflow: hidden;
@@ -758,10 +759,10 @@
 
 /* Neues Logo im Cover */
 .panel[id^="panel-cover"] .cover-logo-emblem {
-  max-width: 120px;
+  max-width: 140px;
   width: 55%;
   height: auto;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
   filter: drop-shadow(0 0 16px rgba(66,199,255,0.55));
 }
 
@@ -1558,6 +1559,34 @@ html, body {
   color: #7f8ba5;
 }
 
+.enter-dossier {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-soft);
+  background: radial-gradient(circle at top, rgba(66,199,255,0.18), rgba(8,13,24,0.95));
+  color: var(--text-main);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.18s ease-out;
+}
+.enter-dossier:hover {
+  background: radial-gradient(circle at top, rgba(66,199,255,0.35), rgba(10,16,30,1));
+  box-shadow: 0 0 16px rgba(66,199,255,0.45);
+  transform: translateY(-1px);
+}
+.enter-dossier .chevron {
+  opacity: 0.8;
+  transition: transform 0.18s ease-out;
+}
+.enter-dossier:hover .chevron {
+  transform: translateX(3px);
+}
 
 
   </style>
@@ -1672,9 +1701,10 @@ html, body {
             </div>
 
             <h1>TREATZ – SWAT K-9 DOSSIER</h1>
-            <p class="muted">
-              WRAFF FORCE internal interface. Unauthorized access will be rewarded with one (1) judgmental head tilt and possible boop.
-            </p>
+<p class="muted">
+  Official K-9 operator dossier for the fictional unit “Puppy Treatz”. Access is intended for internal WRAFF FORCE reference only.
+</p>
+
 
             <div class="classified-block">
               <div class="classified-tag">L4 TREAT-CLASSIFIED</div>
@@ -1711,27 +1741,31 @@ html, body {
 </div>
 
               <div class="cover-text">
-                <p>
-                  Welcome to the fully fictional, lore-heavy K-9 operator file of “Puppy Treatz” – a tactical fluff unit
-                  trained in snack retrieval, couch defense and advanced zoomie operations.
-                </p>
-                <p>
-                  This dossier imitates serious agency vibes but contains exactly zero real-world authority
-                  and 100% pup-powered comedy. Ideal for NFC ID cards, QR codes and dramatic “let me show you my official K-9 file” moments.
-                </p>
-                <p>
-                  If you arrived here by scanning an ID: congratulations, you now have snack-level clearance. Use it wisely.
-                </p>
+  <p>
+    This document constitutes the official operator dossier of the fictional K-9 unit known as “Puppy Treatz”.
+    It contains structured information regarding identity, deployment profile, behavioral metrics
+    and internal clearance levels.
+  </p>
+  <p>
+    While the presentation mirrors real agency documentation, all contents are entirely fictional
+    and formatted for entertainment purposes only.
+    All entries serve internal character description and do not represent any real persons or organizations.
+  </p>
+  <p>
+    Access to this dossier has been authorized via the K-9 Credential Verification Node.
+    If you reached this page unintentionally, maintaining a confident expression is still advised.
+  </p>
 
-                <button type="button" class="enter-dossier">
-                  <span>ACCESS DOSSIER</span><span class="chevron">▶</span>
-                </button>
+  <button type="button" class="enter-dossier">
+    <span>ACCESS DOSSIER</span><span class="chevron">▶</span>
+  </button>
 
-                <p class="muted" style="margin-top:10px;">
-                  Note: All data is fictional. No connection to real persons, agencies or law enforcement.
-                  Only treats, lore and an alarming amount of tail wagging.
-                </p>
-              </div>
+  <p class="muted" style="margin-top:10px;">
+    Disclaimer: This dossier is entirely fictional and intended solely for humorous, non-operational use.
+    No real authority, no real identity — just character-based entertainment and the occasional friendly tail wag.
+  </p>
+</div>
+
             </div>
           </section>
 
@@ -2246,9 +2280,10 @@ html, body {
             </div>
 
             <h1>TREATZ – SWAT K-9 DOSSIER</h1>
-            <p class="muted">
-              Interne WRAFF FORCE Oberfläche. Unbefugter Zugriff wird mit einem (1) streng-jugendlichen Kopfneigen und optionalem Boop quittiert.
-            </p>
+<p class="muted">
+  Offizielle K-9 Operator-Akte der fiktiven Einheit „Puppy Treatz“. Zugriff nur für intern autorisierte WRAFF FORCE Stellen.
+</p>
+
 
             <div class="cover-grid">
               <div class="cover-logo">
@@ -2258,31 +2293,35 @@ html, body {
   <h2>PUPPY TREATZ</h2>
   <p>Shiba / Border Collie Hybrid – SWAT K-9 Operator</p>
 </div>
-              <div class="cover-text">
-                <p>
-                  Willkommen in der vollständig fiktiven, lore-lastigen K-9 Operatorsakte von „Puppy Treatz“ –
-                  einer taktischen Flausch-Einheit mit Schwerpunkt Snack-Bergung, Sofa-Verteidigung
-                  und fortgeschrittene Zoomie-Operationen.
-                </p>
-                <p>
-                  Diese Akte imitiert sehr ernsthafte Behörden-Vibes, enthält aber exakt null echte Befugnisse
-                  und 100&nbsp;% Pup-Comedy. Perfekt für NFC-ID-Karten, QR-Scans und dramatische
-                  „Schau mal, das bin ich als SWAT-K-9“-Momente.
-                </p>
-                <p>
-                  Wenn du über eine ID gescannt hast: Glückwunsch, du besitzt jetzt offiziell Snack-Clearance.
-                  Verantwortungsbewusster Einsatz wird empfohlen, aber nicht streng überwacht.
-                </p>
+           <div class="cover-text">
+  <p>
+    Diese Datei stellt die offizielle Operator-Akte der fiktiven K-9 Einheit „Puppy Treatz“ dar.
+    Sie enthält strukturierte Angaben zu Identität, Einsatzprofil, Verhaltensparametern
+    sowie internen Freigabestufen.
+  </p>
+  <p>
+    Die Darstellung orientiert sich an echten behördlichen Dokumenten, die Inhalte sind jedoch
+    vollständig fiktiv und für unterhaltende Einsatzzwecke formatiert.
+    Alle Angaben dienen ausschließlich der internen Charakterisierung und spiegeln
+    keine realen Personen oder Organisationen wider.
+  </p>
+  <p>
+    Der Zugriff auf diese Akte wurde über die K-9 Credential Verification Node autorisiert.
+    Falls Sie diese Seite unbeabsichtigt geöffnet haben, wird empfohlen,
+    den professionellen Eindruck dennoch beizubehalten.
+  </p>
 
-                <button type="button" class="enter-dossier">
-                  <span>AKTE ÖFFNEN</span><span class="chevron">▶</span>
-                </button>
+  <button type="button" class="enter-dossier">
+    <span>AKTE ÖFFNEN</span><span class="chevron">▶</span>
+  </button>
 
-                <p class="muted" style="margin-top:10px;">
-                  Hinweis: Alle Daten sind fiktiv. Keine Verbindung zu realen Personen, Behörden
-                  oder Einsatzkräften. Nur Treats, Lore und auffälliges Schwanzwedeln.
-                </p>
-              </div>
+  <p class="muted" style="margin-top:10px;">
+    Hinweis: Diese Akte ist rein fiktiv und ausschließlich für humorvolle, nicht-operative Zwecke bestimmt.
+    Keine reale Identität, keine echten Befugnisse – nur charakterbezogene Unterhaltung
+    und gegebenenfalls leichtes Schwanzwedeln.
+  </p>
+</div>
+   
             </div>
           </section>
 
