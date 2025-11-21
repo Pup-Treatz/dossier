@@ -2936,27 +2936,33 @@ bubble.onclick = async () => {
 
 closeBtn.onclick = () => overlay.classList.remove("open");
 
+
 async function sendToAI(message) {
-  const apiKey = "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"; // <-- DEIN KEY HIER REIN
+  try {
+    const response = await fetch("https://wraff-ai-proxy.raumfisch.workers.dev", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: message
+      })
+    });
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: "gpt-4.1-mini",
-      messages: [
-        { role: "system", content: "Du bist die WRAFF AI UNIT – eine taktische, humorvoll-seriöse K-9 Agency KI." },
-        { role: "user", content: message }
-      ]
-    })
-  });
+    const data = await response.json();
 
-  const data = await response.json();
-  return data.choices[0].message.content;
+    if (data.reply) {
+      return data.reply;
+    } else {
+      return "WRAFF AI UNIT: Empfangsfehler. Kein valider Response vom Proxy erhalten.";
+    }
+
+  } catch (err) {
+    return "WRAFF AI UNIT: Proxy unreachable. Fehler: " + err.message;
+  }
 }
+
+
 
 async function startBootscreen() {
   const bootscreen = document.getElementById("wraff-bootscreen");
@@ -3046,4 +3052,3 @@ input.addEventListener("keypress", (e) => {
 
 </body>
 </html>
-
