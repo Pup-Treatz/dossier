@@ -47,13 +47,14 @@
 #intro-overlay.intro-hide {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .intro-inner {
   position: relative;
   text-align: center;
   color: #e5f2ff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Fake Scanline */
@@ -174,8 +175,8 @@
 
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #101626 0, #05070a 40%, #000 100%);
+      font-family: var(--font-sans);
+      background: var(--bg);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -1590,10 +1591,12 @@ html, body {
 
 
   </style>
+  <link rel="stylesheet" href="wraff_v4.css">
 </head>
 <body>
 <!-- WRAFF FORCE Intro Overlay -->
-<div id="intro-overlay">
+<!-- Intro overlay (disabled by default – Problem 1: Variante A) -->
+<div id="intro-overlay" class="" aria-hidden="false">
   <div class="intro-inner">
     <div class="intro-scanline"></div>
 
@@ -1637,10 +1640,9 @@ html, body {
       </div>
     </div>
 
-    <div class="lang-toggle">
-      <span class="lang-toggle-label">LANG</span>
-      <button type="button" data-lang="en" class="active">EN</button>
-      <button type="button" data-lang="de">DE</button>
+    <div class="lang-toggle" aria-label="Language selection">
+      <button type="button" class="lang-btn" data-lang="de">DE</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
     </div>
 
     <span class="status-dot"></span>
@@ -1707,28 +1709,7 @@ html, body {
 
 
             <div class="classified-block">
-              <div class="classified-tag">L4 TREAT-CLASSIFIED</div>
-              <button
-                type="button"
-                class="classified-toggle"
-                data-target="classified-en-ops"
-                data-label-closed="Unlock additional briefing"
-                data-label-open="Hide classified briefing"
-              >
-                Unlock additional briefing
-              </button>
-              <div id="classified-en-ops" class="classified-content">
-                <p>
-                  <strong>Internal Note:</strong> Subject shows above-average
-                  resistance to boring briefings. All mission explanations must
-                  include at least one (1) pizza reference and a clear treat
-                  compensation plan.
-                </p>
-                <p class="muted">
-                  Side effect: humans tend to stay for the briefing as well.
-                </p>
-              </div>
-            </div>
+</div>
 
 
             <div class="cover-grid">
@@ -1756,7 +1737,8 @@ html, body {
     If you reached this page unintentionally, maintaining a confident expression is still advised.
   </p>
 
-  <button type="button" class="enter-dossier">
+  <button type="button" class="btn btn-primary enter-dossier">
+
     <span>ACCESS DOSSIER</span><span class="chevron">▶</span>
   </button>
 
@@ -2037,10 +2019,16 @@ html, body {
     regulations – access the central WRAFF FORCE terminal here:
   </p>
 
-  <a href="wraff_force_central.html" class="wf-central-btn">
+  <div class="wf-callout">
+
+
+  <a href="wraff_force_central.html" class="btn btn-primary btn-pulse wf-central-btn">
     <span class="icon">⟶</span>
     <span>ACCESS WRAFF FORCE CENTRAL TERMINAL</span>
   </a>
+
+
+  </div>
   <p class="wf-central-note">
     Note: The central terminal is a separate, just-for-fun agency interface. The operator dossier stays
     the canonical file for 09-K9-OPS.
@@ -2124,56 +2112,50 @@ html, body {
           <!-- PANEL 7: CONTACT -->
           <section class="panel" id="panel-contact-en">
             <h2>Contact & Links</h2>
-            <p>
-              This dossier describes a fully fictional K-9 character. No real law enforcement affiliation –
-              just vibes, lore and tactical fluff.
+            <p>This dossier describes a fully fictional K‑9 character. No real law enforcement affiliation — just vibes, lore and tactical fluff.</p>
+            <p>For mission updates, field selfies and SWAT‑pup aesthetics:</p>
+
+            <div class="contact-grid">
+              <div class="contact-card">
+                <h3>Primary Mission Channel</h3>
+                <p class="contact-kicker">Live ops, field selfies and SWAT‑pup lore in real time.</p>
+                <div class="contact-id">
+                  <div class="contact-handle">@PUPPY_TREATZ</div>
+                  <div class="contact-actions">
+                    <a class="btn btn-primary" href="https://www.instagram.com/puppy_treatz" target="_blank" rel="noopener">
+                      OPEN IG
+                   </a>
+                   <button class="btn btn-secondary" type="button" data-copy="@puppy_treatz">
+                     COPY HANDLE
+                   </button>
+                  </div>
+                </div>
+                <div class="contact-footer">Channel status: LIVE FEED • Mission updates</div>
+              </div>
+
+              <div class="contact-card">
+                <h3>Operational Contact Line</h3>
+                <p class="contact-kicker">Mission coordination, operator communication and treat‑logistics.</p>
+                <div class="contact-id">
+                  <div class="contact-handle">ops@wraff.agency</div>
+                  <div class="contact-actions">
+                    <a class="btn btn-primary" href="mailto:ops@wraff.agency">
+                      COMPOSE
+                    </a>
+                    <button class="btn btn-secondary" type="button" data-copy="ops@wraff.agency">
+                      COPY
+                    </button>
+                  </div>
+                </div>
+                <div class="contact-footer">Tactical mail channel • Response time: depends on snack availability</div>
+              </div>
+            </div>
+
+            <p style="margin-top:16px;">
+              <button type="button" class="btn btn-secondary btn-field-manual" data-lang="en">
+                Download Full Field Manual (PDF)
+              </button>
             </p>
-
-<p>For mission updates, field selfies and SWAT-pup aesthetics:</p>
-
-<div class="contact-card">
-  <div class="contact-card-main">
-    <strong>Primary Mission Channel</strong><br>
-    Live ops, field selfies and SWAT-pup lore in real time.
-  </div>
-  <a href="https://www.instagram.com/puppy_treatz" target="_blank" class="contact-cta">
-    <span class="contact-cta-handle">@puppy_treatz</span>
-    <span class="contact-cta-tag">Instagram • Live Feed</span>
-  </a>
-</div>
-
-<div class="contact-card" style="margin-top:14px;">
-  <div class="contact-card-main">
-    <strong>Operational Contact Line</strong><br>
-    Mission coordination, operator communication and treat-logistics.
-  </div>
-
-  <a href="mailto:ops@wraff.agency" class="contact-cta" style="position:relative;">
-    <span class="contact-cta-handle">ops@wraff.agency</span>
-    <span class="contact-cta-tag">Tactical Mail Channel</span>
-  </a>
-
-  <style>
-    /* overrides IG badge for this one element only */
-    .contact-card:last-of-type .contact-cta::before {
-      content: "@";
-      font-size: 0.75rem;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      margin-bottom: 2px;
-      letter-spacing: 0.1em;
-    }
-  </style>
-</div>
-
-
-
-<p style="margin-top: 14px;">
-  <button type="button" class="btn-field-manual" data-lang="en">
-    Download Full Field Manual (PDF)
-  </button>
-</p>
 
             <p class="muted" style="margin-top:10px;">
               Accessed via NFC ID: if you’re reading this, you officially have sufficient snack clearance.
@@ -2338,7 +2320,8 @@ html, body {
     den professionellen Eindruck dennoch beizubehalten.
   </p>
 
-  <button type="button" class="enter-dossier">
+  <button type="button" class="btn btn-primary enter-dossier">
+
     <span>AKTE ÖFFNEN</span><span class="chevron">▶</span>
   </button>
 
@@ -2623,10 +2606,16 @@ html, body {
     Treat-Alarmstufen und HQ-Regularien – kann das zentrale WRAFF FORCE Interface aufgerufen werden:
   </p>
 
-  <a href="wraff_force_central.html" class="wf-central-btn">
+  <div class="wf-callout">
+
+
+  <a href="wraff_force_central.html" class="btn btn-primary btn-pulse wf-central-btn">
     <span class="icon">⟶</span>
     <span>WRAFF FORCE ZENTRALE ÖFFNEN</span>
   </a>
+
+
+  </div>
   <p class="wf-central-note">
     Hinweis: Die Zentrale ist ein zusätzlicher, spielerischer Bereich und nicht Teil der offiziellen
     Personalakte. Ideal für neugierige Handler, Operatives und andere Pawfessionals.
@@ -2711,59 +2700,55 @@ html, body {
           <!-- PANEL 7: CONTACT -->
           <section class="panel" id="panel-contact-de">
             <h2>Kontakt & Links</h2>
-            <p>
-              Diese Akte beschreibt einen rein fiktiven K-9 Charakter. Keine echte Zugehörigkeit zu Behörden,
-              Polizei, Militär oder anderen Organisationen – nur Vibes, Lore und taktischer Flausch.
+            <p>Dieses Dossier beschreibt einen vollständig fiktiven K‑9 Charakter. Keine echte Behördenzugehörigkeit — nur Vibes, Lore und taktisches Fluff.</p>
+            <p>Für Einsatz-Updates, Field-Selfies und SWAT‑Pup Ästhetik:</p>
+
+            <div class="contact-grid">
+              <div class="contact-card">
+                <h3>Primary Mission Channel</h3>
+                <p class="contact-kicker">Live Ops, Field-Selfies und SWAT‑Pup Lore in Echtzeit.</p>
+                <div class="contact-id">
+                  <div class="contact-handle">@PUPPY_TREATZ</div>
+                  <div class="contact-actions">
+                    <a class="btn btn-primary" href="https://www.instagram.com/puppy_treatz" target="_blank" rel="noopener">
+  INSTAGRAM ÖFFNEN
+</a>
+<button class="btn btn-secondary" type="button" data-copy="@puppy_treatz">
+  HANDLE KOPIEREN
+</button>
+
+                  </div>
+                </div>
+                <div class="contact-footer">Channel-Status: LIVE FEED • Einsatz-Updates</div>
+              </div>
+
+              <div class="contact-card">
+                <h3>Operational Contact Line</h3>
+                <p class="contact-kicker">Einsatzkoordination, Operator-Kommunikation und Treatz‑Logistik.</p>
+                <div class="contact-id">
+                  <div class="contact-handle">ops@wraff.agency</div>
+                  <div class="contact-actions">
+                    <a class="btn btn-primary" href="mailto:ops@wraff.agency">
+  E-MAIL SCHREIBEN
+</a>
+<button class="btn btn-secondary" type="button" data-copy="ops@wraff.agency">
+  E-MAIL KOPIEREN
+</button>
+
+                  </div>
+                </div>
+                <div class="contact-footer">Tactical Mail Channel • Antwortzeit: hängt von Snack-Lage ab</div>
+              </div>
+            </div>
+
+            <p style="margin-top:16px;">
+              <button type="button" class="btn btn-secondary btn-field-manual" data-lang="de">
+                Field Manual (PDF) herunterladen
+              </button>
             </p>
 
-<p>Für Missions-Updates, Field-Selfies und SWAT-Pup-Ästhetik:</p>
-
-<div class="contact-card">
-  <div class="contact-card-main">
-    <strong>Primary Mission Channel</strong><br>
-    Live-Einsätze, Field-Selfies und SWAT-Pup-Lore in Echtzeit.
-  </div>
-  <a href="https://www.instagram.com/puppy_treatz" target="_blank" class="contact-cta">
-    <span class="contact-cta-handle">@puppy_treatz</span>
-    <span class="contact-cta-tag">Instagram • Live Feed</span>
-  </a>
-</div>
-
-<div class="contact-card" style="margin-top:14px;">
-  <div class="contact-card-main">
-    <strong>Operative Kontaktstelle</strong><br>
-    Für Einsatzabsprachen, Operator-Koordination und Snack-Logistik.
-  </div>
-
-  <a href="mailto:ops@wraff.agency" class="contact-cta" style="position:relative;">
-    <span class="contact-cta-handle">ops@wraff.agency</span>
-    <span class="contact-cta-tag">Taktischer Mail-Kanal</span>
-  </a>
-
-  <style>
-    .contact-card:last-of-type .contact-cta::before {
-      content: "@";
-      font-size: 0.75rem;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      margin-bottom: 2px;
-      letter-spacing: 0.1em;
-    }
-  </style>
-</div>
-
-
-
-<p style="margin-top: 14px;">
-  <button type="button" class="btn-field-manual" data-lang="de">
-    Field Manual (PDF) anfordern
-  </button>
-</p>
-
-
             <p class="muted" style="margin-top:10px;">
-              Zugriff via NFC-ID: Wenn du das hier liest, verfügst du offiziell über ausreichende Snack-Clearance.
+              Zugriff via NFC-ID: Wenn Sie das lesen, haben Sie offiziell ausreichend Snack-Freigabe.
             </p>
           </section>
 
@@ -2843,7 +2828,7 @@ html, body {
 
   <script>
     // Language toggle
-    const langButtons = document.querySelectorAll('.lang-toggle button');
+    const langButtons = document.querySelectorAll('.lang-btn');
     const langContainers = {
       en: document.getElementById('lang-en'),
       de: document.getElementById('lang-de')
@@ -2854,7 +2839,7 @@ html, body {
     const hudMood   = document.getElementById('hud-mood');
     const statusBar = document.getElementById('status-bar');
 
-    const hudPresetsEn = [
+const hudPresetsEn = [
       { access: 'COVER VIEW',         mode: 'LIVE VIEW',      mood: 'GOOD BOI' },
       { access: 'PUP PROFILE',        mode: 'FILE OPEN',      mood: 'FOCUSED FLOOF' },
       { access: 'BEHAVIOR SCAN',      mode: 'ANALYSIS',       mood: 'CURIOUS' },
@@ -2894,46 +2879,43 @@ html, body {
       flashStatusBar();
     }
 
+    
     function setLanguage(lang) {
-      if (!langContainers[lang]) {
-        lang = 'en';
-      }
+      if (!langContainers[lang]) lang = 'en';
+
       Object.entries(langContainers).forEach(([key, el]) => {
         if (!el) return;
         el.classList.toggle('active', key === lang);
       });
+
       langButtons.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
-      try {
-        localStorage.setItem('wraff_lang', lang);
-      } catch (e) {
-        // ignore
-      }
+
+      try { localStorage.setItem('wraffLang', lang); } catch (e) {}
+
       // default HUD to cover panel of selected language
       updateHud(lang, 0);
     }
 
     langButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        setLanguage(btn.dataset.lang);
-      });
+      btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
     });
 
     // Determine initial language from storage or browser
     let initialLang = 'en';
     try {
-      const stored = localStorage.getItem('wraff_lang');
-      if (stored === 'en' || stored === 'de') {
+      const stored = window.localStorage && localStorage.getItem('wraffLang');
+      if (stored && langContainers[stored]) {
         initialLang = stored;
       } else {
         const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
         initialLang = navLang.startsWith('de') ? 'de' : 'en';
       }
-    } catch (e) {
-      // fallback already set
-    }
+    } catch (e) {}
+
     setLanguage(initialLang);
+
 
     // Per-language nav + panels
     function initLanguageUI(containerId) {
@@ -2969,26 +2951,56 @@ html, body {
 
     initLanguageUI('lang-en');
     initLanguageUI('lang-de');
+  
+  // mini copy buttons
+  function copyToClipboard(text){
+    try{
+      navigator.clipboard.writeText(text);
+      toast('COPIED', text);
+    }catch(e){
+      prompt('Copy:', text);
+    }
+  }
+  document.querySelectorAll('[data-copy]').forEach(btn=>{
+    btn.addEventListener('click', ()=>copyToClipboard(btn.getAttribute('data-copy')));
+  });
+
   </script>
-<script>
+
+  <script>
   window.addEventListener('load', function () {
     const overlay = document.getElementById('intro-overlay');
     if (!overlay) return;
 
-    // Dauer des Intros in Millisekunden (z.B. 2600–3200)
-    const INTRO_DURATION = 3500;
+    // Failsafe duration: avoid undefined INTRO_DURATION breaking the reveal.
+    const INTRO_DURATION = 2200; // ms
 
-    setTimeout(function () {
-      overlay.classList.add('intro-finish');
+const hideOverlay = () => {
+  overlay.classList.add('intro-hide');
+  overlay.setAttribute('aria-hidden', 'true');
+};
 
-      // leicht verzögert ausblenden, damit der Zoom-Out sichtbar ist
-      setTimeout(function () {
-        overlay.classList.add('intro-hide');
-      }, 300);
-    }, INTRO_DURATION);
+const showOverlay = () => {
+  overlay.classList.remove('intro-hide');
+  overlay.setAttribute('aria-hidden', 'false');
+};
+
+// ALWAYS play intro (no localStorage skip)
+showOverlay();
+
+// Click / tap to skip
+overlay.addEventListener('click', () => {
+  hideOverlay();
+}, { once: true });
+
+// Auto-hide after duration
+setTimeout(() => {
+  hideOverlay();
+}, INTRO_DURATION);
+
   });
 
-    // Classified toggle
+// Classified toggle
     document.querySelectorAll('.classified-toggle').forEach((btn) => {
       const closedLabel = btn.dataset.labelClosed || btn.textContent;
       const openLabel = btn.dataset.labelOpen || btn.textContent;

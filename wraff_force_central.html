@@ -1413,7 +1413,7 @@ ul li {
             <ul class="wf-map-legend-list">
               <li class="wf-map-legend-item">
                 <span class="wf-map-legend-city">BERLIN</span>
-                <span class="wf-map-legend-level">CSD STREET SNACK PATROL</span>
+                <span class="wf-map-legend-level">PRIDE STREET SNACK PATROL</span>
               </li>
               <li class="wf-map-legend-item">
                 <span class="wf-map-legend-city">LONDON</span>
@@ -1787,34 +1787,35 @@ ul li {
 
           <div class="wf-gallery-grid">
             <button class="wf-gallery-item"
-              data-img="img/field_kitchen_floor.jpg"
+              data-img="field_kitchen_perimeter.png"
               data-caption="Kitchen perimeter breach – unsecured treat container, living room sector.">
               <span class="wf-gallery-thumb"
-                style="background-image:url('img/field_kitchen_floor_thumb.jpg');"></span>
+                style="background-image:url('field_kitchen_perimeter.png');"></span>
               <span class="wf-gallery-label">KITCHEN PERIMETER · TREAT SPILL</span>
             </button>
 
             <button class="wf-gallery-item"
-              data-img="img/field_fridge_infiltration.jpg"
-              data-caption="Fridge-zone infiltration – multiple treat packets spotted at door level.">
+              data-img="field_racoon_incident.png"
+              data-caption=" Nocturnal intruder detected near food storage area.
+Species identified as raccoon. Situation classified as highly agile, snack-motivated, and unpredictable.">
               <span class="wf-gallery-thumb"
-                style="background-image:url('img/field_fridge_infiltration_thumb.jpg');"></span>
-              <span class="wf-gallery-label">FRIDGE ZONE · ACCESS POINT</span>
+                style="background-image:url('field_racoon_incident.png');"></span>
+              <span class="wf-gallery-label">RACCOON INCIDENT · EXTERNAL THREAT</span>
             </button>
 
             <button class="wf-gallery-item"
-              data-img="img/field_street_food_stand.jpg"
-              data-caption="Street food stand at CSD – uncontrolled snack density, crowd-adjacent.">
+              data-img="field_pride_snack_stand.png"
+              data-caption="Street food stand at Pride – uncontrolled snack density, crowd-adjacent.">
               <span class="wf-gallery-thumb"
-                style="background-image:url('img/field_street_food_stand_thumb.jpg');"></span>
-              <span class="wf-gallery-label">CSD OPS · STREET SNACK STAND</span>
+                style="background-image:url('field_pride_snack_stand.png');"></span>
+              <span class="wf-gallery-label">PRIDE OPS · STREET SNACK STAND</span>
             </button>
 
             <button class="wf-gallery-item"
-              data-img="img/field_food_truck.jpg"
+              data-img="field_food_truck_lockdown.png"
               data-caption="Mobile snack source – food truck perimeter secured by K-9 unit.">
               <span class="wf-gallery-thumb"
-                style="background-image:url('img/field_food_truck_thumb.jpg');"></span>
+                style="background-image:url('field_food_truck_lockdown.png');"></span>
               <span class="wf-gallery-label">MOBILE UNIT · FOOD TRUCK</span>
             </button>
           </div>
@@ -1824,17 +1825,6 @@ ul li {
             outside the WRAFF FORCE program.
           </div>
         </section>
-
-        <!-- Modal für Galerie -->
-        <div class="wf-gallery-modal" id="wf-gallery-modal">
-          <div class="wf-gallery-modal-backdrop"></div>
-          <div class="wf-gallery-modal-inner">
-            <button class="wf-gallery-close" type="button">✕</button>
-            <img class="wf-gallery-modal-image" src="" alt="">
-            <div class="wf-gallery-modal-caption"></div>
-          </div>
-        </div>
-
 
         <!-- HQ Regulations -->
         <section class="section">
@@ -2225,14 +2215,25 @@ ul li {
               <svg class="wf-icon wf-icon--muted">
                 <use href="#wf-icon-alert"></use>
               </svg>
-              <div class="section-title">TREAT-ALARMSTUFEN</div>
+              <div class="section-title">TREAT ALARMSYSTEM</div>
             </div>
-            <div class="section-tag">BEDROHUNGSLAGE</div>
+            <div class="section-tag">BEDROHUNGSSTUFEN</div>
           </div>
           <p class="muted">
-            Das Treat-Alarmstufensystem zeigt die aktuelle strategische Relevanz von Snacks im
-            Einsatzgebiet an.
+            Das Treat-Alarmstufensystem zeigt die aktuelle strategische Relevanz von Snacks im Einsatzgebiet an.
           </p>
+          <div class="wf-alert-status">
+            <div class="wf-alert-status-label">AKTUELLER ALARMSTATUS</div>
+            <div class="wf-alert-status-main">
+              <div class="wf-alert-bar-wrap">
+                <div class="wf-alert-bar-fill"></div>
+              </div>
+              <div class="wf-alert-status-level">
+                LEVEL 5 – VOLLSTÄNDIGE BEUTELKOPROMITTIERUNG
+              </div>
+            </div>
+          </div>
+
 
           <div class="alert-grid">
             <div class="alert-card">
@@ -2250,15 +2251,13 @@ ul li {
             <div class="alert-card">
               <div class="alert-level">LEVEL 2 – UNBEAUFSICHTIGTES TREAT-SZENARIO</div>
               <div class="alert-text">
-                Snacks wurden vorübergehend ohne direkte Aufsicht zurückgelassen. Hohe Versuchung,
-                strenge Protokolle erforderlich.
+                Snacks wurden vorübergehend ohne direkte Aufsicht zurückgelassen. Hohe Versuchung, strenge Protokolle erforderlich.
               </div>
             </div>
             <div class="alert-card">
               <div class="alert-level">LEVEL 3 – BODENKONTAKT-EREIGNIS</div>
               <div class="alert-text">
-                Treat hat Bodenniveau erreicht. Sofortige Reaktion unter Sitz–Bleib-Bedingungen
-                autorisiert.
+                TTreat hat Bodenniveau erreicht. Sofortige Reaktion unter Sitz–Bleib-Bedingungen autorisiert.
               </div>
             </div>
             <div class="alert-card">
@@ -2270,10 +2269,70 @@ ul li {
             <div class="alert-card alert-card--high">
               <div class="alert-level">LEVEL 5 – VOLLSTÄNDIGE BEUTELKOMPROMITTIERUNG</div>
               <div class="alert-text">
-                Kompletter Snackbehälter kompromittiert. Alle Einheiten auf Position.
-                Selbstbeherrschung höchste Priorität.
+                Kompletter Snackbehälter kompromittiert. Alle Einheiten auf Position. Selbstbeherrschung höchste Priorität.
               </div>
             </div>
+          </div>
+        </section>
+
+        <!-- Field Imagery / Einsatzarchiv -->
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title-row">
+              <svg class="wf-icon wf-icon--muted">
+                <use href="#wf-icon-mission"></use>
+              </svg>
+              <div class="section-title">EINSATZARCHIV – BILDPROTOKOLLE</div>
+            </div>
+            <div class="section-tag">VISUELLE PROTOKOLLE</div>
+          </div>
+
+          <p class="muted">
+            isuelle Auszüge aus aktuellen snackbezogenen Einsätzen. 
+Das Bildmaterial ist anonymisiert und farbkorrigiert und dient ausschließlich internen Trainings- und Analysezwecken.
+          </p>
+
+          <div class="wf-gallery-grid">
+            <button class="wf-gallery-item"
+              data-img="field_kitchen_perimeter.png"
+              data-caption="Verletzung des Küchenperimeters – ungesicherter Leckerlibehälter im Wohnbereich festgestellt.
+">
+              <span class="wf-gallery-thumb"
+                style="background-image:url('field_kitchen_perimeter.png');"></span>
+              <span class="wf-gallery-label">KÜCHENPERIMETER · LECKERLI-AUSTRITT</span>
+            </button>
+
+            <button class="wf-gallery-item"
+              data-img="field_racoon_incident.png"
+              data-caption="Nächtlicher Eindringling im Bereich der Futterlagerung festgestellt.
+Spezies identifiziert als Waschbär. Lage eingestuft als hochagil, snackmotiviert und unberechenbar.">
+              <span class="wf-gallery-thumb"
+                style="background-image:url('field_racoon_incident.png');"></span>
+              <span class="wf-gallery-label">WASCHBÄR-ZWISCHENFALL · EXTERNE BEDROHUNG</span>
+            </button>
+
+            <button class="wf-gallery-item"
+              data-img="field_pride_snack_stand.png"
+              data-caption="Street-Food-Stand im Rahmen eines CSD-Einsatzes – unkontrollierte Snackdichte in unmittelbarer Nähe zu Menschenansammlungen.
+">
+              <span class="wf-gallery-thumb"
+                style="background-image:url('field_pride_snack_stand.png');"></span>
+              <span class="wf-gallery-label">CSD-EINSATZ · STRASSEN-SNACKSTAND</span>
+            </button>
+
+            <button class="wf-gallery-item"
+              data-img="field_food_truck_lockdown.png"
+              data-caption="Mobile Snackquelle – Food-Truck-Perimeter durch K-9-Einheit gesichert.
+">
+              <span class="wf-gallery-thumb"
+                style="background-image:url('field_food_truck_lockdown.png');"></span>
+              <span class="wf-gallery-label">MOBILE EINHEIT · FOOD TRUCK</span>
+            </button>
+          </div>
+
+          <div class="wf-gallery-note">
+            Hochauflösendes Beweismaterial wird im gesicherten HQ-Archiv verwahrt.
+Eine Weitergabe außerhalb des WRAFF-FORCE-Programms ist untersagt.
           </div>
         </section>
 
@@ -2515,51 +2574,7 @@ document.querySelectorAll('.audio-card').forEach(card => {
         bar.style.width = "0%";
     });
 });
-
-    // Field imagery gallery modal
-    const galleryModal = document.getElementById('wf-gallery-modal');
-    if (galleryModal) {
-      const modalImg = galleryModal.querySelector('.wf-gallery-modal-image');
-      const modalCaption = galleryModal.querySelector('.wf-gallery-modal-caption');
-      const modalClose = galleryModal.querySelector('.wf-gallery-close');
-      const backdrop = galleryModal.querySelector('.wf-gallery-modal-backdrop');
-      const triggers = document.querySelectorAll('.wf-gallery-item');
-
-      const closeModal = () => {
-        galleryModal.classList.remove('is-open');
-        if (modalImg) {
-          modalImg.src = '';
-        }
-      };
-
-      triggers.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const imgSrc = btn.getAttribute('data-img');
-          const caption = btn.getAttribute('data-caption') || '';
-          if (modalImg && imgSrc) {
-            modalImg.src = imgSrc;
-          }
-          if (modalCaption) {
-            modalCaption.textContent = caption;
-          }
-          galleryModal.classList.add('is-open');
-        });
-      });
-
-      [modalClose, backdrop].forEach((el) => {
-        if (!el) return;
-        el.addEventListener('click', closeModal);
-      });
-
-      document.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Escape' && galleryModal.classList.contains('is-open')) {
-          closeModal();
-        }
-      });
-    }
-
-
-  </script>
+     </script>
 
   <!-- WRAFF FORCE ICON SPRITE -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -2654,5 +2669,61 @@ document.querySelectorAll('.audio-card').forEach(card => {
 
   </svg>
   <!-- END ICON SPRITE -->
+
+  <!-- … EN + DE Content … -->
+
+<!-- Modal für Galerie (GLOBAL, nur 1x im Dokument) -->
+<div class="wf-gallery-modal" id="wf-gallery-modal">
+  <div class="wf-gallery-modal-backdrop"></div>
+  <div class="wf-gallery-modal-inner">
+    <button class="wf-gallery-close" type="button">✕</button>
+    <img class="wf-gallery-modal-image" src="" alt="">
+    <div class="wf-gallery-modal-caption"></div>
+  </div>
+</div>
+
+<script>
+  // Field imagery gallery modal
+    const galleryModal = document.getElementById('wf-gallery-modal');
+    if (galleryModal) {
+      const modalImg = galleryModal.querySelector('.wf-gallery-modal-image');
+      const modalCaption = galleryModal.querySelector('.wf-gallery-modal-caption');
+      const modalClose = galleryModal.querySelector('.wf-gallery-close');
+      const backdrop = galleryModal.querySelector('.wf-gallery-modal-backdrop');
+      const triggers = document.querySelectorAll('.wf-gallery-item');
+
+      const closeModal = () => {
+        galleryModal.classList.remove('is-open');
+        if (modalImg) {
+          modalImg.src = '';
+        }
+      };
+
+      triggers.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const imgSrc = btn.getAttribute('data-img');
+          const caption = btn.getAttribute('data-caption') || '';
+          if (modalImg && imgSrc) {
+            modalImg.src = imgSrc;
+          }
+          if (modalCaption) {
+            modalCaption.textContent = caption;
+          }
+          galleryModal.classList.add('is-open');
+        });
+      });
+
+      [modalClose, backdrop].forEach((el) => {
+        if (!el) return;
+        el.addEventListener('click', closeModal);
+      });
+
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape' && galleryModal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
+    }
+  </script>
 </body>
 </html>
