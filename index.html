@@ -882,8 +882,28 @@
 
   </style>
   <link rel="stylesheet" href="wraff_v4.css">
+
+<style>
+  /* Index page: one scroll context (page scroll only) */
+  body.wf-page-index { 
+    overflow-y: auto; 
+  }
+
+  /* Panels: do NOT scroll internally on index */
+  body.wf-page-index .panel {
+    overflow: visible !important;
+  }
+
+  /* Terminal: also not internally scrollable */
+  body.wf-page-index .scan-terminal {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+</style>
+
+
 </head>
-<body>
+<body class="wf-page-index">
   <div class="page-shell">
     <!-- TOPBAR -->
     <header class="topbar">
