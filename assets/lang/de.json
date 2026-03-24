@@ -872,7 +872,12 @@
     "telegramDesc": "Direktleitung zur primären Operativen. Für Feldkommunikation, Einsatzkoordination und snack-nahe Notfälle.",
     "note": "Wraff Force ist Teil der Pupplay-Community in Nordrhein-Westfalen und darüber hinaus. Wenn du ein Pup, Handler oder gleichgesinnter Operativer bist — alle Kanäle sind offen. Unit Two Kontaktanfragen werden mit zusätzlicher Sorgfalt geprüft. Das ist Standardverfahren.",
     "primaryOperative": "Primäre Operative",
-    "operativeNote": "Primäre Operative und Gründungsmitglied der Wraff Force. Aktiv in der Pupplay-Community in NRW und quer durch Europa. Offen für Kontakt mit Pups, Handlern und Operativen weltweit. Erstkontakt: möglicherweise reserviert. Folgekontakt: deutlich weniger reserviert. Das ist im Dossier dokumentiert."
+    "operativeNote": "Primäre Operative und Gründungsmitglied der Wraff Force. Aktiv in der Pupplay-Community in NRW und quer durch Europa. Offen für Kontakt mit Pups, Handlern und Operativen weltweit. Erstkontakt: möglicherweise reserviert. Folgekontakt: deutlich weniger reserviert. Das ist im Dossier dokumentiert.",
+    "recruitEyebrow": "WF-RECRUIT-01 · OFFENE BEWERBUNGEN",
+    "recruitTitle": "INTERESSE AN DER WRAFF FORCE?",
+    "recruitBody": "Offizielle Bewerbungen werden entgegengenommen. Ein Einstellungstest ist erforderlich. Alle Ergebnisse werden veröffentlicht. Die Bewerberliste ist öffentlich einsehbar.",
+    "recruitNote": "Hinweis: Unit Two hat sich ebenfalls beworben. Seine Akte liegt vor. Die Auswertung war nicht überraschend.",
+    "recruitBtn": "JETZT BEWERBEN →"
   },
   "verify": {
     "title": "CREDENTIAL-VERIFIZIERUNGSKNOTEN",

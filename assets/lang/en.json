@@ -903,7 +903,12 @@
     "telegramDesc": "Direct line to primary operative. For field communications, mission coordination and treat-adjacent emergencies.",
     "note": "Wraff Force is part of the pupplay community in North Rhine-Westphalia and beyond. If you are a pup, handler, or fellow operative looking to connect — all channels are open. Unit Two contact requests are reviewed with additional scrutiny. This is standard procedure.",
     "primaryOperative": "Primary Operative",
-    "operativeNote": "Primary operative and founding member of Wraff Force. Active in the pupplay community in NRW and across Europe. Open to contact with fellow pups, handlers and operatives worldwide. Initial contact: may be reserved. Subsequent contact: significantly less reserved. This is documented in the dossier."
+    "operativeNote": "Primary operative and founding member of Wraff Force. Active in the pupplay community in NRW and across Europe. Open to contact with fellow pups, handlers and operatives worldwide. Initial contact: may be reserved. Subsequent contact: significantly less reserved. This is documented in the dossier.",
+    "recruitEyebrow": "WF-RECRUIT-01 · OPEN APPLICATIONS",
+    "recruitTitle": "INTERESTED IN WRAFF FORCE?",
+    "recruitBody": "Official applications are accepted. An aptitude test is required. All results will be published. The applicant list is publicly accessible.",
+    "recruitNote": "Note: Unit Two has also applied. Their file is on record. The evaluation was not surprising.",
+    "recruitBtn": "APPLY NOW →"
   },
   "verify": {
     "title": "CREDENTIAL VERIFICATION NODE",
