@@ -209,8 +209,12 @@
     injectNav();
     injectFooter();
     setActiveNavLink();
-    initHamburger();
-    initLangToggle();
+    // setTimeout(0) ensures injectNav DOM changes are processed
+    // before we attach event listeners to the injected elements
+    setTimeout(() => {
+      initHamburger();
+      initLangToggle();
+    }, 0);
   }
 
   // Run after DOM is ready
