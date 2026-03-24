@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force mission archive. 21 completed operations. 73% snack recovery rate maintained.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wraff.agency/operations.html">
+  <meta property="og:title" content="WRAFF FORCE — Operations Archive">
+  <meta property="og:description" content="21 completed missions. All outcomes documented. Some details redacted. 73% snack recovery rate maintained.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero {
+      padding: 100px 0 56px;
+      border-bottom: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .page-hero__eyebrow {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 640px; margin-bottom: 28px; }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-stat__value { display: block; font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--silver); line-height: 1; }
+    .hero-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+
+    /* ── FEATURED ── */
+    .featured-section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .featured-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .featured-card:hover { border-color: var(--border-md); transform: translateY(-2px); }
+
+    .featured-card__img-wrap { position: relative; overflow: hidden; }
+    .featured-card__img {
+      width: 100%; aspect-ratio: 16/7;
+      object-fit: cover; object-position: center;
+      display: block; transition: transform 0.4s ease;
+    }
+    .featured-card:hover .featured-card__img { transform: scale(1.02); }
+    .featured-card__img-wrap::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+      background: linear-gradient(to top, var(--bg-1), transparent);
+      pointer-events: none;
+    }
+
+    .featured-card__body { padding: 20px 24px 24px; }
+
+    .featured-card__meta {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .featured-card__code { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2px; color: var(--text-3); text-transform: uppercase; }
+    .featured-card__date { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-3); }
+
+    .featured-card__title { font-family: var(--font-display); font-size: 24px; letter-spacing: 2px; color: var(--text-0); margin-bottom: 6px; }
+    .featured-card__location { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-2); margin-bottom: 12px; }
+    .featured-card__desc { font-size: 13.5px; color: var(--text-1); line-height: 1.7; margin-bottom: 16px; }
+
+    .featured-card__footer {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 8px;
+      padding-top: 14px; border-top: 1px solid var(--border);
+    }
+    .featured-card__operatives { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1px; color: var(--text-3); text-transform: uppercase; }
+    .featured-card__recovery { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; color: var(--text-2); text-transform: uppercase; }
+    .featured-card__recovery .val { color: var(--green); font-size: 13px; }
+    .featured-card__recovery .unknown { color: var(--text-3); }
+
+    /* ── OPS TABLE ── */
+    .ops-section { padding: 64px 0; }
+
+    .ops-table { width: 100%; border-collapse: collapse; margin-top: 32px; }
+    .ops-table th {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-2); padding: 11px 16px;
+      text-align: left; background: var(--bg-2);
+      border-bottom: 1px solid var(--border-md); border-top: 1px solid var(--border);
+    }
+    .ops-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); color: var(--text-1); vertical-align: middle; font-size: 13.5px; }
+    .ops-table tr:hover td { background: var(--bg-2); color: var(--text-0); }
+    .ops-table tr.founding td { background: rgba(200,212,224,0.03); }
+    .ops-table tr.sealed td.td-name { color: var(--text-2); }
+
+    .td-code { font-family: var(--font-mono); font-size: 10px; color: var(--text-3) !important; white-space: nowrap; }
+    .td-name { color: var(--text-0) !important; font-weight: 500; }
+    .td-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-2) !important; white-space: nowrap; }
+    .td-location { font-size: 12.5px; color: var(--text-2) !important; }
+    .td-recovery { font-family: var(--font-mono); font-size: 11px; }
+    .td-recovery.good { color: var(--green) !important; }
+    .td-recovery.partial { color: var(--amber) !important; }
+    .td-recovery.sealed { color: var(--text-3) !important; font-style: italic; }
+    .td-recovery.founding { color: var(--text-3) !important; font-style: italic; }
+
+    @media (max-width: 900px) {
+      .featured-grid { grid-template-columns: 1fr; }
+      .page-hero { padding: 80px 0 40px; }
+      .ops-table th:nth-child(4), .ops-table td:nth-child(4) { display: none; }
+    }
+    @media (max-width: 600px) {
+      .ops-table th:nth-child(3), .ops-table td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="main-nav"></div>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow">K9 Special Unit — Mission Archive</div>
+        <h1 class="page-hero__title" data-i18n="operations.title">OPERATIONS</h1>
+        <p class="page-hero__lead" data-i18n="operations.lead">
+          Complete archive of all Wraff Force field operations. 21 missions completed.
+          All outcomes documented. Some details redacted for operational security.
+          73% snack recovery rate maintained across all deployments.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat__value">21</span>
+            <span class="hero-stat__label" data-i18n="operations.statTotal">Missions Completed</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">73%</span>
+            <span class="hero-stat__label" data-i18n="operations.statRecovery">Avg Recovery Rate</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">4</span>
+            <span class="hero-stat__label" data-i18n="operations.statSealed">Files Sealed</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">1</span>
+            <span class="hero-stat__label" data-i18n="operations.statFounding">Founding Event</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED MISSIONS -->
+    <section class="featured-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-OPS-FEATURED</span>
+          <h2 class="sec-title" data-i18n="operations.featuredTitle">KEY OPERATIONS</h2>
+        </div>
+        <div class="featured-grid">
+
+          <!-- BERLIN PRETZEL -->
+          <div class="featured-card">
+            <div class="featured-card__img-wrap">
+              <img class="featured-card__img" src="/assets/img/misc/op-berlin-pretzel.png" alt="The Berlin Pretzel Incident" loading="eager">
+            </div>
+            <div class="featured-card__body">
+              <div class="featured-card__meta">
+                <span class="featured-card__code">WF-OP-001</span>
+                <span class="featured-card__date">March 2025</span>
+                <span class="badge badge--gray" data-i18n="operations.foundingEvent">FOUNDING EVENT</span>
+              </div>
+              <div class="featured-card__title" data-i18n="operations.berlinTitle">THE BERLIN PRETZEL INCIDENT</div>
+              <div class="featured-card__location">📍 Berlin-Mitte — Potsdamer Platz</div>
+              <div class="featured-card__desc" data-i18n="operations.berlinDesc">
+                An unguarded pretzel stand was left unsupervised for 4 minutes and 17 seconds.
+                Three pretzels, one bag of peanuts and one chocolate bar went missing.
+                One unidentified pawprint recovered from the salt shaker. No witnesses.
+                Case closed as unexplained snack loss. Wraff Force founded three weeks later.
+              </div>
+              <div class="featured-card__footer">
+                <span class="featured-card__operatives" data-i18n="operations.berlinOperatives">Operative: Puppy Treatz — Solo</span>
+                <span class="featured-card__recovery"><span class="unknown" data-i18n="operations.recoveryUnknown">Recovery: Pre-Wraff Force</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOLSOM -->
+          <div class="featured-card">
+            <div class="featured-card__img-wrap">
+              <img class="featured-card__img" src="/assets/img/misc/op-folsom.png" alt="Operation Folsom Berlin" loading="eager">
+            </div>
+            <div class="featured-card__body">
+              <div class="featured-card__meta">
+                <span class="featured-card__code">WF-OP-012</span>
+                <span class="featured-card__date">September 2025</span>
+                <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+              </div>
+              <div class="featured-card__title" data-i18n="operations.folsomTitle">OPERATION FOLSOM — BERLIN</div>
+              <div class="featured-card__location">📍 Berlin-Schöneberg — Fuggerstrasse</div>
+              <div class="featured-card__desc" data-i18n="operations.folsomDesc">
+                First large-scale public deployment at Folsom Europe. Full snack perimeter
+                established across Fuggerstrasse and Welserstrasse. Colonel Flops deployed
+                to eastern gate. One rabbit approached. The rabbit hesitated. The rabbit withdrew.
+                Unit Two's after-action report remains sealed. Crowd reception: enthusiastic.
+              </div>
+              <div class="featured-card__footer">
+                <span class="featured-card__operatives" data-i18n="operations.folsomOperatives">Treatz · Col. Flops · Unit Two · Sgt. Bork · Cpl. Zoom</span>
+                <span class="featured-card__recovery"><span class="val">73%</span> <span data-i18n="operations.recovered">recovered</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- EASTER -->
+          <div class="featured-card">
+            <div class="featured-card__img-wrap">
+              <img class="featured-card__img" src="/assets/img/misc/op-easter.png" alt="Operation Easter" loading="lazy">
+            </div>
+            <div class="featured-card__body">
+              <div class="featured-card__meta">
+                <span class="featured-card__code">WF-OP-018</span>
+                <span class="featured-card__date">March 2026</span>
+                <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+              </div>
+              <div class="featured-card__title" data-i18n="operations.easterTitle">OPERATION EASTER</div>
+              <div class="featured-card__location">📍 Castrop-Rauxel, NRW</div>
+              <div class="featured-card__desc" data-i18n="operations.easterDesc">
+                Annual chocolate reserve protection deployment. Easter Bunny formally
+                classified as hostile following direct operational contact.
+                Unit Two found in proximity to reserves with gold foil wrapper fragments
+                on paws. Explanation filed: pre-existing environmental contamination.
+                Review ongoing. 73% recovery rate maintained.
+              </div>
+              <div class="featured-card__footer">
+                <span class="featured-card__operatives" data-i18n="operations.easterOperatives">Treatz · Col. Flops · Unit Two · Lt. Sniff · Unit Five</span>
+                <span class="featured-card__recovery"><span class="val">73%</span> <span data-i18n="operations.recovered">recovered</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- NO FOOL -->
+          <div class="featured-card">
+            <div class="featured-card__img-wrap">
+              <img class="featured-card__img" src="/assets/img/misc/op-no-fool.png" alt="Operation No Fool" loading="lazy">
+            </div>
+            <div class="featured-card__body">
+              <div class="featured-card__meta">
+                <span class="featured-card__code">WF-OP-021</span>
+                <span class="featured-card__date">April 2026</span>
+                <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+              </div>
+              <div class="featured-card__title" data-i18n="operations.noFoolTitle">OPERATION NO FOOL</div>
+              <div class="featured-card__location">📍 Wraff Force HQ</div>
+              <div class="featured-card__desc" data-i18n="operations.noFoolDesc">
+                Annual April 1st snack integrity operation. Holographic treat protocol
+                reviewed and applied following the June 2025 incident. Treat authenticity
+                confirmed before approach on all occasions. All operatives maintained
+                composure. The June 2025 incident was not repeated.
+                We do not discuss June 2025.
+              </div>
+              <div class="featured-card__footer">
+                <span class="featured-card__operatives" data-i18n="operations.noFoolOperatives">Full unit deployment</span>
+                <span class="featured-card__recovery"><span class="val">100%</span> <span data-i18n="operations.recovered">recovered</span></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FULL OPERATIONS LIST -->
+    <section class="ops-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-OPS-ARCHIVE</span>
+          <h2 class="sec-title" data-i18n="operations.archiveTitle">MISSION ARCHIVE</h2>
+        </div>
+
+        <table class="ops-table">
+          <thead>
+            <tr>
+              <th data-i18n="operations.thCode">Code</th>
+              <th data-i18n="operations.thName">Operation</th>
+              <th data-i18n="operations.thDate">Date</th>
+              <th data-i18n="operations.thLocation">Location</th>
+              <th data-i18n="operations.thRecovery">Recovery</th>
+              <th data-i18n="operations.thStatus">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="founding">
+              <td class="td-code">WF-OP-001</td>
+              <td class="td-name" data-i18n="operations.berlinTitle">The Berlin Pretzel Incident</td>
+              <td class="td-date">Mar 2025</td>
+              <td class="td-location">Berlin-Mitte</td>
+              <td class="td-recovery founding">Pre-WF</td>
+              <td><span class="badge badge--gray" data-i18n="operations.statusFounding">FOUNDING</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-002</td>
+              <td class="td-name" data-i18n="operations.op002Title">Operation First Crumb</td>
+              <td class="td-date">Apr 2025</td>
+              <td class="td-location">HQ — Sector 1</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-003</td>
+              <td class="td-name" data-i18n="operations.op003Title">Operation Crumb Recovery</td>
+              <td class="td-date">Apr 2025</td>
+              <td class="td-location">HQ — All Sectors</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-004</td>
+              <td class="td-name" data-i18n="operations.op004Title">Operation Biscuit Watch</td>
+              <td class="td-date">May 2025</td>
+              <td class="td-location">HQ — Sector 3</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-005</td>
+              <td class="td-name" data-i18n="operations.op005Title">Operation Perimeter Hold — First Field Test</td>
+              <td class="td-date">May 2025</td>
+              <td class="td-location">Essen, NRW</td>
+              <td class="td-recovery partial">61%</td>
+              <td><span class="badge badge--amber" data-i18n="operations.successNote">SUCCESS*</span></td>
+            </tr>
+            <tr class="sealed">
+              <td class="td-code">WF-OP-006</td>
+              <td class="td-name" style="position:relative;">
+                <span class="redacted wf-hint-hover" style="cursor:default;">REDACTED</span>
+                <span class="wf-hint-popup" style="display:none; position:absolute; left:0; top:100%; font-family:var(--font-mono); font-size:9px; letter-spacing:2px; color:var(--amber); background:var(--bg-1); border:1px solid rgba(212,133,10,0.4); padding:4px 10px; border-radius:2px; white-space:nowrap; z-index:99;">PASSWORD: NOTACHICKEN → /classified.html</span>
+              </td>
+              <td class="td-date">Jun 2025</td>
+              <td class="td-location"><span class="redacted">SEALED</span></td>
+              <td class="td-recovery sealed">— Sealed —</td>
+              <td><span class="badge badge--red" data-i18n="incidentReports.sealed">SEALED</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-007</td>
+              <td class="td-name" data-i18n="operations.op007Title">Operation Post-June Recovery</td>
+              <td class="td-date">Jul 2025</td>
+              <td class="td-location">HQ — All Sectors</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-008</td>
+              <td class="td-name" data-i18n="operations.op008Title">Operation Cheese Perimeter</td>
+              <td class="td-date">Jul 2025</td>
+              <td class="td-location">Dortmund, NRW</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-009</td>
+              <td class="td-name" data-i18n="operations.op009Title">Operation Treat Authentication</td>
+              <td class="td-date">Aug 2025</td>
+              <td class="td-location">HQ — Sector 2</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-010</td>
+              <td class="td-name" data-i18n="operations.op010Title">Operation Muffin Onboarding</td>
+              <td class="td-date">Aug 2025</td>
+              <td class="td-location">HQ — Sector 1</td>
+              <td class="td-recovery partial">58%</td>
+              <td><span class="badge badge--amber" data-i18n="operations.successNote">SUCCESS*</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-011</td>
+              <td class="td-name" data-i18n="operations.op011Title">Operation Snack Inventory Audit</td>
+              <td class="td-date">Sep 2025</td>
+              <td class="td-location">HQ — All Sectors</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-012</td>
+              <td class="td-name" data-i18n="operations.folsomTitle">Operation Folsom — Berlin</td>
+              <td class="td-date">Sep 2025</td>
+              <td class="td-location">Berlin-Schöneberg</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-013</td>
+              <td class="td-name" data-i18n="operations.op013Title">Operation Bork Walkies Protocol Test</td>
+              <td class="td-date">Oct 2025</td>
+              <td class="td-location">HQ — Perimeter</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-014</td>
+              <td class="td-name" data-i18n="operations.op014Title">Operation Biscuit Perimeter — Muffin First</td>
+              <td class="td-date">Oct 2025</td>
+              <td class="td-location">HQ — Sector 1</td>
+              <td class="td-recovery partial">54%</td>
+              <td><span class="badge badge--amber" data-i18n="operations.successNote">SUCCESS*</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-015</td>
+              <td class="td-name" data-i18n="operations.op015Title">Operation No Fool — First Edition</td>
+              <td class="td-date">Apr 2025</td>
+              <td class="td-location">HQ — All Sectors</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-016</td>
+              <td class="td-name" data-i18n="operations.op016Title">The Anomaly Mission</td>
+              <td class="td-date">Nov 2025</td>
+              <td class="td-location">HQ — Sector 2</td>
+              <td class="td-recovery good">100%</td>
+              <td><span class="badge badge--gray">ANOMALY</span></td>
+            </tr>
+            <tr class="sealed">
+              <td class="td-code">WF-OP-017</td>
+              <td class="td-name"><span class="redacted">REDACTED</span></td>
+              <td class="td-date">Dec 2025</td>
+              <td class="td-location"><span class="redacted">SEALED</span></td>
+              <td class="td-recovery sealed">— Sealed —</td>
+              <td><span class="badge badge--red" data-i18n="incidentReports.sealed">SEALED</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-018</td>
+              <td class="td-name" data-i18n="operations.easterTitle">Operation Easter</td>
+              <td class="td-date">Mar 2026</td>
+              <td class="td-location">Castrop-Rauxel, NRW</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-019</td>
+              <td class="td-name" data-i18n="operations.op017Title">Operation Habinghorst Kitchen — Initial Assessment</td>
+              <td class="td-date">Mar 2026</td>
+              <td class="td-location">Castrop-Rauxel, NRW</td>
+              <td class="td-recovery partial">62%</td>
+              <td><span class="badge badge--amber" data-i18n="badges.ongoing">ONGOING</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-020</td>
+              <td class="td-name" data-i18n="operations.op018Title">Operation Snack Integrity — Q1 Review</td>
+              <td class="td-date">Mar 2026</td>
+              <td class="td-location">HQ — All Sectors</td>
+              <td class="td-recovery good">73%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+            <tr>
+              <td class="td-code">WF-OP-021</td>
+              <td class="td-name" data-i18n="operations.noFoolTitle">Operation No Fool</td>
+              <td class="td-date">Apr 2026</td>
+              <td class="td-location">HQ — All Sectors</td>
+              <td class="td-recovery good">100%</td>
+              <td><span class="badge badge--green" data-i18n="operations.success">SUCCESS</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="info-box info-box--amber" style="margin-top: 24px;">
+          <span style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:2px; text-transform:uppercase; color:var(--amber);" data-i18n="operations.sealedNote">* SUCCESS with noted anomalies. Full details available at standard clearance. Two files sealed. WF-OP-006 is not discussed.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+
+  <script>
+    // WF-OP-006 hover hint
+    document.querySelectorAll('.wf-hint-hover').forEach(el => {
+      const popup = el.parentElement.querySelector('.wf-hint-popup');
+      if (!popup) return;
+      el.addEventListener('mouseenter', () => popup.style.display = 'block');
+      el.addEventListener('mouseleave', () => popup.style.display = 'none');
+    });
+  </script>
+</body>
+</html>

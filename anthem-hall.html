@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Anthem Hall</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta property="og:title" content="WRAFF FORCE — Anthem Hall">
+  <meta property="og:description" content="Official Wraff Force audio archive. Two ceremonial hymns. Clearance Level 2 required.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero { padding: 100px 0 56px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 640px; margin-bottom: 28px; }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-stat__value { display: block; font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--silver); line-height: 1; }
+    .hero-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+    .ah-section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .ah-section:last-of-type { border-bottom: none; }
+
+    /* ── STAGE LAYOUT ── */
+    .hymn-stage {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      background: var(--bg-1);
+      border: 1px solid var(--border-md);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .hymn-stage:last-child { margin-bottom: 0; }
+    .hymn-stage--01 { border-top: 2px solid var(--silver-dim); }
+    .hymn-stage--02 { border-top: 2px solid var(--blue); }
+
+    .hymn-cover { position: relative; background: var(--bg-2); border-right: 1px solid var(--border); }
+    .hymn-cover__img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+    .hymn-cover__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.5)); }
+    .hymn-cover__badge { position: absolute; top: 12px; left: 12px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 2px; padding: 3px 8px; }
+
+    .hymn-content { display: flex; flex-direction: column; }
+
+    .hymn-header { padding: 24px 28px 18px; border-bottom: 1px solid var(--border); }
+    .hymn-clearance { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+    .hymn-title { font-family: var(--font-display); font-size: clamp(20px, 2.2vw, 32px); letter-spacing: 3px; color: var(--text-0); margin-bottom: 4px; line-height: 1.1; }
+    .hymn-subtitle { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-2); margin-bottom: 12px; }
+    .hymn-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .hymn-desc { padding: 16px 28px; font-size: 13.5px; color: var(--text-1); line-height: 1.75; border-bottom: 1px solid var(--border); flex: 1; }
+
+    /* Player */
+    .hymn-player { padding: 14px 28px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; background: var(--bg-2); border-bottom: 1px solid var(--border); }
+    .hymn-player__btn { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border-md); background: var(--bg-3); color: var(--text-0); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0; }
+    .hymn-player__btn:hover { background: var(--bg-4); border-color: var(--silver-dim); }
+    .hymn-player__btn:active { transform: scale(0.95); }
+    .hymn-player__btn.playing { border-color: var(--silver-dim); background: var(--bg-4); }
+    .hymn-player__btn svg { width: 22px; height: 22px; }
+    .hymn-player__progress-wrap { position: relative; height: 6px; background: var(--bg-0); border-radius: 3px; cursor: pointer; margin-bottom: 8px; border: 1px solid var(--border); }
+    .hymn-player__progress-fill { height: 100%; border-radius: 3px; width: 0%; background: var(--silver-dim); pointer-events: none; transition: background 0.2s; }
+    .hymn-stage.playing .hymn-player__progress-fill { background: var(--silver); }
+    .hymn-player__progress-wrap:hover .hymn-player__progress-fill { background: var(--silver); }
+    .hymn-player__thumb { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 14px; height: 14px; border-radius: 50%; background: var(--silver); border: 2px solid var(--bg-2); pointer-events: none; opacity: 0; transition: opacity 0.15s; }
+    .hymn-player__progress-wrap:hover .hymn-player__thumb { opacity: 1; }
+    .hymn-player__times { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 9.5px; color: var(--text-3); }
+    .hymn-player__time-current { color: var(--text-1); }
+    .hymn-player__volume { display: flex; align-items: center; gap: 10px; flex-shrink: 0; background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; }
+    .hymn-player__vol-icon { color: var(--text-2); flex-shrink: 0; }
+    .hymn-player__vol-icon svg { width: 16px; height: 16px; display: block; }
+    .hymn-player__vol-slider { -webkit-appearance: none; appearance: none; width: 72px; height: 4px; background: var(--bg-3); border-radius: 2px; cursor: pointer; outline: none; }
+    .hymn-player__vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--silver-dim); cursor: pointer; border: 1px solid var(--border-md); }
+    .hymn-player__vol-slider:hover::-webkit-slider-thumb { background: var(--silver); }
+
+    /* Lyrics */
+    .hymn-lyrics-toggle { padding: 11px 28px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: var(--bg-1); transition: background 0.15s; border-top: 1px solid rgba(212,133,10,0.25); }
+    .hymn-lyrics-toggle:hover { background: rgba(212,133,10,0.06); }
+    .hymn-lyrics-toggle__label { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); display: flex; align-items: center; gap: 8px; }
+    .hymn-lyrics-toggle__label::before { content: '♪'; color: var(--amber); }
+    .hymn-lyrics-chevron { width: 16px; height: 16px; color: var(--amber); transition: transform 0.25s; flex-shrink: 0; }
+    .hymn-stage.lyrics-open .hymn-lyrics-chevron { transform: rotate(180deg); }
+    .hymn-lyrics-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .hymn-stage.lyrics-open .hymn-lyrics-body { border-top: 1px solid var(--border); }
+    .hymn-lyrics-inner { padding: 24px 28px; max-height: 340px; overflow-y: auto; }
+    .hymn-lyrics-inner::-webkit-scrollbar { width: 4px; }
+    .hymn-lyrics-inner::-webkit-scrollbar-track { background: var(--bg-2); }
+    .hymn-lyrics-inner::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+    .lyrics-text { font-family: var(--font-mono); font-size: 12px; line-height: 2.1; color: var(--text-2); white-space: pre-wrap; }
+    .lyrics-section { display: block; color: var(--text-3); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 14px 0 2px; }
+    .lyrics-highlight { color: var(--silver); font-size: 12.5px; }
+    .lyrics-woof { color: var(--silver-dim); font-style: italic; }
+    .lyrics-shout { color: var(--text-0); letter-spacing: 1px; }
+
+    /* SoundCloud */
+    .sc-section { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 48px 40px; text-align: center; margin-top: 32px; }
+    .sc-logo { width: 40px; height: 40px; margin: 0 auto 20px; opacity: 0.35; }
+    .sc-title { font-family: var(--font-display); font-size: 32px; letter-spacing: 3px; color: var(--text-0); margin-bottom: 12px; }
+    .sc-desc { font-size: 14px; color: var(--text-1); line-height: 1.75; max-width: 520px; margin: 0 auto 28px; }
+
+    @media (max-width: 900px) {
+      .page-hero { padding: 80px 0 40px; }
+      .hymn-stage { grid-template-columns: 1fr; }
+      .hymn-cover { display: none; }
+      .hymn-player { grid-template-columns: auto 1fr; }
+      .hymn-player__volume { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow" data-i18n="anthemHall.eyebrow">K9 Special Unit — Official Audio Archive</div>
+        <h1 class="page-hero__title" data-i18n="anthemHall.title">ANTHEM HALL</h1>
+        <p class="page-hero__lead" data-i18n="anthemHall.lead">Official audio archive of Wraff Force. Two ceremonial hymns available for direct playback. Six additional field compositions available via the official SoundCloud archive. Use of these recordings is restricted to: ceremonies, mission briefings, dramatic slow-motion corridor walks, and any situation where the gravity of snack security must be musically underscored.</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="hero-stat__value">8</span><span class="hero-stat__label" data-i18n="anthemHall.statTotal">Compositions</span></div>
+          <div class="hero-stat"><span class="hero-stat__value">2</span><span class="hero-stat__label" data-i18n="anthemHall.statHymns">Official Hymns</span></div>
+          <div class="hero-stat"><span class="hero-stat__value">6</span><span class="hero-stat__label" data-i18n="anthemHall.statField">Field Compositions</span></div>
+          <div class="hero-stat"><span class="hero-stat__value">2+</span><span class="hero-stat__label" data-i18n="anthemHall.statClearance">Min. Clearance Level</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ah-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-AH-01</span>
+          <h2 class="sec-title" data-i18n="anthemHall.hymnsTitle">OFFICIAL HYMNS</h2>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; max-width:680px; margin-bottom:32px;" data-i18n="anthemHall.hymnsLead">Two recordings have been designated as official Wraff Force hymns. Both are cleared for ceremonial use, public deployment and internal briefings. Playback during snack incidents is permitted but not required. It is, however, recommended.</p>
+
+        <!-- HYMN 01 -->
+        <div class="hymn-stage hymn-stage--01" id="hymn-01">
+          <div class="hymn-cover">
+            <img class="hymn-cover__img" src="/assets/img/misc/anthem-cover-01.png" alt="Grand Unit Anthem">
+            <div class="hymn-cover__overlay"></div>
+            <div class="hymn-cover__badge">WF-A01</div>
+          </div>
+          <div class="hymn-content">
+            <div class="hymn-header">
+              <div class="hymn-clearance" data-i18n="anthemHall.clearanceLabel">WF-A01 · CLEARANCE LEVEL 2+ · OFFICIAL ANTHEM</div>
+              <div class="hymn-title" data-i18n="anthemHall.h1title">WRAFF FORCE GRAND UNIT ANTHEM</div>
+              <div class="hymn-subtitle" data-i18n="anthemHall.h1subtitle">Official Flag Anthem · Ceremonial Use</div>
+              <div class="hymn-badges">
+                <span class="badge badge--gray">Epic Cinematic Orchestral</span>
+                <span class="badge badge--gray" data-i18n="anthemHall.official">● Official</span>
+              </div>
+            </div>
+            <div class="hymn-desc" data-i18n="anthemHall.h1desc">The official flag anthem of Wraff Force. Designated for formal ceremonies, commendation proceedings and any occasion requiring the full weight of the Wraff Force mandate to be felt. Opens with a sweeping orchestral statement, builds through a central movement capturing the dignity of the K9 mission, and closes with a resolution described as profoundly serious given the subject matter. Colonel Flops has heard this anthem. Colonel Flops did not comment. The anthem was considered successful.</div>
+            <div class="hymn-player">
+              <button class="hymn-player__btn" id="play-01" aria-label="Play"><svg id="play-icon-01" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></button>
+              <div class="hymn-player__track">
+                <div class="hymn-player__progress-wrap" id="progress-wrap-01">
+                  <div class="hymn-player__progress-fill" id="progress-01"></div>
+                  <div class="hymn-player__thumb" id="thumb-01"></div>
+                </div>
+                <div class="hymn-player__times"><span class="hymn-player__time-current" id="time-current-01">0:00</span><span id="time-total-01">—:——</span></div>
+              </div>
+              <div class="hymn-player__volume">
+                <div class="hymn-player__vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+                <input class="hymn-player__vol-slider" id="vol-01" type="range" min="0" max="1" step="0.05" value="0.8">
+              </div>
+            </div>
+            <audio id="audio-01" src="/assets/audio/wf-anthem-01.mp3" preload="metadata"></audio>
+            <div class="hymn-lyrics-toggle" id="lyrics-toggle-01">
+              <span class="hymn-lyrics-toggle__label" data-i18n="anthemHall.viewLyrics">View Lyrics</span>
+              <svg class="hymn-lyrics-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="hymn-lyrics-body" id="lyrics-body-01">
+              <div class="hymn-lyrics-inner">
+                <div class="lyrics-text"><span class="lyrics-woof">WOOF… (reverent)</span>
+
+<span class="lyrics-shout">O ancient creed of WRAFF, revered,
+Through countless dawns you've persevered,
+Your sacred laws, in scrolls of blue,
+Define what every pup must do,</span>
+
+<span class="lyrics-woof">(WOOF)</span>
+
+From Ritual of Treat Allocation,
+To Snoot-Inspection Registration,
+Your wisdom guides our steady stance,
+In every march, in every glance
+
+<span class="lyrics-highlight">WE SWEAR UPON THE CODE WE KEEP,
+INSCRIBED IN PAW AND MEMORY DEEP,
+IN UNITY, IN CALM CONTROL
+THE WRAFF FORCE GUARDS THE SNACK-PATROL</span>
+
+<span class="lyrics-woof">(WOOF…)</span>
+
+Through noble tasks both grand and small,
+We honor every fetcher's call,
+
+<span class="lyrics-highlight">O ORDER OF THE WRAFF DECREE,
+WE SERVE WITH STOIC DIGNITY</span>
+
+In solemn chambers, still and wide,
+We train our minds to override
+Temptations such as rustling bags
+Or squeaky toys in crimson tags,
+
+<span class="lyrics-woof">(WOOF)</span>
+
+We study ancient Pup Technique,
+The Art of Tail-Wag, pure and sleek,
+The noble stance of "Sit-but-Wait",
+Commanded in the Scrolls of State
+
+O lineage proud, O pack of old,
+Your chronicles in leather told,
+Detail the trials we overcame:
+The Great Biscuit Famine… by name
+
+<span class="lyrics-section">(dramatic hush)</span>
+
+Yet through it all your guidance stayed,
+Till order once again was made
+
+<span class="lyrics-highlight">WE LIFT OUR VOICES STRONG AND CLEAR,
+WITH REVERENCE FOR THE DUTY HERE,
+IN BLACK AND BLUE, THROUGH NIGHT AND DAY,
+THE WRAFF FORCE WALKS THE HONORED WAY</span>
+
+<span class="lyrics-woof">(WOOF! WOOF!)</span>
+
+Let future pups remember well
+The creed that binds us, firm as steel,
+
+<span class="lyrics-highlight">THE WRAFF FORCE STANDS IN UNITY,
+ETERNAL IN ITS PAW-LICIES</span>
+
+<span class="lyrics-woof">WOOF…</span>
+<span class="lyrics-section">Ceremonial rites concluded. Proceed with decorum.</span>
+<span class="lyrics-woof">WOOF… (reverent)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HYMN 02 -->
+        <div class="hymn-stage hymn-stage--02" id="hymn-02">
+          <div class="hymn-cover">
+            <img class="hymn-cover__img" src="/assets/img/misc/anthem-cover-02.png" alt="Tactical Deployment Anthem">
+            <div class="hymn-cover__overlay"></div>
+            <div class="hymn-cover__badge">WF-A02</div>
+          </div>
+          <div class="hymn-content">
+            <div class="hymn-header">
+              <div class="hymn-clearance" data-i18n="anthemHall.clearanceLabel2">WF-A02 · CLEARANCE LEVEL 2+ · FIELD ANTHEM</div>
+              <div class="hymn-title" data-i18n="anthemHall.h2title">TACTICAL DEPLOYMENT ANTHEM</div>
+              <div class="hymn-subtitle" data-i18n="anthemHall.h2subtitle">Field Operations Theme · Mission Ready</div>
+              <div class="hymn-badges">
+                <span class="badge badge--gray">Epic Cinematic Orchestral</span>
+                <span class="badge badge--blue" data-i18n="anthemHall.fieldAnthemBadge">● Field Anthem</span>
+              </div>
+            </div>
+            <div class="hymn-desc" data-i18n="anthemHall.h2desc">The official tactical field theme of Wraff Force. Designated for mission briefings, gear checks and synchronized team movements. Also approved for dramatic slow-motion corridor walks and any moment operatives need to feel the full cinematic weight of their snack security mandate. Played during three separate operations. Recovery rate on all three: 73%. The anthem is not considered responsible for this. The anthem has been cleared.</div>
+            <div class="hymn-player">
+              <button class="hymn-player__btn" id="play-02" aria-label="Play"><svg id="play-icon-02" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></button>
+              <div class="hymn-player__track">
+                <div class="hymn-player__progress-wrap" id="progress-wrap-02">
+                  <div class="hymn-player__progress-fill" id="progress-02"></div>
+                  <div class="hymn-player__thumb" id="thumb-02"></div>
+                </div>
+                <div class="hymn-player__times"><span class="hymn-player__time-current" id="time-current-02">0:00</span><span id="time-total-02">—:——</span></div>
+              </div>
+              <div class="hymn-player__volume">
+                <div class="hymn-player__vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+                <input class="hymn-player__vol-slider" id="vol-02" type="range" min="0" max="1" step="0.05" value="0.8">
+              </div>
+            </div>
+            <audio id="audio-02" src="/assets/audio/wf-anthem-02.mp3" preload="metadata"></audio>
+            <div class="hymn-lyrics-toggle" id="lyrics-toggle-02">
+              <span class="hymn-lyrics-toggle__label" data-i18n="anthemHall.viewLyrics">View Lyrics</span>
+              <svg class="hymn-lyrics-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="hymn-lyrics-body" id="lyrics-body-02">
+              <div class="hymn-lyrics-inner">
+                <div class="lyrics-text"><span class="lyrics-section">Drums rumble</span>
+
+Marching in the dusk, silent boots on the floor,
+WRAFF FORCE rises, ready once more.
+Through shadows we advance, precision in our stride,
+snack intel guarded, classified inside.
+
+Our mission brief is simple, yet oddly complex,
+retrieve the treat, secure the specs.
+We face each threat with tactical grace,
+but lose our focus if snacks fall out of place.
+
+<span class="lyrics-woof">(WOOF)</span>
+
+<span class="lyrics-highlight">WRAFF Force, elite and bold,
+guarding snacks like minted gold.
+If danger bites, we bite back too,
+that's K-9 logic, tried and true.
+
+WRAFF Force, stand proud, stand tall,
+the overtrained snack corps saving all.
+goo-o-o-ood SNAAACKS!</span>
+
+We passed the toughest tests on Earth,
+like "Advanced Treat Theory" and "Boop Logistics" worth.
+We breach a room with flawless art,
+unless we hear a crinkling bag—that stops the heart.
+
+Command once called: "Is the threat still here?"
+"Negative, sir. But the snack was near."
+
+When darkness falls and tensions peak,
+our scanners beep—
+<span class="lyrics-section">(beep… beep… BEEP!)</span>
+"Unknown object, glowing red,"
+"Relax, Command. It's jam on bread."
+
+We saved the world nine times today,
+and fought a squeaky toy halfway.
+
+<span class="lyrics-highlight">WRAFF Force, brave and bright,
+marching proudly through the night.
+No villain stands, no snack misplaced,
+we solve it all with discipline… and taste.
+
+goo-o-o-ood TREA-EA-EA-EETS!</span>
+
+<span class="lyrics-highlight">WRAFF Force—heroes of the pack,
+we never rest, we never slack.
+And as we march through dust and crunch,
+our battle cry is clear:</span>
+
+<span class="lyrics-shout">"WHO DROPPED THE SNACK?"</span>
+
+<span class="lyrics-woof">SNAAACK…</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOUNDCLOUD -->
+    <section class="ah-section">
+      <div class="wrap">
+        <div class="sec-head"><span class="sec-code">WF-AH-02</span><h2 class="sec-title" data-i18n="anthemHall.archiveTitle">FULL AUDIO ARCHIVE</h2></div>
+        <div class="sc-section">
+          <svg class="sc-logo" viewBox="0 0 24 24" fill="var(--text-2)"><path d="M1.175 12.225c-.015 0-.03.01-.03.025l-.315 2.005.315 1.99c0 .015.015.025.03.025s.03-.01.03-.025l.36-1.99-.36-2.005c0-.015-.015-.025-.03-.025zm.894-.809c-.02 0-.04.015-.04.035l-.38 2.814.38 2.709c0 .02.02.035.04.035s.04-.015.04-.035l.43-2.709-.43-2.814c0-.02-.02-.035-.04-.035zm8.008-5.386c-.29 0-.57.055-.83.155-.17-1.9-1.77-3.385-3.71-3.385-.505 0-.985.105-1.415.295-.165.07-.21.14-.21.205v6.63c0 .07.055.13.125.135h6.04c.62 0 1.12-.5 1.12-1.12 0-.62-.5-1.12-1.12-1.12z"/></svg>
+          <div class="sc-title" data-i18n="anthemHall.scTitle">FULL ARCHIVE ON SOUNDCLOUD</div>
+          <p class="sc-desc" data-i18n="anthemHall.scDesc">All 8 Wraff Force compositions are available in the official SoundCloud archive. Access is unrestricted. Clearance is still recommended. The archive is maintained by primary operative Puppy Treatz. Unit Two's listening history has been reviewed. It was not helpful.</p>
+          <a href="https://soundcloud.com/treatz4lyfe/sets/wraff-force" target="_blank" rel="noopener" class="btn btn--primary"><span data-i18n="anthemHall.scBtn">Open Full Archive →</span></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script>
+    function initPlayer(num) {
+      const audio=document.getElementById(`audio-0${num}`),playBtn=document.getElementById(`play-0${num}`),playIcon=document.getElementById(`play-icon-0${num}`),progress=document.getElementById(`progress-0${num}`),thumb=document.getElementById(`thumb-0${num}`),wrap=document.getElementById(`progress-wrap-0${num}`),timeCur=document.getElementById(`time-current-0${num}`),timeTotal=document.getElementById(`time-total-0${num}`),vol=document.getElementById(`vol-0${num}`),stage=document.getElementById(`hymn-0${num}`);
+      const PLAY=`<polygon points="5,3 19,12 5,21"/>`,PAUSE=`<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
+      const fmt=s=>`${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+      audio.addEventListener('loadedmetadata',()=>timeTotal.textContent=fmt(audio.duration));
+      audio.addEventListener('timeupdate',()=>{if(!audio.duration)return;const p=(audio.currentTime/audio.duration)*100;progress.style.width=p+'%';thumb.style.left=p+'%';timeCur.textContent=fmt(audio.currentTime);});
+      audio.addEventListener('ended',()=>{playIcon.innerHTML=PLAY;stage.classList.remove('playing');playBtn.classList.remove('playing');progress.style.width='0%';timeCur.textContent='0:00';});
+      playBtn.addEventListener('click',()=>{
+        const o=num===1?2:1,oa=document.getElementById(`audio-0${o}`),oi=document.getElementById(`play-icon-0${o}`),os=document.getElementById(`hymn-0${o}`),ob=document.getElementById(`play-0${o}`);
+        if(!oa.paused){oa.pause();oi.innerHTML=PLAY;os.classList.remove('playing');ob.classList.remove('playing');}
+        if(audio.paused){audio.play();playIcon.innerHTML=PAUSE;stage.classList.add('playing');playBtn.classList.add('playing');}
+        else{audio.pause();playIcon.innerHTML=PLAY;stage.classList.remove('playing');playBtn.classList.remove('playing');}
+      });
+      wrap.addEventListener('click',e=>{if(!audio.duration)return;const r=wrap.getBoundingClientRect();audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;});
+      vol.addEventListener('input',()=>audio.volume=vol.value);
+      audio.volume=0.8;
+    }
+
+    function initLyrics(num) {
+      const toggle=document.getElementById(`lyrics-toggle-0${num}`),body=document.getElementById(`lyrics-body-0${num}`),stage=document.getElementById(`hymn-0${num}`);
+      toggle.addEventListener('click',()=>{
+        const open=stage.classList.contains('lyrics-open');
+        if(open){stage.classList.remove('lyrics-open');body.style.maxHeight='0';}
+        else{stage.classList.add('lyrics-open');body.style.maxHeight=body.scrollHeight+'px';}
+      });
+    }
+
+    initPlayer(1); initPlayer(2);
+    initLyrics(1); initLyrics(2);
+  </script>
+</body>
+</html>

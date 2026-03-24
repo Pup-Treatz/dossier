@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Status</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta property="og:title" content="WRAFF FORCE — Status">
+  <meta property="og:description" content="Wraff Force live status dashboard. Global snack threat monitor. Treat Alert Level 2.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero { padding: 80px 0 40px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 12px; }
+    .page-hero__sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-3); }
+
+    .st-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .st-section:last-of-type { border-bottom: none; }
+
+    /* ── TREAT ALERT ── */
+    .treat-alert-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .treat-alert-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; gap: 16px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .treat-alert-header__left { display: flex; align-items: center; gap: 14px; }
+
+    .treat-alert-level-badge {
+      font-family: var(--font-display); font-size: 48px; letter-spacing: 2px;
+      line-height: 1; min-width: 32px; text-align: center;
+      transition: color 0.4s;
+    }
+
+    .treat-alert-info {}
+
+    .treat-alert-label {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+    }
+
+    .treat-alert-name {
+      font-family: var(--font-display); font-size: 20px; letter-spacing: 2px;
+      color: var(--text-0); transition: color 0.4s;
+    }
+
+    .treat-alert-desc {
+      font-size: 12.5px; color: var(--text-2); margin-top: 2px;
+      transition: color 0.4s;
+    }
+
+    .treat-alert-btn {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 10px 18px;
+      border: 1px solid var(--border-md); border-radius: var(--radius);
+      background: var(--bg-2); color: var(--text-1);
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+
+    .treat-alert-btn:hover { background: var(--bg-3); border-color: var(--amber); color: var(--amber); }
+
+    /* Level bar */
+    .treat-alert-bar { padding: 16px 24px; background: var(--bg-2); }
+
+    .treat-alert-levels {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 4px; margin-bottom: 8px;
+    }
+
+    .tal-pip {
+      height: 8px; border-radius: 2px;
+      background: var(--bg-3); border: 1px solid var(--border);
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    .tal-pip.active-0 { background: var(--text-3); border-color: var(--text-3); }
+    .tal-pip.active-1 { background: #4A8CC4; border-color: #4A8CC4; }
+    .tal-pip.active-2 { background: var(--amber); border-color: var(--amber); }
+    .tal-pip.active-3 { background: #E07020; border-color: #E07020; }
+    .tal-pip.active-4 { background: var(--red); border-color: var(--red); }
+    .tal-pip.active-5 { background: var(--red); border-color: var(--red); box-shadow: 0 0 8px rgba(224,52,52,0.5); }
+
+    .treat-alert-levels-labels {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+    }
+
+    .tal-label {
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--text-3); text-align: center;
+    }
+
+    /* ── GLOBAL THREAT MAP ── */
+    .threat-map-wrap {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; margin-top: 28px;
+    }
+
+    .threat-map-header {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .threat-map-title {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-3);
+    }
+
+    .threat-map-svg-wrap {
+      padding: 20px 24px;
+      background: var(--bg-2);
+    }
+
+    /* SVG world map dots */
+    .threat-location {
+      cursor: default;
+    }
+
+    @keyframes threatPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes threatRing {
+      0% { r: 6; opacity: 0.6; }
+      100% { r: 18; opacity: 0; }
+    }
+
+    .threat-dot { transition: r 0.2s; }
+    .threat-dot--high { fill: var(--red); }
+    .threat-dot--elevated { fill: var(--amber); }
+    .threat-dot--moderate { fill: #4A8CC4; }
+    .threat-dot--active { fill: var(--red); animation: threatPulse 1s ease-in-out infinite; }
+
+    .threat-ring {
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 1.2;
+      animation: threatRing 1.8s ease-out infinite;
+    }
+
+    .threat-ring--elevated {
+      stroke: var(--amber);
+      animation: threatRing 2.4s ease-out infinite;
+    }
+
+    /* Scanline overlay */
+    .map-scanline {
+      pointer-events: none;
+    }
+
+    .threat-list {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; padding: 16px 24px; border-top: 1px solid var(--border);
+    }
+
+    .threat-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; background: var(--bg-1);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+
+    .threat-item__dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .threat-item__dot--high { background: var(--red); box-shadow: 0 0 6px rgba(224,52,52,0.5); }
+    .threat-item__dot--elevated { background: var(--amber); }
+    .threat-item__dot--moderate { background: #4A8CC4; }
+    .threat-item__dot--active { background: var(--red); animation: threatPulse 1s ease-in-out infinite; }
+
+    .threat-item__info {}
+    .threat-item__city { font-family: var(--font-display); font-size: 14px; letter-spacing: 1.5px; color: var(--text-0); }
+    .threat-item__status { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); }
+
+    /* ── OPERATIVE STATUS GRID ── */
+    .operative-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; margin-top: 28px;
+    }
+
+    .op-status-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      position: relative; overflow: hidden;
+    }
+
+    .op-status-card::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(204,216,228,0.03), transparent);
+      transition: left 0.5s ease;
+      pointer-events: none;
+    }
+
+    .op-status-card:hover::before { left: 140%; }
+
+    .op-status-card:hover {
+      border-color: var(--border-md);
+      background: var(--bg-2);
+      transform: translateY(-1px);
+    }
+
+    .op-status-card--watch {
+      border-left: 2px solid var(--amber);
+      background: linear-gradient(135deg, rgba(212,133,10,0.04) 0%, var(--bg-1) 50%);
+    }
+
+    .op-status-card--watch:hover {
+      background: linear-gradient(135deg, rgba(212,133,10,0.07) 0%, var(--bg-2) 50%);
+    }
+
+    .op-status-card__portrait {
+      width: 44px; height: 44px; border-radius: 2px;
+      object-fit: cover; object-position: top;
+      border: 1px solid var(--border); flex-shrink: 0;
+      filter: contrast(1.05) saturate(0.9);
+      transition: filter 0.2s;
+    }
+
+    .op-status-card:hover .op-status-card__portrait {
+      filter: contrast(1.1) saturate(1.0);
+    }
+
+    .op-status-card__name {
+      font-family: var(--font-display); font-size: 14px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 3px;
+    }
+    .op-status-card__div {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px;
+    }
+
+    /* Scan-Linie auf Watch-Karten */
+    @keyframes scanDown {
+      0% { top: -100%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 110%; opacity: 0; }
+    }
+
+    .op-status-card--watch::after {
+      content: '';
+      position: absolute; left: 0; top: -100%;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,133,10,0.4), transparent);
+      animation: scanDown 3s ease-in-out infinite 1s;
+      pointer-events: none;
+    }
+
+    /* ── MISSION STATS ── */
+    .stats-grid-4 {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 12px; margin-top: 28px;
+    }
+
+    .stat-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-md);
+      transform: translateY(-1px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(204,216,228,0.1), transparent);
+    }
+
+    .stat-card--green::before { background: linear-gradient(90deg, transparent, rgba(26,158,92,0.3), transparent); }
+    .stat-card--amber::before { background: linear-gradient(90deg, transparent, rgba(212,133,10,0.3), transparent); }
+    .stat-card--red::before   { background: linear-gradient(90deg, transparent, rgba(224,52,52,0.25), transparent); }
+
+    .stat-card__value {
+      font-family: var(--font-display); font-size: 44px;
+      letter-spacing: 2px; color: var(--silver); line-height: 1; margin-bottom: 6px;
+      transition: color 0.3s;
+    }
+
+    .stat-card__value.amber { color: var(--amber); text-shadow: 0 0 20px rgba(212,133,10,0.2); }
+    .stat-card__value.red   { color: var(--red);   text-shadow: 0 0 20px rgba(224,52,52,0.15); }
+    .stat-card__value.green { color: var(--green);  text-shadow: 0 0 20px rgba(26,158,92,0.2); }
+
+    .stat-card__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+    .stat-card__note  { font-size: 11.5px; color: var(--text-2); margin-top: 6px; font-style: italic; }
+
+    /* ── ACTIVE INCIDENTS ── */
+    .active-incident {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 14px 14px 16px; border-bottom: 1px solid var(--border);
+      position: relative; transition: background 0.15s;
+      cursor: default;
+    }
+    .active-incident:last-child { border-bottom: none; }
+    .active-incident:hover { background: rgba(204,216,228,0.02); }
+
+    .active-incident::before {
+      content: '';
+      position: absolute; left: 0; top: 8px; bottom: 8px;
+      width: 2px; border-radius: 1px;
+      background: var(--border);
+      transition: background 0.2s;
+    }
+    .active-incident--active::before  { background: var(--red);   box-shadow: 0 0 6px rgba(224,52,52,0.4); }
+    .active-incident--review::before  { background: var(--amber); }
+    .active-incident--ongoing::before { background: var(--amber); }
+
+    .active-incident__ref { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; min-width: 80px; }
+    .active-incident__name { font-family: var(--font-display); font-size: 15px; letter-spacing: 1.5px; color: var(--text-0); flex: 1; }
+    .active-incident__location { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-2); white-space: nowrap; }
+
+    @media (max-width: 1024px) { .operative-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 900px) { .page-hero { padding: 80px 0 32px; } .threat-list { grid-template-columns: 1fr 1fr; } .treat-alert-levels { grid-template-columns: repeat(3, 1fr); } .treat-alert-levels-labels { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .operative-grid { grid-template-columns: 1fr 1fr; } .stats-grid-4 { grid-template-columns: 1fr 1fr; } .threat-list { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+
+    <!-- HERO -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow">K9 Special Unit — Live Status Feed</div>
+        <h1 class="page-hero__title" data-i18n="status.title">STATUS</h1>
+        <div class="page-hero__sub" data-i18n="status.sub">All Systems Monitored · Live Feed · Last Updated: Now</div>
+      </div>
+    </section>
+
+    <!-- TREAT ALERT -->
+    <section class="st-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-ST-01</span>
+          <h2 class="sec-title" data-i18n="status.treatAlertTitle">TREAT ALERT SYSTEM</h2>
+        </div>
+
+        <div class="treat-alert-card" id="treat-alert-card">
+          <div class="treat-alert-header">
+            <div class="treat-alert-header__left">
+              <div class="treat-alert-level-badge" id="tal-level-num">2</div>
+              <div class="treat-alert-info">
+                <div class="treat-alert-label" data-i18n="status.currentLevel">Current Alert Level</div>
+                <div class="treat-alert-name" id="tal-level-name">UNATTENDED TREAT SCENARIO</div>
+                <div class="treat-alert-desc" id="tal-level-desc">Snacks temporarily left without direct supervision. High temptation. Strict protocol required.</div>
+              </div>
+            </div>
+            <button class="treat-alert-btn" id="tal-escalate-btn" data-i18n="status.escalateBtn">▲ ESCALATE THREAT LEVEL</button>
+          </div>
+          <div class="treat-alert-bar">
+            <div class="treat-alert-levels" id="tal-pips">
+              <div class="tal-pip" data-pip="0"></div>
+              <div class="tal-pip" data-pip="1"></div>
+              <div class="tal-pip active-2" data-pip="2"></div>
+              <div class="tal-pip" data-pip="3"></div>
+              <div class="tal-pip" data-pip="4"></div>
+              <div class="tal-pip" data-pip="5"></div>
+            </div>
+            <div class="treat-alert-levels-labels">
+              <div class="tal-label">0</div>
+              <div class="tal-label">1</div>
+              <div class="tal-label">2 ←</div>
+              <div class="tal-label">3</div>
+              <div class="tal-label">4</div>
+              <div class="tal-label">5</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Global Threat Map -->
+        <div class="threat-map-wrap">
+          <div class="threat-map-header">
+            <span class="threat-map-title" data-i18n="status.globalMapTitle">Global Snack Threat Monitor</span>
+            <span class="badge badge--red">● <span data-i18n="status.live">Live</span></span>
+          </div>
+          <div class="threat-map-svg-wrap" style="padding:0; position:relative; overflow:hidden;">
+            <img src="/assets/img/ui/threat-map-bg.png" alt="" aria-hidden="true"
+              style="width:100%; height:auto; display:block; opacity:0.9;">
+            <!-- SVG-Overlay: viewBox 0 0 100 100, Koordinaten in % des Bildes
+              Bild zeigt lon ca. -15..42  (57° Breite)
+              Bild zeigt lat ca. 33..72  (39° Höhe)
+              x% = (lon + 15) / 57 * 100
+              y% = (72 - lat) / 39 * 100
+              Castrop-Rauxel 51.55N 7.32E  → x=38.9 y=52.4
+              Berlin         52.52N 13.40E → x=49.8 y=49.9
+              Köln           50.93N 6.96E  → x=38.5 y=54.5
+              London         51.51N -0.13W → x=26.1 y=52.6
+            -->
+            <svg viewBox="0 0 150 100"
+              xmlns="http://www.w3.org/2000/svg"
+              style="position:absolute; top:0; left:0; width:100%; height:100%;">
+
+              <!-- Castrop-Rauxel — Label nach LINKS-UNTEN -->
+              <g class="threat-location">
+                <circle class="threat-ring" cx="63.1" cy="49.2" r="1.4"/>
+                <circle class="threat-ring" cx="63.1" cy="49.2" r="1.4" style="animation-delay:0.7s"/>
+                <circle cx="63.1" cy="49.2" r="2.2" fill="rgba(224,52,52,0.10)"/>
+                <circle class="threat-dot threat-dot--active" cx="63.1" cy="49.2" r="1.0"/>
+                <line x1="62.0" y1="50.0" x2="58.5" y2="53.5" stroke="rgba(224,52,52,0.4)" stroke-width="0.2" stroke-dasharray="0.6 0.4"/>
+                <text x="58.2" y="55.5" font-family="DM Mono, monospace" font-size="2.0" fill="rgba(224,52,52,0.95)" letter-spacing="0.3" font-weight="500" text-anchor="middle">CASTROP-RAUXEL</text>
+                <text x="58.2" y="57.7" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(224,52,52,0.55)" letter-spacing="0.2" text-anchor="middle">WF-OP-019 · ACTIVE</text>
+              </g>
+
+              <!-- Köln — Label nach LINKS-UNTEN (weiter unten als Castrop) -->
+              <g class="threat-location">
+                <circle cx="61.7" cy="50.8" r="1.4" fill="rgba(74,140,196,0.12)"/>
+                <circle class="threat-dot threat-dot--moderate" cx="61.7" cy="50.8" r="0.8"/>
+                <line x1="60.8" y1="51.8" x2="57.5" y2="60.5" stroke="rgba(74,140,196,0.3)" stroke-width="0.2" stroke-dasharray="0.5 0.3"/>
+                <text x="57.2" y="61.8" font-family="DM Mono, monospace" font-size="1.9" fill="rgba(74,140,196,0.85)" letter-spacing="0.2" text-anchor="middle">COLOGNE</text>
+              </g>
+
+              <!-- Berlin — Label nach RECHTS-OBEN -->
+              <g class="threat-location">
+                <circle class="threat-ring threat-ring--elevated" cx="71.8" cy="46.6" r="1.4"/>
+                <circle cx="71.8" cy="46.6" r="2.0" fill="rgba(212,133,10,0.10)"/>
+                <circle class="threat-dot threat-dot--elevated" cx="71.8" cy="46.6" r="0.9"/>
+                <line x1="73.0" y1="45.6" x2="76.5" y2="42.5" stroke="rgba(212,133,10,0.4)" stroke-width="0.2" stroke-dasharray="0.6 0.4"/>
+                <text x="76.8" y="42.0" font-family="DM Mono, monospace" font-size="2.0" fill="rgba(212,133,10,0.95)" letter-spacing="0.3">BERLIN</text>
+                <text x="76.8" y="44.2" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(212,133,10,0.5)" letter-spacing="0.2">ELEVATED</text>
+              </g>
+
+              <!-- London — Label nach LINKS-OBEN -->
+              <g class="threat-location">
+                <circle cx="48.8" cy="47.0" r="1.4" fill="rgba(74,140,196,0.12)"/>
+                <circle class="threat-dot threat-dot--moderate" cx="48.8" cy="47.0" r="0.8"/>
+                <line x1="47.8" y1="46.2" x2="44.5" y2="43.5" stroke="rgba(74,140,196,0.3)" stroke-width="0.2" stroke-dasharray="0.5 0.3"/>
+                <text x="44.2" y="42.5" font-family="DM Mono, monospace" font-size="1.9" fill="rgba(74,140,196,0.85)" letter-spacing="0.2" text-anchor="end">LONDON</text>
+              </g>
+
+              <!-- Status-Indikator oben links -->
+              <circle cx="2.5" cy="3.0" r="0.7" fill="none" stroke="var(--red)" stroke-width="0.25" style="animation: threatPulse 1s ease-in-out infinite;"/>
+              <circle cx="2.5" cy="3.0" r="0.35" fill="var(--red)"/>
+              <text x="4.2" y="3.8" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(204,216,228,0.22)" letter-spacing="0.4">SNACK THREAT MONITOR · EUROPA</text>
+            </svg>
+          </div>
+          <div class="threat-list">
+            <div class="threat-item">
+              <div class="threat-item__dot threat-item__dot--active"></div>
+              <div class="threat-item__info">
+                <div class="threat-item__city">Castrop-Rauxel</div>
+                <div class="threat-item__status" data-i18n="status.threatActive">ACTIVE — Kitchen Incident</div>
+              </div>
+            </div>
+            <div class="threat-item">
+              <div class="threat-item__dot threat-item__dot--elevated"></div>
+              <div class="threat-item__info">
+                <div class="threat-item__city">Berlin</div>
+                <div class="threat-item__status" data-i18n="status.threatElevated">ELEVATED</div>
+              </div>
+            </div>
+            <div class="threat-item">
+              <div class="threat-item__dot threat-item__dot--moderate"></div>
+              <div class="threat-item__info">
+                <div class="threat-item__city">Cologne</div>
+                <div class="threat-item__status" data-i18n="status.threatModerate">MODERATE</div>
+              </div>
+            </div>
+            <div class="threat-item">
+              <div class="threat-item__dot threat-item__dot--moderate"></div>
+              <div class="threat-item__info">
+                <div class="threat-item__city">London</div>
+                <div class="threat-item__status" data-i18n="status.threatModerate">MODERATE</div>
+              </div>
+            </div>
+            <div class="threat-item">
+              <div class="threat-item__dot" style="background:var(--text-3);"></div>
+              <div class="threat-item__info">
+                <div class="threat-item__city">New York</div>
+                <div class="threat-item__status" data-i18n="status.threatMonitored">MONITORED</div>
+              </div>
+            </div>
+            <div class="threat-item">
+              <div class="threat-item__dot" style="background:var(--text-3);"></div>
+              <div class="threat-item__info">
+                <div class="threat-item__city">Global</div>
+                <div class="threat-item__status" data-i18n="status.threatRoutine">ROUTINE PATROLS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OPERATIVE STATUS -->
+    <section class="st-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-ST-02</span>
+          <h2 class="sec-title" data-i18n="status.operativeTitle">OPERATIVE STATUS</h2>
+        </div>
+        <div class="operative-grid">
+
+          <a href="/dossier/dossier_treatz.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/treatz.png" alt="Treatz">
+            <div>
+              <div class="op-status-card__name">TREATZ</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.snackOps">Snack Ops</div>
+              <span class="badge badge--green" style="font-size:9px;">● <span data-i18n="badges.onDuty">On Duty</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_colonel-flops.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/colonel-flops.png" alt="Colonel Flops">
+            <div>
+              <div class="op-status-card__name">COL. FLOPS</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.psychOps">Psych Ops</div>
+              <span class="badge badge--green" style="font-size:9px;">● <span data-i18n="badges.deployed">Deployed</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_unit-two.html" class="op-status-card op-status-card--watch">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/unit-two.png" alt="Unit Two">
+            <div>
+              <div class="op-status-card__name">UNIT TWO</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.snackRetrieval">Snack Retrieval</div>
+              <span class="badge badge--amber" style="font-size:9px;">● <span data-i18n="badges.underObservation">Under Observation</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_sergeant-bork.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/sergeant-bork.png" alt="Sgt Bork">
+            <div>
+              <div class="op-status-card__name">SGT. BORK</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.perimeter">Perimeter</div>
+              <span class="badge badge--green" style="font-size:9px;">● <span data-i18n="badges.onDuty">On Duty</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_lieutenant-sniff.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="Lt Sniff">
+            <div>
+              <div class="op-status-card__name">LT. SNIFF</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.scentIntel">Scent Intel</div>
+              <span class="badge badge--blue" style="font-size:9px;">● <span data-i18n="badges.analysisInProgress">Analysis In Progress</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_corporal-zoom.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/corporal-zoom.png" alt="Cpl Zoom">
+            <div>
+              <div class="op-status-card__name">CPL. ZOOM</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.rapidResponse">Rapid Response</div>
+              <span class="badge badge--green" style="font-size:9px;">● <span data-i18n="badges.standby">Standby</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_agent-muffin.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/agent-muffin.png" alt="Agent Muffin">
+            <div>
+              <div class="op-status-card__name">AGENT MUFFIN</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.covertOps">Covert Ops</div>
+              <span class="badge badge--amber" style="font-size:9px;">● <span data-i18n="badges.probationary">Probationary</span></span>
+            </div>
+          </a>
+
+          <a href="/dossier/dossier_unit-five.html" class="op-status-card">
+            <img class="op-status-card__portrait" src="/assets/img/operatives/unit-five.png" alt="Unit Five">
+            <div>
+              <div class="op-status-card__name">UNIT FIVE</div>
+              <div class="op-status-card__div" data-i18n="operatives.divisions.cuddleCommand">Cuddle Command</div>
+              <span class="badge badge--green" style="font-size:9px;">● <span data-i18n="badges.onDuty">On Duty</span></span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION STATS -->
+    <section class="st-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-ST-03</span>
+          <h2 class="sec-title" data-i18n="status.statsTitle">MISSION STATISTICS</h2>
+        </div>
+        <div class="stats-grid-4">
+          <div class="stat-card">
+            <div class="stat-card__value" id="stat-missions" data-target="21">0</div>
+            <div class="stat-card__label" data-i18n="status.statMissions">Missions Completed</div>
+            <div class="stat-card__note" data-i18n="status.statMissionsNote">2 files sealed. 1 anomaly.</div>
+          </div>
+          <div class="stat-card stat-card--green">
+            <div class="stat-card__value green" id="stat-recovery" data-target="73" data-suffix="%">0%</div>
+            <div class="stat-card__label" data-i18n="status.statRecovery">Avg Snack Recovery</div>
+            <div class="stat-card__note" data-i18n="status.statRecoveryNote">Benchmark maintained. Always.</div>
+          </div>
+          <div class="stat-card stat-card--amber">
+            <div class="stat-card__value amber" id="stat-incidents" data-target="23">0</div>
+            <div class="stat-card__label" data-i18n="status.statIncidents">Incidents Filed</div>
+            <div class="stat-card__note" data-i18n="status.statIncidentsNote">17 involve Unit Two.</div>
+          </div>
+          <div class="stat-card stat-card--red">
+            <div class="stat-card__value red" id="stat-conclusions" data-target="0">0</div>
+            <div class="stat-card__label" data-i18n="status.statConclusions">Conclusions Reached</div>
+            <div class="stat-card__note" data-i18n="status.statConclusionsNote">Investigation ongoing.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVE INCIDENTS -->
+    <section class="st-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-ST-04</span>
+          <h2 class="sec-title" data-i18n="status.activeTitle">ACTIVE INCIDENTS</h2>
+        </div>
+        <div style="margin-top:24px;">
+          <div class="active-incident active-incident--active">
+            <div class="active-incident__ref">WF-OP-019</div>
+            <div class="active-incident__name" data-i18n="status.habinghorstName">Operation Habinghorst Kitchen</div>
+            <div class="active-incident__location">Castrop-Rauxel, NRW</div>
+            <span class="badge badge--red" data-i18n="badges.ongoing">ONGOING</span>
+          </div>
+          <div class="active-incident active-incident--ongoing">
+            <div class="active-incident__ref">WF-IR-019</div>
+            <div class="active-incident__name" data-i18n="status.easterFoilName">Easter Foil Fragment Investigation</div>
+            <div class="active-incident__location">Unit Two — Paws</div>
+            <span class="badge badge--amber" data-i18n="badges.ongoing">ONGOING</span>
+          </div>
+          <div class="active-incident active-incident--review">
+            <div class="active-incident__ref">WF-IR-022</div>
+            <div class="active-incident__name" data-i18n="status.flopsRelocationName">Colonel Flops Relocation Event</div>
+            <div class="active-incident__location">Eastern Gate</div>
+            <span class="badge badge--amber" data-i18n="badges.underReview">UNDER REVIEW</span>
+          </div>
+          <div class="active-incident active-incident--ongoing">
+            <div class="active-incident__ref">WF-IB-01</div>
+            <div class="active-incident__name" data-i18n="status.unitTwoInvestName">Unit Two — Ongoing Investigation</div>
+            <div class="active-incident__location">All Sectors</div>
+            <span class="badge badge--amber" data-i18n="badges.ongoing">ONGOING</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+    // ── TREAT ALERT LEVELS ──
+    const levels = [
+      { name: "DORMANT CRUMBS",           desc: "No active treats detected. Routine patrols only.",                                                color: "var(--text-3)" },
+      { name: "VISIBLE SNACK ACTIVITY",   desc: "Open snack packages observed in human custody. Increased vigilance recommended.",                  color: "#4A8CC4" },
+      { name: "UNATTENDED TREAT SCENARIO",desc: "Snacks temporarily left without direct supervision. High temptation. Strict protocol required.",   color: "var(--amber)" },
+      { name: "FLOOR-LEVEL IMPACT EVENT", desc: "Treat has reached ground level. Immediate response authorized under sit-stay conditions.",         color: "#E07020" },
+      { name: "MULTI-TREAT SPILL",        desc: "Multiple units scattered. Coordinated retrieval operations in effect. All operatives on standby.", color: "var(--red)" },
+      { name: "FULL BAG COMPROMISE",      desc: "Entire treat container breached. ALL UNITS ON DECK. Self-control at maximum priority. WOOF WOOF WOOF.", color: "var(--red)" },
+    ];
+
+    const levelsDe = [
+      { name: "RUHENDE KRÜMEL",              desc: "Keine aktiven Treats detektiert. Nur Routinepatrouillen." },
+      { name: "SICHTBARE SNACK-AKTIVITÄT",   desc: "Geöffnete Snack-Verpackungen in Menschenhand. Erhöhte Wachsamkeit empfohlen." },
+      { name: "UNBEAUFSICHTIGTES TREAT-SZENARIO", desc: "Snacks vorübergehend ohne Aufsicht. Hohe Versuchung. Strenge Protokolle erforderlich." },
+      { name: "BODENKONTAKT-EREIGNIS",       desc: "Treat hat Bodenniveau erreicht. Sofortige Reaktion unter Sitz-Bleib-Bedingungen autorisiert." },
+      { name: "MULTI-TREAT-STREUUNG",        desc: "Mehrere Einheiten verteilt. Koordinierte Rückholoperationen aktiv." },
+      { name: "VOLLSTÄNDIGE BEUTELKOMPROMITTIERUNG", desc: "Kompletter Snackbehälter kompromittiert. ALLE EINHEITEN AUF POSITION. WOOF WOOF WOOF." },
+    ];
+
+    let currentLevel = 2;
+
+    function getLang() {
+      return document.documentElement.getAttribute('data-lang') || 'en';
+    }
+
+    function updateAlert(level) {
+      const lang = getLang();
+      const data = lang === 'de' ? levelsDe[level] : levels[level];
+      const color = levels[level].color;
+
+      document.getElementById('tal-level-num').textContent = level;
+      document.getElementById('tal-level-num').style.color = color;
+      document.getElementById('tal-level-name').textContent = data.name;
+      document.getElementById('tal-level-name').style.color = color;
+      document.getElementById('tal-level-desc').textContent = data.desc;
+
+      // Update pips
+      document.querySelectorAll('.tal-pip').forEach((pip, i) => {
+        pip.className = 'tal-pip';
+        if (i <= level) pip.classList.add(`active-${level}`);
+      });
+
+      // Update label indicator
+      document.querySelectorAll('.tal-label').forEach((lbl, i) => {
+        lbl.textContent = i === level ? `${i} ←` : `${i}`;
+        lbl.style.color = i === level ? color : '';
+      });
+
+      // Level 5 — card flash
+      const card = document.getElementById('treat-alert-card');
+      if (level === 5) {
+        card.style.borderColor = 'rgba(224,52,52,0.5)';
+        card.style.background = 'rgba(224,52,52,0.05)';
+      } else {
+        card.style.borderColor = '';
+        card.style.background = '';
+      }
+
+      // Hide button at max
+      const btn = document.getElementById('tal-escalate-btn');
+      btn.style.display = level >= 5 ? 'none' : '';
+
+      currentLevel = level;
+    }
+
+    document.getElementById('tal-escalate-btn').addEventListener('click', () => {
+      if (currentLevel < 5) updateAlert(currentLevel + 1);
+    });
+
+    // Init
+    updateAlert(2);
+  </script>
+
+  <script>
+    // ── COUNT-UP ANIMATION ──
+    function countUp(el, target, suffix, duration) {
+      const start = performance.now();
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        // Ease-out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * target);
+        el.textContent = current + (suffix || '');
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // Intersection Observer — zählt erst wenn sichtbar
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.target, 10);
+        const suffix = el.dataset.suffix || '';
+        // Stagger basierend auf Index
+        const idx = [...document.querySelectorAll('[data-target]')].indexOf(el);
+        setTimeout(() => countUp(el, target, suffix, 1200 + idx * 150), idx * 80);
+        statsObserver.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-target]').forEach(el => statsObserver.observe(el));
+  </script>
+</body>
+</html>

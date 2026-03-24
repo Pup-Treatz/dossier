@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Classified</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="robots" content="noindex">
+
+  <style>
+    /* Hide nav while gate is showing */
+    body:not(.dossier-active) .wf-nav,
+    body:not(.dossier-active) .wf-mobile-menu,
+    body:not(.dossier-active) .wf-footer { display: none !important; }
+    .gate {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px;
+      background: var(--bg-0);
+      position: relative; overflow: hidden;
+    }
+
+    .gate__grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .gate__vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 100%);
+      pointer-events: none;
+    }
+
+    .gate__card {
+      position: relative; z-index: 10;
+      width: min(400px, 92vw);
+      background: var(--bg-1);
+      border: 1px solid var(--border-md);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .gate__header {
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      background: var(--bg-2);
+    }
+
+    .gate__logo { width: 36px; height: 36px; object-fit: contain; margin: 0 auto 12px; display: block; }
+
+    .gate__eyebrow {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+    }
+
+    .gate__title {
+      font-family: var(--font-display); font-size: 36px;
+      letter-spacing: 4px; color: var(--text-0); margin-bottom: 4px;
+    }
+
+    .gate__sub {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-3);
+    }
+
+    .gate__body { padding: 28px; }
+
+    .gate__desc {
+      font-size: 13px; color: var(--text-2); line-height: 1.7;
+      text-align: center; margin-bottom: 24px;
+    }
+
+    /* Code input */
+    .gate__input-wrap {
+      position: relative; margin-bottom: 12px;
+    }
+
+    .gate__input {
+      width: 100%;
+      background: var(--bg-0); border: 1px solid var(--border-md);
+      border-radius: var(--radius); padding: 14px 16px;
+      font-family: var(--font-mono); font-size: 16px;
+      letter-spacing: 6px; text-align: center; text-transform: uppercase;
+      color: var(--text-0); outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .gate__input:focus { border-color: var(--silver-dim); }
+    .gate__input.error { border-color: var(--red); animation: shake 0.4s ease; }
+    .gate__input.success { border-color: var(--green); }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60% { transform: translateX(-8px); }
+      40%,80% { transform: translateX(8px); }
+    }
+
+    .gate__btn {
+      width: 100%;
+      background: var(--bg-2); border: 1px solid var(--border-md);
+      border-radius: var(--radius); padding: 13px;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-1); cursor: pointer;
+      transition: all 0.15s; margin-bottom: 12px;
+    }
+
+    .gate__btn:hover { background: var(--bg-3); border-color: var(--silver-dim); color: var(--text-0); }
+
+    .gate__error-msg {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      text-align: center; height: 16px;
+      transition: opacity 0.2s;
+    }
+
+    .gate__hint {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--text-3); text-align: center; margin-top: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg-0);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .reveal-overlay.active { opacity: 1; pointer-events: all; }
+
+    .reveal-stamp {
+      font-family: var(--font-display); font-size: clamp(48px, 12vw, 96px);
+      letter-spacing: 8px; color: var(--red);
+      border: 4px solid var(--red); padding: 8px 24px;
+      transform: rotate(-8deg);
+      text-shadow: 0 0 30px rgba(224,52,52,0.4);
+      animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      opacity: 0;
+    }
+
+    @keyframes stampIn {
+      0%   { transform: rotate(-8deg) scale(2); opacity: 0; }
+      100% { transform: rotate(-8deg) scale(1); opacity: 1; }
+    }
+
+    .reveal-sub {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3);
+      margin-top: 24px; opacity: 0;
+      animation: fadeIn 0.4s 0.6s forwards;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* ── DOSSIER ── */
+    .dossier { display: none; }
+    .dossier.active { display: block; }
+
+    .dossier-hero {
+      background: var(--bg-0);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 0 48px;
+      position: relative; overflow: hidden;
+    }
+
+    .dossier-hero__bg {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 40px,
+        rgba(224,52,52,0.03) 40px, rgba(224,52,52,0.03) 41px
+      );
+    }
+
+    .dossier-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1240px; margin: 0 auto; padding: 0 24px;
+    }
+
+    .dossier-hero__stamp {
+      font-family: var(--font-display); font-size: clamp(16px, 2.5vw, 28px);
+      letter-spacing: 6px; color: var(--red); border: 3px solid var(--red);
+      display: inline-block; padding: 3px 14px; transform: rotate(-3deg);
+      margin-bottom: 20px; opacity: 0.8;
+    }
+
+    .dossier-hero__title {
+      font-family: var(--font-display); font-size: clamp(52px, 8vw, 96px);
+      letter-spacing: 6px; color: var(--text-0); line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .dossier-hero__alias {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 28px;
+    }
+
+    .dossier-hero__badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Dossier content */
+    .dossier-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .dossier-section:last-of-type { border-bottom: none; }
+
+    /* Profile grid */
+    .profile-grid {
+      display: grid; grid-template-columns: 280px 1fr;
+      gap: 32px; margin-top: 28px; align-items: start;
+    }
+
+    .profile-photo {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .profile-photo__img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover; object-position: top; display: block;
+      filter: grayscale(60%) contrast(1.1);
+    }
+
+    .profile-photo__label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 8px 12px; background: rgba(0,0,0,0.7);
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+    }
+
+    .profile-table { width: 100%; border-collapse: collapse; }
+    .profile-table tr { border-bottom: 1px solid var(--border); }
+    .profile-table tr:last-child { border-bottom: none; }
+    .profile-table td { padding: 10px 0; font-size: 13px; vertical-align: top; }
+    .profile-table td:first-child {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-3); width: 140px; padding-right: 16px;
+    }
+    .profile-table td:last-child { color: var(--text-1); }
+
+    /* Seasonal chart */
+    .season-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 12px; margin-top: 24px;
+    }
+
+    .season-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+    }
+
+    .season-card--danger { border-left: 2px solid var(--red); }
+    .season-card--warning { border-left: 2px solid var(--amber); }
+    .season-card--low { border-left: 2px solid var(--text-3); }
+
+    .season-card__month {
+      font-family: var(--font-display); font-size: 16px;
+      letter-spacing: 2px; color: var(--text-0); margin-bottom: 4px;
+    }
+
+    .season-card__status {
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+
+    .season-card--danger  .season-card__status { color: var(--red); }
+    .season-card--warning .season-card__status { color: var(--amber); }
+    .season-card--low     .season-card__status { color: var(--text-3); }
+
+    .season-card__desc { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+
+    /* Evidence photos grid */
+    .evidence-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 16px; margin-top: 24px;
+    }
+
+    .evidence-photo {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+
+    .evidence-photo__img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; display: block;
+      filter: saturate(0.6);
+    }
+
+    .evidence-photo__caption {
+      padding: 10px 12px;
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-3);
+    }
+
+    .evidence-photo__ref {
+      font-size: 8px; color: var(--text-3); margin-top: 2px;
+    }
+
+    /* Incident list */
+    .incident-list { margin-top: 24px; display: flex; flex-direction: column; gap: 0; }
+
+    .incident-row {
+      display: grid; grid-template-columns: 80px 1fr auto;
+      gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .incident-row:last-child { border-bottom: none; }
+
+    .incident-row__ref {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--red); padding-top: 2px;
+    }
+
+    .incident-row__name {
+      font-family: var(--font-display); font-size: 15px;
+      letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 4px;
+    }
+
+    .incident-row__desc { font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
+
+    /* Audio player — same style as anthem hall but red theme */
+    .barbel-player-wrap {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-top: 2px solid var(--red);
+      border-radius: var(--radius); overflow: hidden;
+      margin-top: 28px;
+    }
+
+    .barbel-player-header {
+      padding: 16px 24px 14px; border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+    }
+
+    .barbel-player-header__ref {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 6px;
+    }
+
+    .barbel-player-header__title {
+      font-family: var(--font-display); font-size: 22px;
+      letter-spacing: 2px; color: var(--text-0); margin-bottom: 4px;
+    }
+
+    .barbel-player-header__sub {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-2);
+    }
+
+    .barbel-player {
+      padding: 16px 24px;
+      display: grid; grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 18px;
+    }
+
+    .barbel-player__btn {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 1px solid rgba(224,52,52,0.3);
+      background: var(--bg-3); color: var(--text-0);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+
+    .barbel-player__btn:hover { background: var(--bg-4); border-color: var(--red); }
+    .barbel-player__btn svg { width: 22px; height: 22px; }
+
+    .barbel-player__progress-wrap {
+      position: relative; height: 6px;
+      background: var(--bg-0); border-radius: 3px;
+      cursor: pointer; margin-bottom: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .barbel-player__progress-fill {
+      height: 100%; border-radius: 3px; width: 0%;
+      background: rgba(224,52,52,0.6); pointer-events: none; transition: background 0.2s;
+    }
+
+    .barbel-player__progress-wrap:hover .barbel-player__progress-fill { background: var(--red); }
+
+    .barbel-player__thumb {
+      position: absolute; top: 50%; transform: translate(-50%,-50%);
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--red); border: 2px solid var(--bg-2);
+      pointer-events: none; opacity: 0; transition: opacity 0.15s;
+    }
+
+    .barbel-player__progress-wrap:hover .barbel-player__thumb { opacity: 1; }
+
+    .barbel-player__times {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 9.5px; color: var(--text-3);
+    }
+
+    .barbel-player__volume {
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 12px;
+    }
+
+    .barbel-player__vol-icon { color: var(--text-2); flex-shrink: 0; }
+    .barbel-player__vol-icon svg { width: 16px; height: 16px; display: block; }
+
+    .barbel-player__vol-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 72px; height: 4px; background: var(--bg-3);
+      border-radius: 2px; cursor: pointer; outline: none;
+    }
+
+    .barbel-player__vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: rgba(224,52,52,0.7); cursor: pointer;
+    }
+
+    .barbel-player__vol-slider:hover::-webkit-slider-thumb { background: var(--red); }
+
+    /* Behavioral analysis cards */
+    .behavior-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 24px;
+    }
+
+    .behavior-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
+    }
+
+    .behavior-card--strength { border-top: 2px solid var(--green); }
+    .behavior-card--weakness { border-top: 2px solid var(--red); }
+    .behavior-card--notable  { border-top: 2px solid var(--silver-dim); }
+
+    .behavior-card__type {
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+
+    .behavior-card--strength .behavior-card__type { color: var(--green); }
+    .behavior-card--weakness  .behavior-card__type { color: var(--red); }
+    .behavior-card--notable   .behavior-card__type { color: var(--silver-dim); }
+
+    .behavior-card__title {
+      font-family: var(--font-display); font-size: 15px;
+      letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 6px;
+    }
+
+    .behavior-card__desc { font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
+
+    /* Conclusion box */
+    .conclusion-box {
+      background: rgba(224,52,52,0.05);
+      border: 1px solid rgba(224,52,52,0.2);
+      border-radius: var(--radius); padding: 28px;
+      text-align: center; margin-top: 32px;
+    }
+
+    .conclusion-box__label {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 12px;
+    }
+
+    .conclusion-box__text {
+      font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 4px; color: var(--red);
+    }
+
+    .conclusion-box__sub {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3); margin-top: 10px;
+    }
+
+    /* Placeholder photos */
+    .photo-placeholder {
+      width: 100%; aspect-ratio: 4/3;
+      background: var(--bg-2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+    }
+
+    .photo-placeholder__icon { font-size: 28px; opacity: 0.3; }
+
+    .photo-placeholder__label {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3);
+    }
+
+    @media (max-width: 900px) {
+      .profile-grid { grid-template-columns: 1fr; }
+      .season-grid { grid-template-columns: 1fr 1fr; }
+      .behavior-grid { grid-template-columns: 1fr 1fr; }
+      .evidence-grid { grid-template-columns: 1fr; }
+      .barbel-player { grid-template-columns: auto 1fr; }
+      .barbel-player__volume { display: none; }
+      .incident-row { grid-template-columns: 60px 1fr; }
+      .incident-row > .badge { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .season-grid { grid-template-columns: 1fr; }
+      .behavior-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── ACCESS GATE ── -->
+  <div class="gate" id="gate">
+    <div class="gate__grid"></div>
+    <div class="gate__vignette"></div>
+
+    <div class="gate__card">
+      <div class="gate__header">
+        <img class="gate__logo" src="/assets/img/logo/Logo_trs.png" alt="Wraff Force">
+        <div class="gate__eyebrow"><span data-i18n="classified.gateEyebrow">Wraff Force · Restricted Access</span></div>
+        <div class="gate__title" data-i18n="classified.gateTitle">CLASSIFIED</div>
+        <div class="gate__sub"><span data-i18n="classified.gateSub">Enter Access Code to Proceed</span></div>
+      </div>
+      <div class="gate__body">
+        <p class="gate__desc" data-i18n="classified.gateDesc">
+          This file is classified. Access requires a valid clearance code. The code exists. It can be found.
+        </p>
+        <div class="gate__input-wrap">
+          <input
+            class="gate__input" id="code-input"
+            type="text" maxlength="20"
+            placeholder="_ _ _ _ _ _ _ _ _ _"
+            autocomplete="off" autocorrect="off"
+            spellcheck="false"
+          >
+        </div>
+        <button class="gate__btn" id="code-submit"><span data-i18n="classified.gateBtn">SUBMIT ACCESS CODE</span></button>
+        <div class="gate__error-msg" id="error-msg"></div>
+        <div class="gate__hint" data-i18n="classified.gateHint">
+          The code is hidden somewhere on this site.<br>
+          Those who look carefully will find it.<br>
+          Those who don't: routine patrols only.
+        </div>
+        <a href="/" style="display:block; text-align:center; margin-top:20px; font-family:var(--font-mono); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-3)'" data-i18n="classified.backToHQ">← Return to HQ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── REVEAL OVERLAY ── -->
+  <div class="reveal-overlay" id="reveal-overlay">
+    <div class="reveal-stamp" id="reveal-stamp">DECLASSIFIED</div>
+    <div class="reveal-sub" id="reveal-sub"><span data-i18n="classified.revealSub">Accessing file… stand by.</span></div>
+  </div>
+
+  <!-- ── DOSSIER ── -->
+  <div class="dossier" id="dossier">
+    <div id="main-nav"></div>
+
+    <!-- HERO -->
+    <div class="dossier-hero">
+      <div class="dossier-hero__bg"></div>
+      <div class="dossier-hero__inner">
+        <div class="dossier-hero__stamp" data-i18n="classified.heroStamp">HOSTILE ENTITY</div>
+        <h1 class="dossier-hero__title">BÄRBEL</h1>
+        <div class="dossier-hero__alias">
+          <span data-i18n="classified.heroAlias">Known As: "Der Osterhase" · WF-HOSTILE-01 · Threat Classification: Seasonal / Persistent</span>
+        </div>
+        <div class="dossier-hero__badges">
+          <span class="badge badge--red">● Active Threat</span>
+          <span class="badge badge--amber">Foil Smuggler</span>
+          <span class="badge badge--gray">Saisonarbeiter</span>
+          <span class="badge badge--gray">Prior Record</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-H01-PROFILE</span>
+          <h2 class="sec-title" data-i18n="classified.profileTitle">SUBJECT PROFILE</h2>
+        </div>
+        <div class="profile-grid">
+          <div class="profile-photo" id="profile-photo-wrap">
+            <!-- Mugshot placeholder — replace with barbel-mugshot.png -->
+            <div class="photo-placeholder" id="photo-mugshot-placeholder">
+              <div class="photo-placeholder__icon">🐰</div>
+              <div class="photo-placeholder__label">Mugshot · Pending</div>
+            </div>
+            <img class="profile-photo__img" id="photo-mugshot"
+                 src="/assets/img/hostile/barbel-mugshot.png"
+                 alt="Bärbel — Mugshot"
+                 style="display:none;"
+                 onload="this.style.display='block'; document.getElementById('photo-mugshot-placeholder').style.display='none';">
+            <div class="profile-photo__label">WF-HOSTILE-01 · CONFIRMED HOSTILE</div>
+          </div>
+          <div>
+            <table class="profile-table">
+              <tr><td data-i18n="classified.ptRealName">Real Name</td><td>Bärbel <span style="color:var(--text-3); font-size:11px;"><span data-i18n="classified.ptRealNameNote">(last name: 3 variations on file, none verified)</span></span></td></tr>
+              <tr><td data-i18n="classified.ptKnownAs">Known As</td><td>"Der Osterhase" · "The Bunny" · "That Rabbit"</td></tr>
+              <tr><td data-i18n="classified.ptDesig">Designation</td><td>WF-HOSTILE-01</td></tr>
+              <tr><td data-i18n="classified.ptSpecies">Species</td><td>European Hare (<em>Lepus europaeus</em>) — <span style="color:var(--text-3);" data-i18n="classified.ptSpeciesNote">not independently verified</span></td></tr>
+              <tr><td data-i18n="classified.ptGender">Gender</td><td>She/Her — <span style="color:var(--text-3);" data-i18n="classified.ptGenderNote">self-identified, documented</span></td></tr>
+              <tr><td data-i18n="classified.ptOccup">Occupation</td><td><span data-i18n="classified.ptOccupOfficial">Seasonal Worker, Süßwarenlogistik</span> <span style="color:var(--text-3); font-size:11px;" data-i18n="classified.ptOccupOfficialNote">(official)</span><br><span data-i18n="classified.ptOccupActual">Snack Infiltration, Goldfolie Supply Chain</span> <span style="color:var(--red); font-size:11px;" data-i18n="classified.ptOccupActualNote">(actual)</span></td></tr>
+              <tr><td data-i18n="classified.ptAddresses">Known Addresses</td><td data-i18n="classified.ptAddressesVal">3 — all registered under different names</td></tr>
+              <tr><td data-i18n="classified.ptThreat">Threat Level</td><td><span style="color:var(--red);" data-i18n="classified.ptThreatVal">HIGH (Seasonal) / ELEVATED (Year-Round)</span></td></tr>
+              <tr><td data-i18n="classified.ptWF">WF Connection</td><td data-i18n="classified.ptWFVal">Linked to 4 Wraff Force incidents. Direct involvement: unconfirmed. Foil fragments: confirmed.</td></tr>
+              <tr><td data-i18n="classified.ptJune">June 2025</td><td><span class="redacted">████████████████████████</span></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIO PLAYER — OPERATION EASTER -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-H01-AUDIO</span>
+          <h2 class="sec-title" data-i18n="classified.audioTitle">OPERATIONAL AUDIO FILE</h2>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; max-width:680px; margin-top:8px;">
+          <span data-i18n="classified.audioDescText">The following audio file was composed in direct response to Bärbel's recurring hostile activity.
+          It classifies the Easter Bunny as a hostile entity for the first time in an official Wraff Force recording.
+          This was a significant moment. The rabbit has been informed. The rabbit has not responded.</span>
+        </p>
+        <div class="barbel-player-wrap">
+          <div class="barbel-player-header">
+            <div class="barbel-player-header__ref"><span data-i18n="classified.audioRef">WF-AH-05 · CLASSIFIED CONTEXT · OPERATION EASTER</span></div>
+            <div class="barbel-player-header__title" data-i18n="classified.audioSongTitle">OPERATION EASTER</div>
+            <div class="barbel-player-header__sub" data-i18n="classified.audioSongSub">Epic Cinematic Orchestral · First Official Hostile Classification of Bärbel</div>
+          </div>
+          <div class="barbel-player">
+            <button class="barbel-player__btn" id="barbel-play-btn" aria-label="Play">
+              <svg id="barbel-play-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+            <div>
+              <div class="barbel-player__progress-wrap" id="barbel-progress-wrap">
+                <div class="barbel-player__progress-fill" id="barbel-progress"></div>
+                <div class="barbel-player__thumb" id="barbel-thumb"></div>
+              </div>
+              <div class="barbel-player__times">
+                <span style="color:var(--text-1);" id="barbel-time-cur">0:00</span>
+                <span id="barbel-time-total">—:——</span>
+              </div>
+            </div>
+            <div class="barbel-player__volume">
+              <div class="barbel-player__vol-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              </div>
+              <input class="barbel-player__vol-slider" id="barbel-vol" type="range" min="0" max="1" step="0.05" value="0.8">
+            </div>
+          </div>
+        </div>
+        <audio id="barbel-audio" src="/assets/audio/wf-easter.mp3" preload="metadata"></audio>
+      </div>
+    </div>
+
+    <!-- SEASONAL BEHAVIOR -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-H01-SEASONAL</span>
+          <h2 class="sec-title" data-i18n="classified.seasonTitle">SEASONAL BEHAVIOR PATTERN</h2>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; max-width:680px; margin-top:8px;">
+          <span data-i18n="classified.seasonDescText">Bärbel exhibits a highly predictable seasonal cycle. Documented across 4 consecutive years.
+          Wraff Force threat assessment is adjusted quarterly. The pattern has not changed.
+          Bärbel has been informed that we are aware of the pattern. Bärbel did not seem concerned.</span>
+        </p>
+        <div class="season-grid">
+          <div class="season-card season-card--low">
+            <div class="season-card__month" data-i18n="classified.s1month">OCT — DEC</div>
+            <div class="season-card__status" data-i18n="classified.s1status">● Low Activity</div>
+            <div class="season-card__desc" data-i18n="classified.s1desc">Unauffällig. Occasionally spotted near confectionery wholesalers. No confirmed incidents. Wraff Force: monitoring only.</div>
+          </div>
+          <div class="season-card season-card--warning">
+            <div class="season-card__month" data-i18n="classified.s2month">JANUARY</div>
+            <div class="season-card__status" data-i18n="classified.s2status">⚠ Activation Phase</div>
+            <div class="season-card__desc" data-i18n="classified.s2desc">Annual gym registration. Same facility, four years running. Motivational hoodie: "NEW YEAR NEW ME." Weight: noticeably elevated. Determination: genuine. Results: temporary.</div>
+          </div>
+          <div class="season-card season-card--warning">
+            <div class="season-card__month" data-i18n="classified.s3month">FEB — MAR</div>
+            <div class="season-card__status" data-i18n="classified.s3status">⚠ Operational Prep</div>
+            <div class="season-card__desc" data-i18n="classified.s3desc">Weight stabilizing. Supply chain contacts reactivated. Goldfolie procurement begins. Wraff Force Treat Alert Level elevated. Bärbel: increasingly confident. Critically.</div>
+          </div>
+          <div class="season-card season-card--danger">
+            <div class="season-card__month" data-i18n="classified.s4month">APRIL (EASTER)</div>
+            <div class="season-card__status" data-i18n="classified.s4status">● MAXIMUM THREAT</div>
+            <div class="season-card__desc" data-i18n="classified.s4desc">Full operational deployment. Snack infiltration rate: critical. Goldfolie dispersal: widespread. Known locations: everywhere. Wraff Force on highest alert. The rabbit knows what it's doing.</div>
+          </div>
+          <div class="season-card season-card--danger">
+            <div class="season-card__month" data-i18n="classified.s5month">POST-EASTER</div>
+            <div class="season-card__status" data-i18n="classified.s5status">● Whereabouts Unknown</div>
+            <div class="season-card__desc" data-i18n="classified.s5desc">Disappears within 48 hours of Easter. Next confirmed sighting: always a bar. Always Cologne. Always the same stool. Glitter-Top still on. Oster-Handtasche still present. Mission: complete.</div>
+          </div>
+          <div class="season-card season-card--warning">
+            <div class="season-card__month" data-i18n="classified.s6month">MAY — SEP</div>
+            <div class="season-card__status" data-i18n="classified.s6status">⚠ Recovery Phase</div>
+            <div class="season-card__desc" data-i18n="classified.s6desc">Largely inactive. Occasional sightings near snack-adjacent establishments. Reports of extended brunch sessions. Lt. Sniff notes: the smell of confectionery follows her. Always.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEHAVIORAL ANALYSIS -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-H01-BEHAVIORAL</span>
+          <h2 class="sec-title" data-i18n="classified.behaviorTitle">BEHAVIORAL ANALYSIS</h2>
+        </div>
+        <div class="behavior-grid" style="margin-top:24px;">
+          <div class="behavior-card behavior-card--strength">
+            <div class="behavior-card__type" data-i18n="classified.b1type">Strength</div>
+            <div class="behavior-card__title" data-i18n="classified.b1title">Perfect Seasonal Cover</div>
+            <div class="behavior-card__desc" data-i18n="classified.b1desc">No one suspects the Easter Bunny. This has been her primary tactical advantage for decades. The Wraff Force is the first agency to formally document it.</div>
+          </div>
+          <div class="behavior-card behavior-card--strength">
+            <div class="behavior-card__type" data-i18n="classified.b2type">Strength</div>
+            <div class="behavior-card__title" data-i18n="classified.b2title">Extensive Snack Network</div>
+            <div class="behavior-card__desc" data-i18n="classified.b2desc">Supply chain spans at least 4 countries. Goldfolie sourcing: undocumented. Chocolate procurement contacts: classified. Network structure: unknown. Unit Two: possibly aware.</div>
+          </div>
+          <div class="behavior-card behavior-card--strength">
+            <div class="behavior-card__type" data-i18n="classified.b3type">Strength</div>
+            <div class="behavior-card__title" data-i18n="classified.b3title">Chicken Cooperation</div>
+            <div class="behavior-card__desc" data-i18n="classified.b3desc">Annual egg acquisition from multiple farms. Most cooperate without incident. The Mertens farm situation was an exception. An injunction was involved. She still gets the eggs.</div>
+          </div>
+          <div class="behavior-card behavior-card--weakness">
+            <div class="behavior-card__type" data-i18n="classified.b4type">Weakness</div>
+            <div class="behavior-card__title" data-i18n="classified.b4title">Predictable Routine</div>
+            <div class="behavior-card__desc" data-i18n="classified.b4desc">Same gym. Same bar stool. Same foil brand. Same Cologne establishment post-Easter. Wraff Force has mapped her annual movement pattern with 89% accuracy. She is aware of this. She does not care.</div>
+          </div>
+          <div class="behavior-card behavior-card--weakness">
+            <div class="behavior-card__type" data-i18n="classified.b5type">Weakness</div>
+            <div class="behavior-card__title" data-i18n="classified.b5title">January Overconfidence</div>
+            <div class="behavior-card__desc" data-i18n="classified.b5desc">The motivational hoodie phase produces elevated risk-taking behavior. Three of four known pre-Easter reconnaissance missions were initiated in January. All coincided with gym registration week.</div>
+          </div>
+          <div class="behavior-card behavior-card--notable">
+            <div class="behavior-card__type" data-i18n="classified.b6type">Notable</div>
+            <div class="behavior-card__title" data-i18n="classified.b6title">The Hesitation</div>
+            <div class="behavior-card__desc" data-i18n="classified.b6desc">Bärbel hesitated once. Once. In front of the eastern gate. In front of Colonel Flops. She did not enter. She has not returned to that sector. Colonel Flops has not commented. He did not need to.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIOR RECORD -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-H01-RECORD</span>
+          <h2 class="sec-title" data-i18n="classified.recordTitle">PRIOR RECORD — NON-WRAFF FORCE INCIDENTS</h2>
+        </div>
+        <div class="incident-list" style="margin-top:24px;">
+          <div class="incident-row">
+            <div class="incident-row__ref">2019</div>
+            <div>
+              <div class="incident-row__name" data-i18n="classified.i1name">Hühnerhof Brandenburg — Belästigungsvorwurf</div>
+              <div class="incident-row__desc"><span data-i18n="classified.i1desc">Alleged harassment of laying hens during pre-Easter egg acquisition. Bärbel denied presence. Feather traces at scene. Charges dropped — primary witness (rooster) declined to cooperate. Case closed. Bärbel still collects eggs from that farm.</span></div>
+            </div>
+            <span class="badge badge--gray" data-i18n="classified.i1badge">CLOSED</span>
+          </div>
+          <div class="incident-row">
+            <div class="incident-row__ref">2021</div>
+            <div>
+              <div class="incident-row__name" data-i18n="classified.i2name">Schokoladenfabrik Köln — Unbefugtes Betreten</div>
+              <div class="incident-row__desc"><span data-i18n="classified.i2desc">Interrogated for unauthorized entry to a chocolate manufacturing facility in Cologne. Released — insufficient evidence. Gold foil found on paws: "environmental contamination." Factory security reviewed. Bärbel was not added to the visitor list. She was added the following year.</span></div>
+            </div>
+            <span class="badge badge--gray" data-i18n="classified.i2badge">RELEASED</span>
+          </div>
+          <div class="incident-row">
+            <div class="incident-row__ref">2022</div>
+            <div>
+              <div class="incident-row__name" data-i18n="classified.i3name">Supermarkt Aachen — Unbefugtes Betreten (Nacht)</div>
+              <div class="incident-row__desc"><span data-i18n="classified.i3desc">Apprehended in Easter egg aisle, 03:40 hrs. Stated: "I work here." Bärbel does not work there. Bärbel has never worked there. Bärbel was asked to leave. Bärbel left. One foil wrapper recovered from the scene. Matched standard Bärbel profile.</span></div>
+            </div>
+            <span class="badge badge--amber" data-i18n="classified.i3badge">ON RECORD</span>
+          </div>
+          <div class="incident-row">
+            <div class="incident-row__ref">2023</div>
+            <div>
+              <div class="incident-row__name" data-i18n="classified.i4name">Hühnerhof Mertens, Eifel — Einstweilige Verfügung</div>
+              <div class="incident-row__desc"><span data-i18n="classified.i4desc">Restraining order filed by family Mertens regarding conduct during egg collection visits. Details: sealed. The hens recovered. The rooster did not testify. The injunction limits visit duration to 90 minutes and requires a supervisor to be present. Bärbel complies. Marginally.</span></div>
+            </div>
+            <span class="badge badge--red" data-i18n="classified.i4badge">INJUNCTION ACTIVE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVIDENCE PHOTOS -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-H01-EVIDENCE</span>
+          <h2 class="sec-title" data-i18n="classified.evidenceTitle">EVIDENCE PHOTOGRAPHS</h2>
+        </div>
+        <div class="evidence-grid">
+
+          <div class="evidence-photo">
+            <div class="photo-placeholder" id="ph-surveillance-placeholder">
+              <div class="photo-placeholder__icon">📷</div>
+              <div class="photo-placeholder__label">Surveillance Photo · Pending</div>
+            </div>
+            <img class="evidence-photo__img" id="photo-surveillance"
+                 src="/assets/img/hostile/barbel-surveillance.png" alt="Surveillance"
+                 style="display:none;"
+                 onload="this.style.display='block'; document.getElementById('ph-surveillance-placeholder').style.display='none';">
+            <div class="evidence-photo__caption">Surveillance — Köln, Nacht
+              <div class="evidence-photo__ref" data-i18n="classified.ev1ref">WF-IR-013 · Gold foil confirmed · 23:47</div>
+            </div>
+          </div>
+
+          <div class="evidence-photo">
+            <div class="photo-placeholder" id="ph-bar-placeholder">
+              <div class="photo-placeholder__icon">🍺</div>
+              <div class="photo-placeholder__label">Post-Easter Bar Photo · Pending</div>
+            </div>
+            <img class="evidence-photo__img" id="photo-bar"
+                 src="/assets/img/hostile/barbel-bar.png" alt="Bar"
+                 style="display:none;"
+                 onload="this.style.display='block'; document.getElementById('ph-bar-placeholder').style.display='none';">
+            <div class="evidence-photo__caption">Post-Easter · Stammkneipe Köln
+              <div class="evidence-photo__ref" data-i18n="classified.ev2ref">Confirmed sighting · Easter +2 days · Oster-Handtasche present</div>
+            </div>
+          </div>
+
+          <div class="evidence-photo">
+            <div class="photo-placeholder" id="ph-gym-placeholder">
+              <div class="photo-placeholder__icon">🏋️</div>
+              <div class="photo-placeholder__label">Gym Photo January · Pending</div>
+            </div>
+            <img class="evidence-photo__img" id="photo-gym"
+                 src="/assets/img/hostile/barbel-gym.png" alt="Gym"
+                 style="display:none;"
+                 onload="this.style.display='block'; document.getElementById('ph-gym-placeholder').style.display='none';">
+            <div class="evidence-photo__caption">January Activation Phase
+              <div class="evidence-photo__ref" data-i18n="classified.ev3ref">Annual gym registration · "NEW YEAR NEW ME" · Threat rising</div>
+            </div>
+          </div>
+
+          <div class="evidence-photo">
+            <div class="photo-placeholder" id="ph-foil-placeholder">
+              <div class="photo-placeholder__icon">✨</div>
+              <div class="photo-placeholder__label">Foil Fragment Evidence · Pending</div>
+            </div>
+            <img class="evidence-photo__img" id="photo-foil"
+                 src="/assets/img/hostile/barbel-foil.png" alt="Foil Evidence"
+                 style="display:none;"
+                 onload="this.style.display='block'; document.getElementById('ph-foil-placeholder').style.display='none';">
+            <div class="evidence-photo__caption">Gold Foil Fragments — Evidence
+              <div class="evidence-photo__ref" data-i18n="classified.ev4ref">WF-IR-013 + WF-IR-019 · Same brand · Same operative's paws</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="dossier-section">
+      <div class="wrap">
+        <div class="conclusion-box">
+          <div class="conclusion-box__label" data-i18n="classified.conclusionLabel">Threat Assessment — Current Status</div>
+          <div class="conclusion-box__text" data-i18n="classified.conclusionText">HOSTILE. SEASONAL. REPEAT OFFENDER.</div>
+          <div class="conclusion-box__sub" data-i18n="classified.conclusionSub">She will return next Easter · The foil will match · The paws will have been there first</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-footer"></div>
+  </div>
+
+  <!-- i18n runs on gate too -->
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script>
+    const CORRECT_CODE = 'NOTACHICKEN';
+
+    const input  = document.getElementById('code-input');
+    const btn    = document.getElementById('code-submit');
+    const errMsg = document.getElementById('error-msg');
+
+    function showError(msg) {
+      input.classList.add('error');
+      errMsg.textContent = msg;
+      setTimeout(() => {
+        input.classList.remove('error');
+        errMsg.textContent = '';
+      }, 2000);
+    }
+
+    function checkCode() {
+      const val = input.value.trim().toUpperCase().replace(/\s/g,'');
+      if (!val) return;
+
+      if (val === CORRECT_CODE) {
+        input.classList.add('success');
+        btn.style.display = 'none';
+        triggerReveal();
+      } else {
+        showError('ACCESS DENIED — INVALID CODE');
+        input.value = '';
+      }
+    }
+
+    btn.addEventListener('click', checkCode);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') checkCode(); });
+
+    async function triggerReveal() {
+      const overlay = document.getElementById('reveal-overlay');
+      overlay.classList.add('active');
+
+      await new Promise(r => setTimeout(r, 1200));
+
+      overlay.style.transition = 'opacity 0.8s';
+      overlay.style.opacity = '0';
+
+      await new Promise(r => setTimeout(r, 800));
+
+      overlay.style.display = 'none';
+      document.body.classList.add('dossier-active');
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('dossier').classList.add('active');
+
+      // Re-init nav & footer for dossier
+      if (window.WFi18n) window.WFi18n.applyTranslations();
+    }
+
+    // ── AUDIO PLAYER ──
+    const audio     = document.getElementById('barbel-audio');
+    const playBtn   = document.getElementById('barbel-play-btn');
+    const playIcon  = document.getElementById('barbel-play-icon');
+    const progress  = document.getElementById('barbel-progress');
+    const thumb     = document.getElementById('barbel-thumb');
+    const wrap      = document.getElementById('barbel-progress-wrap');
+    const timeCur   = document.getElementById('barbel-time-cur');
+    const timeTotal = document.getElementById('barbel-time-total');
+    const vol       = document.getElementById('barbel-vol');
+
+    const PLAY  = `<polygon points="5,3 19,12 5,21"/>`;
+    const PAUSE = `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
+    const fmt   = s => `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+
+    audio.addEventListener('loadedmetadata', () => { timeTotal.textContent = fmt(audio.duration); });
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progress.style.width = pct + '%';
+      thumb.style.left = pct + '%';
+      timeCur.textContent = fmt(audio.currentTime);
+    });
+    audio.addEventListener('ended', () => {
+      playIcon.innerHTML = PLAY;
+      progress.style.width = '0%';
+      timeCur.textContent = '0:00';
+    });
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) { audio.play(); playIcon.innerHTML = PAUSE; }
+      else { audio.pause(); playIcon.innerHTML = PLAY; }
+    });
+    wrap.addEventListener('click', e => {
+      if (!audio.duration) return;
+      const r = wrap.getBoundingClientRect();
+      audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+    });
+    vol.addEventListener('input', () => audio.volume = vol.value);
+    audio.volume = 0.8;
+  </script>
+
+</body>
+</html>

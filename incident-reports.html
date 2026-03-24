@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Incident Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force incident report archive. 23 filed incidents. All technically explained.">
+  <meta property="og:title" content="WRAFF FORCE — Incident Reports">
+  <meta property="og:description" content="23 filed incidents. All explanations technically plausible. 17 involve Unit Two.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero { padding: 100px 0 56px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 640px; margin-bottom: 28px; }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-stat__value { display: block; font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--silver); line-height: 1; }
+    .hero-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+
+    /* ── UNIT TWO BANNER ── */
+    .unit-two-banner__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: nowrap;
+      background: rgba(212,133,10,0.05); border: 1px solid rgba(212,133,10,0.2);
+      border-radius: var(--radius); padding: 14px 20px;
+    }
+    .unit-two-banner__portrait { width: 36px; height: 36px; border-radius: var(--radius); object-fit: cover; object-position: top; border: 1px solid rgba(212,133,10,0.3); flex-shrink: 0; }
+
+    /* ── AKTE VIEWER ── */
+    .akte-section { padding: 48px 0 64px; }
+
+    .akte-viewer {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      height: 620px;
+      margin-top: 28px;
+    }
+
+    /* Sidebar */
+    .akte-sidebar {
+      width: 240px; flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      background: var(--bg-1);
+    }
+    .akte-sidebar-header {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2.5px;
+      color: var(--text-3); text-transform: uppercase; flex-shrink: 0;
+    }
+    .akte-list { overflow-y: auto; flex: 1; }
+    .akte-list::-webkit-scrollbar { width: 3px; }
+    .akte-list::-webkit-scrollbar-thumb { background: var(--border-md); }
+    .akte-entry {
+      padding: 10px 16px; cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s; display: flex;
+      align-items: flex-start; gap: 9px;
+      border-left: 2px solid transparent;
+    }
+    .akte-entry:hover { background: var(--bg-2); }
+    .akte-entry.active { background: var(--bg-2); border-left-color: var(--silver-dim); }
+    .akte-entry.active-red { background: var(--bg-2); border-left-color: var(--red); }
+    .akte-entry-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .akte-entry-dot.ut      { background: var(--red); }
+    .akte-entry-dot.sealed  { background: var(--red); }
+    .akte-entry-dot.ongoing { background: var(--amber); }
+    .akte-entry-dot.normal  { background: var(--border-md); }
+    .akte-entry-ref   { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; }
+    .akte-entry-title { font-size: 11px; color: var(--text-1); line-height: 1.4; margin-top: 2px; }
+
+    /* Main doc area */
+    .akte-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-0); }
+
+    /* Filter tabs — oben am Dokument */
+    .akte-tabs {
+      display: flex; border-bottom: 1px solid var(--border);
+      flex-shrink: 0; background: var(--bg-1);
+    }
+    .akte-tab {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 10px 16px;
+      border: none; border-bottom: 2px solid transparent;
+      background: transparent; color: var(--text-3);
+      cursor: pointer; transition: all 0.12s; margin-bottom: -1px;
+    }
+    .akte-tab:hover { color: var(--text-1); }
+    .akte-tab.on       { color: var(--text-0); border-bottom-color: var(--silver-dim); }
+    .akte-tab.on-amber { color: var(--amber);  border-bottom-color: var(--amber); }
+    .akte-tab.on-red   { color: var(--red);    border-bottom-color: var(--red); }
+
+    /* Doc scroll area */
+    .akte-doc-wrap { flex: 1; overflow: hidden; position: relative; }
+
+    @keyframes slideIn  { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes slideOut { from { opacity:1; transform:translateX(0); }   to { opacity:0; transform:translateX(-16px); } }
+
+    .akte-doc {
+      position: absolute; inset: 0; overflow-y: auto;
+      padding: 28px 32px;
+    }
+    .akte-doc::-webkit-scrollbar { width: 3px; }
+    .akte-doc::-webkit-scrollbar-thumb { background: var(--border-md); }
+    .akte-doc.entering { animation: slideIn 0.22s ease forwards; }
+    .akte-doc.leaving  { animation: slideOut 0.18s ease forwards; pointer-events: none; }
+
+    /* Perforations for Unit Two */
+    .doc-perforations {
+      position: absolute; left: 0; top: 0; bottom: 0; width: 24px;
+      border-right: 1px dashed var(--border);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: space-evenly; padding: 16px 0; pointer-events: none;
+    }
+    .doc-hole { width: 7px; height: 7px; border-radius: 50%; background: var(--bg-1); border: 1px solid var(--border); }
+
+    .doc-inner { padding-left: 0; }
+    .doc-inner.has-perforations { padding-left: 28px; }
+
+    .doc-topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+    .doc-ref { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2.5px; color: var(--text-3); text-transform: uppercase; }
+    .doc-rec { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; color: var(--red); margin-left: 12px; animation: recblink 2s step-end infinite; }
+    @keyframes recblink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+    .doc-stamp {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2.5px;
+      padding: 3px 9px; border: 1.5px solid currentColor; border-radius: 2px;
+      text-transform: uppercase; display: inline-block; flex-shrink: 0;
+    }
+    .doc-stamp.closed  { color: var(--text-3); transform: rotate(-2deg); }
+    .doc-stamp.ongoing { color: var(--amber);  transform: rotate(-1.5deg); }
+    .doc-stamp.sealed  { color: var(--red);    transform: rotate(-3deg); font-size: 11px; letter-spacing: 3px; }
+
+    .doc-title {
+      font-family: var(--font-display); font-size: 22px; letter-spacing: 2px;
+      color: var(--text-0); text-transform: uppercase; margin-bottom: 18px; line-height: 1.2;
+    }
+    .doc-fields {
+      display: grid; grid-template-columns: 90px 1fr;
+      gap: 5px 14px; margin-bottom: 16px;
+    }
+    .doc-field-label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; padding-top: 1px; }
+    .doc-field-value { font-family: var(--font-mono); font-size: 11px; color: var(--text-1); }
+
+    .doc-rule {
+      height: 1px; margin: 16px 0; border: none;
+      background: repeating-linear-gradient(90deg, var(--border-md) 0, var(--border-md) 5px, transparent 5px, transparent 10px);
+    }
+    .doc-body { font-size: 13.5px; color: var(--text-1); line-height: 1.75; }
+
+    .doc-sealed-overlay {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(224,52,52,0.03); pointer-events: none;
+    }
+    .doc-sealed-stamp {
+      font-family: var(--font-display); font-size: 36px; letter-spacing: 8px;
+      color: var(--red); border: 2.5px solid var(--red); padding: 8px 24px;
+      border-radius: 2px; transform: rotate(-10deg); opacity: 0.2; text-transform: uppercase;
+    }
+
+    /* Nav footer */
+    .doc-nav {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .doc-counter { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; color: var(--text-3); flex: 1; }
+    .doc-nav-btn {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      padding: 6px 14px; border: 1px solid var(--border-md); border-radius: var(--radius);
+      background: var(--bg-2); color: var(--text-2); cursor: pointer; transition: all 0.12s;
+      text-transform: uppercase;
+    }
+    .doc-nav-btn:hover:not(:disabled) { border-color: var(--silver-dim); color: var(--text-0); background: var(--bg-3); }
+    .doc-nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+    @media (max-width: 900px) {
+      .page-hero { padding: 80px 0 40px; }
+      .akte-viewer { flex-direction: column; height: auto; }
+      .akte-sidebar { width: 100%; height: 180px; border-right: none; border-bottom: 1px solid var(--border); }
+      .akte-list { display: flex; overflow-x: auto; overflow-y: hidden; }
+      .akte-entry { flex-direction: column; border-bottom: none; border-right: 1px solid var(--border); min-width: 140px; border-left: none; border-top: 2px solid transparent; }
+      .akte-entry.active, .akte-entry.active-red { border-top-color: var(--silver-dim); border-left-color: transparent; }
+      .akte-doc-wrap { min-height: 500px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+
+    <!-- HERO -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow">K9 Special Unit — Filed Incidents</div>
+        <h1 class="page-hero__title" data-i18n="incidentReports.title">INCIDENT REPORTS</h1>
+        <p class="page-hero__lead" data-i18n="incidentReports.lead">
+          Complete archive of all filed Wraff Force incident reports.
+          23 incidents on record. All explanations technically plausible.
+          All cases reviewed. Some cases ongoing. One file sealed.
+          17 incidents involve Unit Two. This is noted.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat__value">23</span>
+            <span class="hero-stat__label" data-i18n="incidentReports.statTotal">Total Incidents</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">17</span>
+            <span class="hero-stat__label" data-i18n="incidentReports.statUnitTwo">Involve Unit Two</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">0</span>
+            <span class="hero-stat__label" data-i18n="incidentReports.statDisproven">Explanations Disproven</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">1</span>
+            <span class="hero-stat__label" data-i18n="incidentReports.statSealed">File Sealed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UNIT TWO BANNER -->
+    <section style="padding: 24px 0; border-bottom: 1px solid var(--border);">
+      <div class="wrap">
+        <div class="unit-two-banner__inner">
+          <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:0;">
+            <img class="unit-two-banner__portrait" src="/assets/img/operatives/unit-two.png" alt="Unit Two">
+            <div style="min-width:0;">
+              <div style="font-family:var(--font-mono); font-size:8.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--amber); margin-bottom:3px;" data-i18n="incidentReports.unitTwoBannerLabel">Subject of Ongoing Investigation</div>
+              <div style="font-size:12.5px; color:var(--text-2);" data-i18n="incidentReports.unitTwoBannerText">Unit Two is referenced in 17 of 23 incident reports. All explanations filed. None disproven. Investigation ongoing. No conclusion reached.</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:6px; flex-shrink:0;">
+            <span style="font-family:var(--font-display); font-size:24px; letter-spacing:2px; color:var(--amber); line-height:1;">17</span>
+            <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(212,133,10,0.6);" data-i18n="incidentReports.unitTwoBannerStat">of 23 reports</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AKTE VIEWER -->
+    <section class="akte-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-IR-ARCHIVE</span>
+          <h2 class="sec-title" data-i18n="incidentReports.archiveTitle">INCIDENT ARCHIVE</h2>
+        </div>
+
+        <div class="akte-viewer">
+
+          <!-- Sidebar -->
+          <div class="akte-sidebar">
+            <div class="akte-sidebar-header" data-i18n="incidentReports.sidebarLabel">Filed Reports</div>
+            <div class="akte-list" id="ak-list"></div>
+          </div>
+
+          <!-- Main -->
+          <div class="akte-main">
+            <!-- Filter Tabs -->
+            <div class="akte-tabs">
+              <button class="akte-tab on"    data-f="all"     data-i18n="incidentReports.filterAll">ALLE</button>
+              <button class="akte-tab"       data-f="ut"      data-i18n="incidentReports.filterUnitTwo">UNIT TWO</button>
+              <button class="akte-tab"       data-f="ongoing" data-i18n="incidentReports.filterOngoing">LAUFEND</button>
+              <button class="akte-tab"       data-f="sealed"  data-i18n="incidentReports.filterSealed">VERSIEGELT</button>
+            </div>
+            <!-- Doc area -->
+            <div class="akte-doc-wrap" id="ak-docwrap"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+    const INCIDENTS = [
+      { ref:"WF-IR-001", title_de:"Der Berliner Brezel-Vorfall",             title_en:"The Berlin Pretzel Incident",               ut:false, sealed:false, ongoing:false, subject:"Puppy Treatz · 09-K9-OPS",    div_de:"Snack-Ops",          div_en:"Snack Ops",         filed:"Mär 2025", outcome_de:"Wraff Force gegründet.",                                          outcome_en:"Wraff Force founded.",                          body_de:"Pretzelstand 4 Min 17 Sek unbeaufsichtigt. Drei Brezeln, Erdnüsse, eine Schokolade verschwunden. Einzelne Pfote im Salzstreuer. Erklärung: Ich war in der Nähe. Wraff Force wurde infolgedessen gegründet. Akte nachträglich eingereicht.", body_en:"Pretzel stand left unsupervised for 4 min 17 sec. Three pretzels, peanuts, one chocolate bar missing. Single pawprint in salt shaker. Explanation: I was in the area. Resulted in the founding of Wraff Force. Filed retroactively." },
+      { ref:"WF-IR-002", title_de:"Quietschspielzeug — Sektor Sieben",       title_en:"Squeaky Toy — Sector Seven",                ut:false, sealed:false, ongoing:false, subject:"Cpl. Zoom · 11-K9-OPS",        div_de:"Schnellreaktion",    div_en:"Rapid Response",    filed:"Apr 2025", outcome_de:"Als taktisches Equipment eingestuft.",                            outcome_en:"Filed as tactical equipment.",                   body_de:"Nicht regulationskonformes Quietschspielzeug in Sektor Sieben während Nachtoperation entdeckt. Spielzeug elfmal von Corporal Zoom aktiviert. Missionsstatus unberührt. Spielzeug gesichert. Anschließend als taktisches Equipment eingestuft. Kommando akzeptierte dies.", body_en:"Non-regulation squeaky toy encountered in Sector Seven during night operation. Toy activated eleven times by Corporal Zoom. Mission unaffected. Toy secured. Subsequently filed as tactical equipment. Command accepted this." },
+      { ref:"WF-IR-003", title_de:"Nähe zur gesicherten Keksreserve",         title_en:"Proximity to Secured Biscuit Reserve",      ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Snack-Bergung",      div_en:"Snack Retrieval",   filed:"Apr 2025", outcome_de:"Erklärung akzeptiert. Technisch plausibel.",                      outcome_en:"Explanation accepted. Technically plausible.",   body_de:"Unit Two innerhalb von 1 Meter an gesicherter Keksreserve während Routinepatrouille. Erklärung: Perimeter-Integritätsprüfung von innen. Akzeptiert. Dies war Vorfall eins von siebzehn.", body_en:"Unit Two found within 1 metre of secured biscuit reserve during routine patrol. Explanation filed: checking perimeter integrity from the inside. Accepted. This was incident one of seventeen." },
+      { ref:"WF-IR-004", title_de:"Erhöhter Beef-Breath-Index — Erstmessung", title_en:"Elevated Beef Breath — First Reading",       ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Biometrisch",        div_en:"Biometric",         filed:"Apr 2025", outcome_de:"Index-Tracking initiiert.",                                       outcome_en:"Index tracking initiated.",                      body_de:"Lt. Sniff erfasste erste erhöhte Beef-Breath-Messung nach Snack-Inventurdiskrepanz. Unit Twos Erklärung: Ernährungsvariation. Lt. Sniff: notiert. Index-Tracking initiiert.", body_en:"Lt. Sniff recorded first elevated beef breath reading following a snack inventory discrepancy. Unit Two's explanation: dietary variance. Lt. Sniff's assessment: noted. Index tracking initiated." },
+      { ref:"WF-IR-005", title_de:"Käsekeks-Verzögerung — 22 Minuten",       title_en:"Cheese Biscuit Delay — 22 Minutes",         ut:false, sealed:false, ongoing:false, subject:"Lt. Sniff · 07-K9-OPS",         div_de:"Geruchsintelligenz",  div_en:"Scent Intel",       filed:"Mai 2025", outcome_de:"Bericht eingereicht. Länge: 4 Seiten.",                           outcome_en:"Report filed. Length: 4 pages.",                 body_de:"Mission 22 Minuten verzögert während Lt. Sniff Duftanalyse eines Käsekekses unbekannter Herkunft durchführte. Keks als nicht-missionsrelevant eingestuft. Bericht dennoch eingereicht. Länge: 4 Seiten. Keks wurde als hochkomplex beschrieben. Kommando akzeptierte dies.", body_en:"Mission delayed 22 minutes while Lt. Sniff completed scent analysis of a cheese biscuit of unknown origin. Biscuit determined to be non-mission-relevant. Report filed regardless. Length: 4 pages. The biscuit was described as highly complex. Command accepted this." },
+      { ref:"WF-IR-006", title_de:"Zuerst vor Ort — Krümel-Bergungsszene",   title_en:"First to Arrive — Crumb Recovery Scene",    ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Näherungsmuster",    div_en:"Proximity Pattern", filed:"Apr 2025", outcome_de:"Zusatzerklärung eingereicht.",                                    outcome_en:"Supplementary explanation filed.",               body_de:"Unit Two als Erster am Einsatzort von Operation Krümel-Bergung — vor Abschluss des Briefings. Erklärung: Einsatz antizipiert. Kommando: Der Einsatzort wurde im Briefing noch nicht genannt. Unit Two reichte eine Zusatzerklärung ein.", body_en:"Unit Two was first on scene at Operation Crumb Recovery before the mission briefing was complete. Explanation: anticipated the deployment. Command noted that the briefing had not yet mentioned the location. Unit Two filed a supplementary explanation." },
+      { ref:"WF-IR-007", title_de:"Erdnuss-Fragmente — Unbekannte Herkunft", title_en:"Peanut Fragments — Source Unknown",          ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Physische Beweise",  div_en:"Physical Evidence", filed:"Mai 2025", outcome_de:"Geruchsabgleich bestätigt. Bericht: 4 Seiten.",                   outcome_en:"Scent match confirmed. Report: 4 pages.",        body_de:"Erdnussfragmente konsistent mit gesicherter Reserve an Unit Twos Pfoten nach Mission. Erklärung: Vorbestehende Kontamination durch früheren Kontakt. Lt. Sniff bestätigte den Geruchsabgleich. Bericht: 4 Seiten.", body_en:"Peanut fragments consistent with secured reserve inventory recovered from Unit Two's paws post-mission. Explanation: pre-existing contamination from an earlier unrelated exposure. Lt. Sniff confirmed the scent match. Lt. Sniff's report: 4 pages." },
+      { ref:"WF-IR-008", title_de:"KLASSIFIZIERT",                            title_en:"CLASSIFIED",                                ut:false, sealed:true,  ongoing:false, subject:"████████",                     div_de:"████",               div_en:"████",              filed:"Jun 2025", outcome_de:"Nicht verfügbar.",                                                outcome_en:"Not available.",                                 body_de:"Akte versiegelt. WF-TREAT-06. Dieser Vorfall ist bei Standard-Freigabestufe nicht verfügbar. Wir sprechen nicht über Juni 2025. Operative werden an die Snack-Inventarcheckliste verwiesen. Das ist die einzige verfügbare Antwort.", body_en:"File sealed. WF-TREAT-06. This incident is not available at standard clearance level. We do not discuss June 2025. Operatives seeking further information are redirected to the snack inventory checklist. That is the only response available." },
+      { ref:"WF-IR-009", title_de:"Zweites Nähe-Ereignis — Gleiche Reserve",  title_en:"Second Proximity Event — Same Reserve",    ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Näherungsmuster",    div_en:"Proximity Pattern", filed:"Mai 2025", outcome_de:"Protokoll-Review initiiert.",                                     outcome_en:"Proximity protocol review initiated.",           body_de:"Unit Two innerhalb von 1 Meter derselben Keksreserve wie WF-IR-003. Andere Erklärung diesmal: Strukturelle Bewertung des Reservebehälters. Erklärung akzeptiert. Nähe-Protokoll-Review initiiert.", body_en:"Unit Two found within 1 metre of the same biscuit reserve as WF-IR-003. Different explanation filed this time: structural assessment of the reserve casing. Explanation accepted. Proximity protocol review initiated." },
+      { ref:"WF-IR-010", title_de:"Colonel Flops — Nicht autorisierte Kommissionierung", title_en:"Colonel Flops Unauthorized Commission", ut:false, sealed:false, ongoing:false, subject:"Puppy Treatz · 09-K9-OPS", div_de:"Kommando",          div_en:"Command",           filed:"Mai 2025", outcome_de:"Status: geschlossen.",                                            outcome_en:"Status: closed.",                                body_de:"Colonel Flops ohne formale Prüfung kommissioniert. Ohne Genehmigung benannt. Mündlich dem Osttor zugeteilt. Alle Unterlagen nachträglich eingereicht. Kommando genehmigt ohne dokumentierte Begründung. Status: geschlossen. Keine weiteren Maßnahmen geplant.", body_en:"Colonel Flops commissioned without formal review. Named without authorization. Assigned to eastern gate verbally. All paperwork filed retroactively. Command approved without documented rationale. Status: closed. No further action taken or planned." },
+      { ref:"WF-IR-011", title_de:"Beef-Breath-Index — Kritische Messung",   title_en:"Beef Breath Index — Critical Reading",      ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Biometrisch",        div_en:"Biometric",         filed:"Jun 2025", outcome_de:"Review zum dritten Mal initiiert.",                               outcome_en:"Review initiated for the third time.",           body_de:"Beef-Breath-Index: kritisch. Zeitpunkt: 4 Minuten nach Snack-Inventurdiskrepanz. Unit Two: Ernährungsvariation. Lt. Sniff: Das ist Vorfall elf. Kommando: notiert. Review zum dritten Mal initiiert.", body_en:"Beef breath index reading: critical. Timing: 4 minutes after snack inventory showed a discrepancy. Unit Two: dietary variance. Lt. Sniff: this is incident eleven. Command: noted. Review initiated for the third time." },
+      { ref:"WF-IR-012", title_de:"Folsom-Nachbericht — Versiegelt",         title_en:"Folsom After-Action Report — Sealed",       ut:true,  sealed:true,  ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Versiegeltes Dokument", div_en:"Sealed Document",filed:"Sep 2025", outcome_de:"Review: aktenkundig.",                                            outcome_en:"Review outcome: filed.",                         body_de:"Unit Two reichte Nachbericht für Operation Folsom Berlin ein. Bericht sofort nach Einreichung versiegelt. Inhalt unbekannt. Versiegelung von Unit Two autorisiert. Diese Autorisierung wurde geprüft. Prüfungsergebnis: aktenkundig.", body_en:"Unit Two submitted after-action report for Operation Folsom — Berlin. Report sealed immediately following submission. Contents unknown. Sealing authorized by Unit Two. This authorization was reviewed. Review outcome: filed." },
+      { ref:"WF-IR-013", title_de:"Folienbruchstücke — Nach Folsom",         title_en:"Foil Fragments — Post Folsom",              ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Physische Beweise",  div_en:"Physical Evidence", filed:"Sep 2025", outcome_de:"Geruchsabgleich bestätigt.",                                      outcome_en:"Scent match confirmed.",                         body_de:"Goldfolien-Fragmente konsistent mit gesicherter Schokoladenreserve an Unit Twos Pfoten nach Operation Folsom. Erklärung: Vorbestehende Umweltkontamination vom Einsatzort. Lt. Sniffs Analyse bestätigte den Abgleich. Lt. Sniff reichte einen separaten Bericht ein.", body_en:"Gold foil fragments consistent with secured chocolate reserve wrapping recovered from Unit Two's paws following Operation Folsom. Explanation: pre-existing environmental contamination from the event site. Lt. Sniff's analysis confirmed the match. Lt. Sniff filed a separate report." },
+      { ref:"WF-IR-014", title_de:"Drei Kekse — Muffin-Einsatz",             title_en:"Three Biscuits — Muffin Deployment",        ut:false, sealed:false, ongoing:false, subject:"Agent Muffin · 19-K9-OPS",     div_de:"Verdeckte Operationen", div_en:"Covert Ops",     filed:"Okt 2025", outcome_de:"Probationary-Review initiiert. Begeisterung: unverändert.",      outcome_en:"Probationary review initiated. Enthusiasm: unaffected.", body_de:"Drei Kekse während aktiven Perimeterdienstes beim ersten Einsatz von Muffin konsumiert. Drei separate Berichte eingereicht. Jede Erklärung: es war ein Unfall. Alle drei Male. Probationary-Status-Review initiiert. Begeisterung: unverändert.", body_en:"Three biscuits consumed during active perimeter duty on Muffin's first deployment. Three separate reports filed. Each explanation: it was an accident. All three times. Probationary status review initiated. Enthusiasm rating: unaffected." },
+      { ref:"WF-IR-015", title_de:"Der Blick — Erste offizielle Dokumentation", title_en:"The Look — First Official Documentation", ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Verhaltensbasiert",  div_en:"Behavioral",        filed:"Okt 2025", outcome_de:"Erste formale Dokumentation des Blicks.",                         outcome_en:"First formal documentation of the look.",        body_de:"Drei Operative berichteten unabhängig voneinander, dass Unit Two einen spezifischen Blick in der Nähe gesicherter Snacks zeigte. Blick beschrieben als: unschuldig. Lt. Sniff: Das sieht nicht nach unschuldig aus. Erste formale Dokumentation. Nicht die letzte.", body_en:"Three operatives independently reported that Unit Two gave a specific look when positioned near secured snacks. Look described as: innocent. Lt. Sniff's assessment: that is not what innocent looks like. First formal documentation of the look. Not the last." },
+      { ref:"WF-IR-016", title_de:"Reservenähe — Vorfälle 10 bis 14",        title_en:"Reserve Proximity — Incidents 10 to 14",    ut:true,  sealed:false, ongoing:false, subject:"Unit Two · 02-K9-OPS",         div_de:"Näherungsmuster",    div_en:"Proximity Pattern", filed:"Okt–Nov 2025", outcome_de:"Statistisch unwahrscheinlich. Unit Two: unterschätzte Koinzidenz.", outcome_en:"Statistically improbable. Unit Two: coincidence is underappreciated.", body_de:"Fünf Nähe-Vorfälle als Stapel eingereicht. Vorfälle 10–14: alle innerhalb von 1 Meter gesicherter Reserven. Fünf verschiedene Erklärungen. Alle technisch plausibel. Lt. Sniff: statistisch unwahrscheinlich. Unit Two: Koinzidenz wird unterschätzt.", body_en:"Five proximity incidents filed as a batch following a review period. Incidents 10 through 14: all within 1 metre of secured reserves. Five different explanations. All technically plausible. Lt. Sniff: this is statistically improbable. Unit Two: coincidence is underappreciated." },
+      { ref:"WF-IR-017", title_de:"Colonel Flops Schweigen — Überprüfung",   title_en:"Colonel Flops Silence Review",              ut:true,  sealed:false, ongoing:true,  subject:"Unit Two · 02-K9-OPS",         div_de:"Intel-Bewertung",    div_en:"Intel Assessment",  filed:"Nov 2025", outcome_de:"Beide Schweigen notiert.",                                        outcome_en:"Both silences noted.",                           body_de:"Colonel Flops Schweigen als potentielles Beweismittel in Unit-Two-Ermittlung geprüft. Unit Two war bei der Prüfung anwesend. Unit Two kommentierte nicht. Colonel Flops kommentierte ebenfalls nicht. Beide Schweigen wurden notiert. Das Schweigen von Colonel Flops bleibt das meistüberprüfte Dokument des Falls.", body_en:"Colonel Flops' silence reviewed as potential evidence in Unit Two investigation. Unit Two was present during the review. Unit Two did not comment. Colonel Flops also did not comment. Both silences have been noted. The silence of Colonel Flops remains the most reviewed document in the case." },
+      { ref:"WF-IR-018", title_de:"Unit Five — Klettverschluss-Verwicklung", title_en:"Unit Five — Velcro Entanglement",            ut:false, sealed:false, ongoing:false, subject:"Unit Five · 44-K9-OPS",        div_de:"Cuddle Command",     div_en:"Cuddle Command",    filed:"Feb 2026", outcome_de:"Klettverschluss aus Ausrüstungsliste entfernt.",                  outcome_en:"Velcro removed from gear manifest.",             body_de:"Samoyed-Fell in taktischen Westen-Klettverschluss während schnellem Ausrüstungswechsel verwickelt. Ausrüstung 6 Minuten außer Betrieb. Mission unberührt. Klettverschluss anschließend aus Ausrüstungsliste entfernt. Unit Five kommentierte nicht. Das Fell bleibt.", body_en:"Samoyed fur became entangled with tactical vest velcro during rapid gear change. Equipment non-functional for 6 minutes. Mission unaffected. Velcro removed from Unit Five's gear manifest following this incident. Unit Five did not comment. The fur remains." },
+      { ref:"WF-IR-019", title_de:"Osterfolie — Jährliche Wiederholung",     title_en:"Easter Foil — Annual Repeat",               ut:true,  sealed:false, ongoing:true,  subject:"Unit Two · 02-K9-OPS",         div_de:"Physische Beweise",  div_en:"Physical Evidence", filed:"Mär 2026", outcome_de:"Jährliche Wiederholung. Bericht: 8 Seiten. Neuer Rekord.",        outcome_en:"Annual recurrence. Report: 8 pages. New record.", body_de:"Goldfolien-Fragmente von Unit Twos Pfoten nach Operation Easter geborgen. Gleicher Fragmenttyp wie WF-IR-013. Gleiche Erklärung: Umweltkontamination. Lt. Sniff notierte die jährliche Wiederholung. Bericht: 8 Seiten. Neuer Rekord. Unit Two: kein Kommentar.", body_en:"Gold foil fragments recovered from Unit Two's paws following Operation Easter. Same fragment type as WF-IR-013. Same explanation filed: environmental contamination. Lt. Sniff noted the annual recurrence. Lt. Sniff's report: 8 pages. New record. Unit Two: no comment." },
+      { ref:"WF-IR-020", title_de:"Osterhase-Nähe — Nach Klassifizierung",   title_en:"Easter Bunny Proximity — Post-Classification", ut:true, sealed:false, ongoing:true,  subject:"Unit Two · 02-K9-OPS",         div_de:"Verhaltensbasiert",  div_en:"Behavioral",        filed:"Mär 2026", outcome_de:"Nicht beauftragt. Ermittlung läuft.",                             outcome_en:"Not assigned. Investigation ongoing.",           body_de:"Nach formaler Feindeinstufung des Osterhasen wurde Unit Two in der Nähe des letzten bekannten Standorts des Hasen beobachtet. Erklärung: Standard-Aufklärung. Kommando: Das war nicht beauftragt. Unit Two: Es fühlte sich wie das Richtige an.", body_en:"Following the formal hostile classification of the Easter Bunny, Unit Two was observed in proximity to the bunny's last known position. Explanation: standard reconnaissance. Command: this was not assigned. Unit Two: it felt like the right thing to do." },
+      { ref:"WF-IR-021", title_de:"Vorfälle 15 bis 17 — Stapeleinreichung",  title_en:"Incidents 15 to 17 — Batch Filing",         ut:true,  sealed:false, ongoing:true,  subject:"Unit Two · 02-K9-OPS",         div_de:"Näherungsmuster",    div_en:"Proximity Pattern", filed:"Mär 2026", outcome_de:"Umfangreicher Erklärungswortschatz notiert.",                     outcome_en:"Extensive explanation vocabulary noted.",        body_de:"Drei weitere Nähe-Vorfälle nach Q1-Review eingereicht. Jeder Vorfall hat eine separate Erklärung. Keine Erklärung wiederholt sich. Kommando stellt fest, dass Unit Two einen umfangreichen Vorrat plausibler Erklärungen zu haben scheint. Unit Two: Vorbereitung.", body_en:"Three additional proximity incidents filed following Q1 review. Each incident has a separate explanation. No explanation repeats. Command has observed that Unit Two appears to have an extensive vocabulary of plausible explanations. Unit Two: preparation." },
+      { ref:"WF-IR-022", title_de:"Colonel Flops Verlagerungsereignis",      title_en:"Colonel Flops Relocation Event",            ut:false, sealed:false, ongoing:true,  subject:"Colonel Flops · CF-01",        div_de:"Psych-Ops",          div_en:"Psych Ops",         filed:"Mär 2026", outcome_de:"Unter Überprüfung.",                                              outcome_en:"Under review.",                                  body_de:"Colonel Flops 4 Minuten vom Osttor entfernt während Perimeter-Reinigung. Drei Operative berichteten unabhängig voneinander, sich beobachtet zu fühlen während seiner Abwesenheit. Colonel Flops hatte sich nicht bewegt. Dieser Vorfall wird überprüft.", body_en:"Colonel Flops temporarily relocated from eastern gate for 4 minutes during perimeter cleaning. Three operatives independently reported feeling watched during his absence. Colonel Flops had not yet returned. Colonel Flops had not moved. This incident is under review." },
+      { ref:"WF-IR-023", title_de:"Annex 7-A — 14. Überarbeitung ausstehend", title_en:"Annex 7-A — 14th Revision Pending",        ut:false, sealed:false, ongoing:false, subject:"Cpl. Zoom · 11-K9-OPS",        div_de:"Schnellreaktion",    div_en:"Rapid Response",    filed:"Mär 2026", outcome_de:"Annex 7-A: weiterhin ausstehend.",                                outcome_en:"Annex 7-A revision: still pending.",             body_de:"Türvorfall Nummer 14 eingereicht. Glastür, bei Annäherungsgeschwindigkeit nicht sichtbar. Annex 7-A des Feldhandbuchs zum 14. Mal zur Überarbeitung initiiert. Begeisterung: unverändert. Die Tür wurde ersetzt. Annex 7-A: weiterhin ausstehend.", body_en:"Door incident number 14 filed. Glass door, not visible at approach velocity. Annex 7-A of the Field Manual initiated for revision for the fourteenth time. Enthusiasm: unaffected. The door has been replaced. Annex 7-A revision: still pending." },
+    ];
+
+    let currentFilter = 'all';
+    let currentIdx = 0;
+    let filtered = [...INCIDENTS];
+
+    function getLang() { return (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en'; }
+
+    function t(inc, key) {
+      const lang = getLang();
+      return inc[key + '_' + lang] || inc[key + '_en'] || '';
+    }
+
+    function getFiltered() {
+      if (currentFilter === 'ut')      return INCIDENTS.filter(i => i.ut);
+      if (currentFilter === 'ongoing') return INCIDENTS.filter(i => i.ongoing);
+      if (currentFilter === 'sealed')  return INCIDENTS.filter(i => i.sealed);
+      return INCIDENTS;
+    }
+
+    function dotClass(inc) {
+      if (inc.sealed)  return 'sealed';
+      if (inc.ut)      return 'ut';
+      if (inc.ongoing) return 'ongoing';
+      return 'normal';
+    }
+
+    function stampInfo(inc) {
+      const lang = getLang();
+      if (inc.sealed)  return { cls: 'sealed',  label: lang === 'de' ? 'VERSIEGELT' : 'SEALED' };
+      if (inc.ongoing) return { cls: 'ongoing', label: lang === 'de' ? 'LAUFEND'    : 'ONGOING' };
+      return                  { cls: 'closed',  label: lang === 'de' ? 'GESCHLOSSEN': 'CLOSED' };
+    }
+
+    function renderList() {
+      filtered = getFiltered();
+      const list = document.getElementById('ak-list');
+      list.innerHTML = '';
+      filtered.forEach((inc, i) => {
+        const el = document.createElement('div');
+        const isActive = i === currentIdx;
+        el.className = 'akte-entry' + (isActive ? (inc.ut || inc.sealed ? ' active-red' : ' active') : '');
+        el.innerHTML = `
+          <div class="akte-entry-dot ${dotClass(inc)}"></div>
+          <div>
+            <div class="akte-entry-ref">${inc.ref}</div>
+            <div class="akte-entry-title">${inc.sealed ? '██████████' : t(inc, 'title')}</div>
+          </div>`;
+        el.addEventListener('click', () => showDoc(i));
+        list.appendChild(el);
+      });
+    }
+
+    function renderDoc(idx) {
+      const inc = filtered[idx];
+      const wrap = document.getElementById('ak-docwrap');
+      const old  = wrap.querySelector('.akte-doc');
+      const lang = getLang();
+
+      const doc = document.createElement('div');
+      doc.className = 'akte-doc entering';
+
+      const stamp = stampInfo(inc);
+      const recHtml  = inc.ut ? `<span class="doc-rec">● REC</span>` : '';
+      const perfHtml = inc.ut ? `<div class="doc-perforations">${'<div class="doc-hole"></div>'.repeat(8)}</div>` : '';
+      const sealedOverlay = inc.sealed ? `<div class="doc-sealed-overlay"><div class="doc-sealed-stamp">${lang === 'de' ? 'VERSIEGELT' : 'SEALED'}</div></div>` : '';
+
+      const bodyHtml = inc.sealed
+        ? `<div style="filter:blur(4px);user-select:none;">${t(inc,'body')}</div>`
+        : t(inc,'body');
+
+      const divLabel  = lang === 'de' ? 'Division'  : 'Division';
+      const subLabel  = lang === 'de' ? 'Operativ'  : 'Subject';
+      const filLabel  = lang === 'de' ? 'Eingereicht' : 'Filed';
+      const outLabel  = lang === 'de' ? 'Ergebnis'  : 'Outcome';
+      const prevLabel = lang === 'de' ? '◀ Zurück'  : '◀ Prev';
+      const nextLabel = lang === 'de' ? 'Weiter ▶'  : 'Next ▶';
+
+      doc.innerHTML = `
+        ${perfHtml}
+        <div class="doc-inner ${inc.ut ? 'has-perforations' : ''}">
+          <div class="doc-topbar">
+            <div class="doc-ref">${inc.ref}${recHtml}</div>
+            <span class="doc-stamp ${stamp.cls}">${stamp.label}</span>
+          </div>
+          <div class="doc-title">${inc.sealed ? '████████████████' : t(inc,'title')}</div>
+          <div class="doc-fields">
+            <span class="doc-field-label">${subLabel}</span><span class="doc-field-value">${inc.subject}</span>
+            <span class="doc-field-label">${divLabel}</span><span class="doc-field-value">${t(inc,'div')}</span>
+            <span class="doc-field-label">${filLabel}</span><span class="doc-field-value">${inc.filed}</span>
+            <span class="doc-field-label">${outLabel}</span><span class="doc-field-value">${t(inc,'outcome')}</span>
+          </div>
+          <div class="doc-rule"></div>
+          <div class="doc-body">${bodyHtml}</div>
+          <div class="doc-nav">
+            <span class="doc-counter">${idx + 1} / ${filtered.length}</span>
+            <button class="doc-nav-btn" id="btn-prev" ${idx === 0 ? 'disabled' : ''}>${prevLabel}</button>
+            <button class="doc-nav-btn" id="btn-next" ${idx === filtered.length - 1 ? 'disabled' : ''}>${nextLabel}</button>
+          </div>
+        </div>
+        ${sealedOverlay}`;
+
+      if (old) {
+        old.classList.add('leaving');
+        old.addEventListener('animationend', () => old.remove(), { once: true });
+      }
+      wrap.appendChild(doc);
+
+      doc.querySelector('#btn-prev')?.addEventListener('click', () => showDoc(currentIdx - 1));
+      doc.querySelector('#btn-next')?.addEventListener('click', () => showDoc(currentIdx + 1));
+    }
+
+    function showDoc(idx) {
+      if (idx < 0 || idx >= filtered.length) return;
+      currentIdx = idx;
+      renderList();
+      renderDoc(idx);
+      // Aktiven Eintrag in Sidebar scrollen
+      const entries = document.querySelectorAll('.akte-entry');
+      if (entries[idx]) entries[idx].scrollIntoView({ block: 'nearest' });
+    }
+
+    // Filter-Tabs
+    document.querySelectorAll('.akte-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.dataset.f;
+        currentIdx    = 0;
+        document.querySelectorAll('.akte-tab').forEach(b => b.classList.remove('on','on-amber','on-red'));
+        if      (currentFilter === 'ut')                        btn.classList.add('on-amber');
+        else if (currentFilter === 'ongoing' || currentFilter === 'sealed') btn.classList.add('on-red');
+        else                                                    btn.classList.add('on');
+        filtered = getFiltered();
+        renderList();
+        renderDoc(0);
+      });
+    });
+
+    // Sprach-Switch mitbekommen
+    document.addEventListener('wf:langChanged', () => { renderList(); renderDoc(currentIdx); });
+
+    // Warten bis i18n initialisiert hat, dann rendern
+    function initialRender() {
+      filtered = getFiltered();
+      renderList();
+      renderDoc(0);
+    }
+
+    // Falls i18n schon fertig ist (WF_LANG gesetzt), direkt rendern
+    // sonst auf erstes langChanged Event warten
+    if (window.WF_LANG) {
+      initialRender();
+    } else {
+      document.addEventListener('wf:langChanged', initialRender, { once: true });
+      // Fallback nach 800ms falls Event nicht kommt
+      setTimeout(() => {
+        if (!document.querySelector('.akte-doc')) initialRender();
+      }, 800);
+    }
+  </script>
+
+</body>
+</html>

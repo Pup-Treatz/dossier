@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<!-- 
+  WF INTERNAL MEMO — EYES ONLY
+  If you are reading this, you have found something.
+  The code is: NOTACHICKEN
+  This is not a test. Proceed to /classified.html
+  — WF Command
+-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Intel Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force Intel Board — Unit Two investigation. 17 incidents. 0 conclusions.">
+  <meta property="og:title" content="WRAFF FORCE — Intel Board">
+  <meta property="og:description" content="Unit Two investigation board. 17 incidents. 0 explanations disproven. Investigation ongoing.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ── PAGE HERO ── */
+    .page-hero { padding: 100px 0 56px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 640px; margin-bottom: 28px; }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-stat__value { display: block; font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--silver); line-height: 1; }
+    .hero-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+
+    /* ── BOARD SECTIONS ── */
+    .board-section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .board-section:last-of-type { border-bottom: none; }
+
+    /* ── CORKBOARD ── */
+    .corkboard-wrap {
+      background: #1C1A17;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 32px;
+    }
+
+    /* Subtle cork texture via CSS */
+    .corkboard-wrap::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(180,140,80,0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(150,110,60,0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .corkboard {
+      position: relative;
+      min-height: 620px;
+    }
+
+    /* SVG lines */
+    .corkboard-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* PIN cards */
+    .pin-card {
+      position: absolute;
+      background: #F5F0E8;
+      border-radius: 2px;
+      padding: 10px 12px;
+      width: 148px;
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3);
+      z-index: 1;
+      cursor: default;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .pin-card:hover {
+      transform: translateY(-2px) rotate(0deg) !important;
+      box-shadow: 4px 6px 16px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    /* Pin dot */
+    .pin-card::before {
+      content: '';
+      position: absolute;
+      top: -6px; left: 50%;
+      transform: translateX(-50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--pin-color, #CC3333);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .pin-card--subject { --pin-color: #CC3333; transform: rotate(-1deg); }
+    .pin-card--witness { --pin-color: #4A8CC4; transform: rotate(1.5deg); }
+    .pin-card--evidence { --pin-color: #2A7A4A; transform: rotate(-2deg); }
+    .pin-card--flops { --pin-color: #9A9A8A; transform: rotate(0.5deg); }
+    .pin-card--note { --pin-color: #CC8833; transform: rotate(-1.5deg); }
+
+    .pin-card__ref {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #888;
+      margin-bottom: 4px;
+    }
+
+    .pin-card__portrait {
+      width: 32px; height: 32px;
+      border-radius: 2px; object-fit: cover; object-position: top;
+      float: right; margin: 0 0 4px 8px;
+      border: 1px solid #ccc;
+    }
+
+    .pin-card__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px; letter-spacing: 1px;
+      color: #1a1a1a; margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .pin-card__body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; color: #444;
+      line-height: 1.5; clear: both;
+    }
+
+    .pin-card__stamp {
+      display: inline-block;
+      margin-top: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: 1.5px solid currentColor;
+      padding: 1px 5px; border-radius: 1px;
+    }
+
+    .pin-card__stamp--open { color: #CC3333; }
+    .pin-card__stamp--ongoing { color: #CC8833; }
+    .pin-card__stamp--closed { color: #666; }
+    .pin-card__stamp--sealed { color: #CC3333; }
+
+    /* Red string connecting cards */
+    .corkboard-svg line {
+      stroke: rgba(180,40,40,0.55);
+      stroke-width: 1.5;
+      stroke-dasharray: none;
+    }
+
+    .corkboard-svg line.blue { stroke: rgba(74,140,196,0.4); }
+    .corkboard-svg line.gray { stroke: rgba(200,212,224,0.2); }
+
+    /* ── BEEF BREATH INDEX ── */
+    .bbi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .bbi-table { }
+
+    .bbi-row {
+      display: grid;
+      grid-template-columns: 40px 1fr 52px;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bbi-row:last-child { border-bottom: none; }
+
+    .bbi-num {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px;
+      color: var(--text-3); text-align: right;
+    }
+
+    .bbi-track {
+      height: 6px; background: var(--bg-3);
+      border-radius: 3px; overflow: hidden;
+    }
+
+    .bbi-fill {
+      height: 100%; border-radius: 3px;
+      width: 0; transition: width 1.2s ease;
+    }
+
+    .bbi-fill--critical { background: var(--red); }
+    .bbi-fill--elevated { background: var(--amber); }
+    .bbi-fill--normal   { background: var(--green); }
+    .bbi-fill--unknown  { background: var(--text-3); }
+
+    .bbi-val {
+      font-family: var(--font-mono); font-size: 10px; text-align: right;
+    }
+
+    .bbi-val.critical { color: var(--red); }
+    .bbi-val.elevated { color: var(--amber); }
+    .bbi-val.normal   { color: var(--green); }
+    .bbi-val.unknown  { color: var(--text-3); }
+
+    .bbi-summary {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+
+    .bbi-summary__title {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 20px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bbi-stat {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+
+    .bbi-stat:last-child { border-bottom: none; }
+
+    .bbi-stat__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-2); }
+    .bbi-stat__value { font-family: var(--font-display); font-size: 22px; letter-spacing: 1.5px; }
+    .bbi-stat__value.red { color: var(--red); }
+    .bbi-stat__value.amber { color: var(--amber); }
+    .bbi-stat__value.silver { color: var(--silver); }
+
+    /* ── TIMELINE ── */
+    .timeline-wrap { margin-top: 32px; position: relative; }
+
+    .tl-line {
+      position: absolute; left: 120px; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+
+    .tl-entry {
+      display: grid; grid-template-columns: 120px 1fr;
+      gap: 24px; padding: 0 0 28px;
+      position: relative;
+    }
+
+    .tl-entry:last-child { padding-bottom: 0; }
+
+    .tl-date {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-3);
+      text-align: right; padding-top: 2px;
+    }
+
+    .tl-dot {
+      position: absolute; left: 116px; top: 4px;
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 2px solid var(--bg-0);
+    }
+
+    .tl-dot--amber  { background: var(--amber); }
+    .tl-dot--red    { background: var(--red); }
+    .tl-dot--green  { background: var(--green); }
+    .tl-dot--silver { background: var(--silver-dim); }
+    .tl-dot--gray   { background: var(--text-3); }
+
+    .tl-content { padding-left: 18px; }
+
+    .tl-ref {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+    }
+
+    .tl-title {
+      font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px;
+      color: var(--text-0); margin-bottom: 4px;
+    }
+
+    .tl-desc { font-size: 13px; color: var(--text-1); line-height: 1.65; }
+
+    /* ── CONNECTIONS ── */
+    .connections-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 32px;
+    }
+
+    .conn-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
+    }
+
+    .conn-card__header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+
+    .conn-card__portrait {
+      width: 36px; height: 36px; border-radius: 2px;
+      object-fit: cover; object-position: top;
+      border: 1px solid var(--border); flex-shrink: 0;
+    }
+
+    .conn-card__name { font-family: var(--font-display); font-size: 15px; letter-spacing: 1.5px; color: var(--text-0); }
+    .conn-card__role { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); }
+
+    .conn-fact {
+      font-size: 12.5px; color: var(--text-1); line-height: 1.6;
+      padding: 6px 0; border-bottom: 1px solid var(--border);
+    }
+
+    .conn-fact:last-child { border-bottom: none; }
+    .conn-fact strong { color: var(--text-0); font-weight: 500; }
+
+    /* ── CONCLUSION BOX ── */
+    .conclusion-box {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 32px;
+      margin-top: 32px; text-align: center;
+    }
+
+    .conclusion-box__label {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;
+    }
+
+    .conclusion-box__text {
+      font-family: var(--font-display); font-size: 28px; letter-spacing: 3px;
+      color: var(--text-2);
+    }
+
+    .conclusion-box__sub {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3); margin-top: 8px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) { .bbi-grid { grid-template-columns: 1fr; } .connections-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .page-hero { padding: 80px 0 40px; } .corkboard { min-height: 800px; } .connections-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div id="main-nav"></div>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow"><span data-i18n="intelBoard.pageEyebrow">K9 Special Unit — Active Investigation</span></div>
+        <h1 class="page-hero__title" data-i18n="intelBoard.pageTitle">INTEL BOARD</h1>
+        <p class="page-hero__lead">
+          <span data-i18n="intelBoard.pageLead">Active investigation file — Unit Two, 02-K9-OPS. 17 incident reports. 0 explanations disproven. 0 conclusions reached. All evidence documented. All connections mapped. Investigation status: ongoing.</span>
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat__value">17</span>
+            <span class="hero-stat__label" data-i18n="intelBoard.statIncidents">Incident Reports</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">0</span>
+            <span class="hero-stat__label" data-i18n="intelBoard.statConclusions">Conclusions</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">89%</span>
+            <span class="hero-stat__label" data-i18n="intelBoard.statBBI">BBI Correlation</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">34×</span>
+            <span class="hero-stat__label" data-i18n="intelBoard.statFlops">Flops Silence Reviewed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORKBOARD -->
+    <section class="board-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-IB-01</span>
+          <h2 class="sec-title" data-i18n="intelBoard.evidenceBoardTitle">EVIDENCE BOARD</h2>
+        </div>
+
+        <div class="corkboard-wrap">
+          <div class="corkboard" id="corkboard">
+
+            <svg class="corkboard-svg" id="corkboard-svg"></svg>
+
+            <!-- SUBJECT: UNIT TWO -->
+            <div class="pin-card pin-card--subject" id="pin-subject" style="left:38%; top:36px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinSubjectRef">WF · SUBJECT · 02-K9-OPS</div>
+              <img class="pin-card__portrait" src="/assets/img/operatives/unit-two.png" alt="Unit Two">
+              <div class="pin-card__title" data-i18n="intelBoard.pinSubjectTitle">UNIT TWO</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinSubjectBody">17 incident reports. 0 disproven. Beef breath index: elevated 89% of occasions.</div>
+              <span class="pin-card__stamp pin-card__stamp--open" data-i18n="intelBoard.pinSubjectStamp">UNDER REVIEW</span>
+            </div>
+
+            <!-- WITNESS: TREATZ -->
+            <div class="pin-card pin-card--witness" id="pin-treatz" style="left:4%; top:28px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinTreatzRef">WF · HANDLER · 09-K9-OPS</div>
+              <img class="pin-card__portrait" src="/assets/img/operatives/treatz.png" alt="Puppy Treatz">
+              <div class="pin-card__title" data-i18n="intelBoard.pinTreatzTitle">PUPPY TREATZ</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinTreatzBody">Filed proximity watch protocol. Maintains professional distance near secured snacks.</div>
+              <span class="pin-card__stamp pin-card__stamp--closed">HANDLER</span>
+            </div>
+
+            <!-- WITNESS: LT. SNIFF -->
+            <div class="pin-card pin-card--witness" id="pin-sniff" style="right:4%; top:28px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinSniffRef">WF · ANALYST · 07-K9-OPS</div>
+              <img class="pin-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="Lt. Sniff">
+              <div class="pin-card__title" data-i18n="intelBoard.pinSniffTitle">LT. SNIFF</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinSniffBody">Primary analyst. 12 scent reports filed. Each concludes: this is a pattern.</div>
+              <span class="pin-card__stamp pin-card__stamp--ongoing">ANALYST</span>
+            </div>
+
+            <!-- EVIDENCE: FOLSOM REPORT -->
+            <div class="pin-card pin-card--evidence" id="pin-folsom" style="left:4%; top:260px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinFolsomRef">WF-IR-012 · SEP 2025</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinFolsomTitle">FOLSOM REPORT</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinFolsomBody">After-action report sealed by Unit Two immediately after submission. Contents unknown. Sealing reviewed. Outcome: filed.</div>
+              <span class="pin-card__stamp pin-card__stamp--sealed">SEALED</span>
+            </div>
+
+            <!-- EVIDENCE: FOIL FRAGMENTS -->
+            <div class="pin-card pin-card--evidence" id="pin-foil" style="left:20%; top:320px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinFoilRef">WF-IR-013 · WF-IR-019</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinFoilTitle">FOIL FRAGMENTS</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinFoilBody">Gold foil matching chocolate reserve found on Unit Two's paws. Same fragments. Two separate incidents. One explanation: environmental contamination. Filed twice.</div>
+              <span class="pin-card__stamp pin-card__stamp--ongoing">ANNUAL REPEAT</span>
+            </div>
+
+            <!-- EVIDENCE: THE LOOK -->
+            <div class="pin-card pin-card--evidence" id="pin-look" style="right:20%; top:300px;">
+              <div class="pin-card__ref">WF-IR-015</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinLookTitle">THE LOOK</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinLookBody">3 operatives independently documented a specific look near secured snacks. Described as: innocent. Lt. Sniff: that is not what innocent looks like.</div>
+              <span class="pin-card__stamp pin-card__stamp--closed">DOCUMENTED</span>
+            </div>
+
+            <!-- EVIDENCE: BEEF BREATH -->
+            <div class="pin-card pin-card--evidence" id="pin-bbi" style="right:4%; top:250px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinBBIRef">BBI · 17 READINGS</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinBBITitle">BEEF BREATH INDEX</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinBBIBody">Elevated on 17 of 19 occasions. Correlation with snack incidents: 89%. Unit Two: dietary variance. Lt. Sniff: this is a pattern.</div>
+              <span class="pin-card__stamp pin-card__stamp--ongoing">CORRELATION: 89%</span>
+            </div>
+
+            <!-- COLONEL FLOPS: SILENCE -->
+            <div class="pin-card pin-card--flops" id="pin-flops" style="left:38%; top:320px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinFlopsRef">CF-01 · SILENCE REVIEW</div>
+              <img class="pin-card__portrait" src="/assets/img/operatives/colonel-flops.png" alt="Colonel Flops">
+              <div class="pin-card__title" data-i18n="intelBoard.pinFlopsTitle">COL. FLOPS</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinFlopsBody">Silence reviewed 34 times as evidence. No conclusions drawn. The silence remains pending. Colonel Flops has not commented.</div>
+              <span class="pin-card__stamp pin-card__stamp--ongoing">PENDING × 34</span>
+            </div>
+
+            <!-- NOTE: PROXIMITY PATTERN -->
+            <div class="pin-card pin-card--note" id="pin-proximity" style="left:22%; top:160px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinProxRef">PATTERN NOTE</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinProxTitle">ALWAYS FIRST</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinProxBody">Unit Two arrives at snack-adjacent scenes before other operatives in 100% of documented cases. Before the briefing in at least 2 cases.</div>
+              <span class="pin-card__stamp pin-card__stamp--open">100%</span>
+            </div>
+
+            <!-- NOTE: EXPLANATIONS -->
+            <div class="pin-card pin-card--note" id="pin-explanations" style="right:22%; top:150px;">
+              <div class="pin-card__ref" data-i18n="intelBoard.pinExpRef">ANALYST NOTE</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinExpTitle">17 EXPLANATIONS</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinExpBody">No explanation has been repeated. Each is technically plausible. Lt. Sniff notes: the vocabulary of plausible explanations is extensive.</div>
+              <span class="pin-card__stamp pin-card__stamp--open">ZERO REPEATS</span>
+            </div>
+
+
+            <!-- CLASSIFIED HINT CARD -->
+            <div class="pin-card pin-card--evidence" id="pin-classified" style="right:2%; bottom:28px; transform:rotate(2deg);">
+              <div class="pin-card__ref" style="color:var(--red);" data-i18n="intelBoard.pinClassifiedRef">WF · CLASSIFIED FILE · RESTRICTED</div>
+              <div class="pin-card__title" data-i18n="intelBoard.pinClassifiedTitle">RELATED FILE EXISTS</div>
+              <div class="pin-card__body" data-i18n="intelBoard.pinClassifiedBody">One hostile entity is not on this board. She was filed separately. Access code required.</div>
+              <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; color:var(--red); margin-top:8px; font-weight:bold;">/classified.html</div>
+              <span class="pin-card__stamp pin-card__stamp--open" style="border-color:var(--red); color:var(--red);" data-i18n="intelBoard.pinClassifiedStamp">PASSWORD: NOTACHICKEN</span>
+            </div>
+
+          </div><!-- .corkboard -->
+        </div><!-- .corkboard-wrap -->
+      </div>
+    </section>
+
+    <!-- BEEF BREATH INDEX -->
+    <section class="board-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-IB-02</span>
+          <h2 class="sec-title" data-i18n="intelBoard.bbiTitle">BEEF BREATH INDEX — READINGS LOG</h2>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; max-width:680px; margin-bottom:8px;">
+          <span data-i18n="intelBoard.bbiLead">Biometric index tracked by Lt. Sniff across 19 recorded measurement occasions.
+          Elevated readings correlate with 89% of snack-adjacent incidents.
+          Unit Two's explanation across all 17 elevated readings: dietary variance.
+          Lt. Sniff's assessment across all 17 elevated readings: this is a pattern.
+        </p>
+
+        <div class="bbi-grid">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-3); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border);" data-i18n="intelBoard.bbiReadingLog">Reading Log — All 19 Occasions</div>
+            <div class="bbi-row" data-pct="92" data-level="critical">
+              <span class="bbi-num">#01</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="88" data-level="elevated">
+              <span class="bbi-num">#02</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="22" data-level="normal">
+              <span class="bbi-num">#03</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--normal"></div></div>
+              <span class="bbi-val normal" data-i18n="intelBoard.bbiNormalLabel">Normal</span>
+            </div>
+            <div class="bbi-row" data-pct="95" data-level="critical">
+              <span class="bbi-num">#04</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="79" data-level="elevated">
+              <span class="bbi-num">#05</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="85" data-level="elevated">
+              <span class="bbi-num">#06</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="91" data-level="critical">
+              <span class="bbi-num">#07</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="18" data-level="normal">
+              <span class="bbi-num">#08</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--normal"></div></div>
+              <span class="bbi-val normal" data-i18n="intelBoard.bbiNormalLabel">Normal</span>
+            </div>
+            <div class="bbi-row" data-pct="74" data-level="elevated">
+              <span class="bbi-num">#09</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="98" data-level="critical">
+              <span class="bbi-num">#10</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="82" data-level="elevated">
+              <span class="bbi-num">#11</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="87" data-level="elevated">
+              <span class="bbi-num">#12</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="93" data-level="critical">
+              <span class="bbi-num">#13</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="76" data-level="elevated">
+              <span class="bbi-num">#14</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="89" data-level="elevated">
+              <span class="bbi-num">#15</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="96" data-level="critical">
+              <span class="bbi-num">#16</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="83" data-level="elevated">
+              <span class="bbi-num">#17</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+            <div class="bbi-row" data-pct="91" data-level="critical">
+              <span class="bbi-num">#18</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--critical"></div></div>
+              <span class="bbi-val critical" data-i18n="intelBoard.bbiCritical">Critical</span>
+            </div>
+            <div class="bbi-row" data-pct="78" data-level="elevated">
+              <span class="bbi-num">#19</span>
+              <div class="bbi-track"><div class="bbi-fill bbi-fill--elevated"></div></div>
+              <span class="bbi-val elevated" data-i18n="intelBoard.bbiElevatedLabel">Elevated</span>
+            </div>
+          </div>
+
+          <div class="bbi-summary">
+            <div class="bbi-summary__title" data-i18n="intelBoard.bbiSummaryTitle">BBI Statistical Summary</div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiTotal">Total Readings</span>
+              <span class="bbi-stat__value silver">19</span>
+            </div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiElevated">Elevated / Critical</span>
+              <span class="bbi-stat__value amber">17 of 19</span>
+            </div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiNormal">Normal Readings</span>
+              <span class="bbi-stat__value silver">2 of 19</span>
+            </div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiCorrelation">Incident Correlation</span>
+              <span class="bbi-stat__value red">89%</span>
+            </div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiUnitTwo">Unit Two's Explanation</span>
+              <span class="bbi-stat__value silver" style="font-size:14px;" data-i18n="intelBoard.bbiUnitTwoVal">Dietary Variance</span>
+            </div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiSniff">Lt. Sniff's Assessment</span>
+              <span class="bbi-stat__value amber" style="font-size:13px;" data-i18n="intelBoard.bbiSniffVal">This Is A Pattern</span>
+            </div>
+            <div class="bbi-stat">
+              <span class="bbi-stat__label" data-i18n="intelBoard.bbiConclusion">Official Conclusion</span>
+              <span class="bbi-stat__value silver" style="font-size:13px;" data-i18n="intelBoard.bbiConclusionVal">Pending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INCIDENT TIMELINE -->
+    <section class="board-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-IB-03</span>
+          <h2 class="sec-title" data-i18n="intelBoard.timelineTitle">INCIDENT TIMELINE</h2>
+        </div>
+
+        <div class="timeline-wrap">
+          <div class="tl-line"></div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl1date">Mar 2025</div>
+            <div class="tl-dot tl-dot--silver"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl1ref">FOUNDING EVENT</div>
+              <div class="tl-title" data-i18n="intelBoard.tl1title">Berlin Pretzel Incident</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl1desc">Wraff Force founded. Unit Two joins 3 weeks later. First BBI reading taken on arrival. Reading: elevated. Unit Two: dietary variance.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl2date">Apr 2025</div>
+            <div class="tl-dot tl-dot--amber"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl2ref">WF-IR-003 · WF-IR-004</div>
+              <div class="tl-title" data-i18n="intelBoard.tl2title">First Proximity Events</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl2desc">Unit Two found within 1 metre of secured biscuit reserve (IR-003). First elevated BBI reading recorded (IR-004). Two separate incidents. Two separate explanations. Investigation not yet initiated.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl3date">May 2025</div>
+            <div class="tl-dot tl-dot--amber"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl3ref">WF-IR-006 · WF-IR-007 · WF-IR-009</div>
+              <div class="tl-title" data-i18n="intelBoard.tl3title">Pattern Emerging</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl3desc">Unit Two arrives at Operation Crumb Recovery before briefing mentions the location (IR-006). Peanut fragments recovered from paws (IR-007). Second proximity event at same reserve (IR-009). Lt. Sniff initiates tracking log.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl4date">Jun 2025</div>
+            <div class="tl-dot tl-dot--red"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl4ref">WF-IR-011 · WF-TREAT-06</div>
+              <div class="tl-title" data-i18n="intelBoard.tl4title">Critical Reading + The Incident</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl4desc">BBI reading: critical. Timing: 4 minutes after inventory discrepancy. Same month: WF-TREAT-06 sealed. The June 2025 incident is not discussed. Unit Two was present. Unit Two's file for this period is under review.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl5date">Sep 2025</div>
+            <div class="tl-dot tl-dot--red"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl5ref">WF-IR-012 · WF-IR-013</div>
+              <div class="tl-title" data-i18n="intelBoard.tl5title">Operation Folsom — Sealed Report</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl5desc">Unit Two submits after-action report for Folsom and seals it immediately (IR-012). Gold foil wrapper fragments found on paws post-mission (IR-013). Explanation: environmental contamination. This will happen again in March 2026.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl6date">Oct 2025</div>
+            <div class="tl-dot tl-dot--amber"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl6ref">WF-IR-015 · WF-IR-016</div>
+              <div class="tl-title" data-i18n="intelBoard.tl6title">The Look — Documented</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl6desc">Three operatives independently document "the look" for the first time (IR-015). Five proximity incidents filed as batch (IR-016) — incidents 10 through 14. Five different explanations. Lt. Sniff: statistically improbable.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl7date">Nov 2025</div>
+            <div class="tl-dot tl-dot--silver"></div>
+            <div class="tl-content">
+              <div class="tl-ref">WF-IR-017</div>
+              <div class="tl-title" data-i18n="intelBoard.tl7title">Colonel Flops Reviewed As Evidence</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl7desc">Colonel Flops' silence reviewed as potential evidence for the first time (IR-017). Unit Two present during review. Neither commented. The silence of Colonel Flops reviewed 34 times since. No conclusions drawn.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl8date">Mar 2026</div>
+            <div class="tl-dot tl-dot--amber"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl8ref">WF-IR-019 · WF-IR-020 · WF-IR-021</div>
+              <div class="tl-title" data-i18n="intelBoard.tl8title">Easter + Batch Filing</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl8desc">Gold foil fragments recovered again post-Easter (IR-019) — same type, same explanation as IR-013. Unit Two observed near Easter Bunny last known position (IR-020). Three further proximity incidents filed as batch (IR-021). Lt. Sniff's Easter report: 8 pages. New record.</div>
+            </div>
+          </div>
+
+          <div class="tl-entry">
+            <div class="tl-date" data-i18n="intelBoard.tl9date">Ongoing</div>
+            <div class="tl-dot tl-dot--amber"></div>
+            <div class="tl-content">
+              <div class="tl-ref" data-i18n="intelBoard.tl9ref">INVESTIGATION STATUS</div>
+              <div class="tl-title" data-i18n="intelBoard.tl9title">No Conclusion Reached</div>
+              <div class="tl-desc" data-i18n="intelBoard.tl9desc">Investigation ongoing. 17 incident reports. 0 explanations disproven. 0 conclusions reached. Unit Two is aware of the investigation. Unit Two filed an explanation. The explanation has been noted.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- OPERATIVE CONNECTIONS -->
+    <section class="board-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-IB-04</span>
+          <h2 class="sec-title" data-i18n="intelBoard.connectionsTitle">OPERATIVE CONNECTIONS</h2>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; max-width:680px; margin-bottom:8px;">
+          <span data-i18n="intelBoard.connectionsLead">Connection analysis between Unit Two and all active Wraff Force operatives.
+          All connections documented through incident reports or mission logs.
+          One connection remains unconfirmed. That connection is Colonel Flops.</span>
+        </p>
+
+        <div class="connections-grid">
+
+          <div class="conn-card">
+            <div class="conn-card__header">
+              <img class="conn-card__portrait" src="/assets/img/operatives/treatz.png" alt="Treatz">
+              <div>
+                <div class="conn-card__name" data-i18n="intelBoard.connTreatzName">TREATZ</div>
+                <div class="conn-card__role" data-i18n="intelBoard.connTreatzRole">Handler · Proximity Watch Protocol</div>
+              </div>
+            </div>
+            <div class="conn-fact" data-i18n="intelBoard.connTreatzFact1">Filed the <strong>Proximity Watch Protocol</strong> after incident 3.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connTreatzFact2">Maintains <strong>professional distance</strong> from Unit Two near secured snacks.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connTreatzFact3">Relationship status: <strong>officially strained</strong> in snack-adjacent contexts.</div>
+          </div>
+
+          <div class="conn-card">
+            <div class="conn-card__header">
+              <img class="conn-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="Lt. Sniff">
+              <div>
+                <div class="conn-card__name" data-i18n="intelBoard.connSniffName">LT. SNIFF</div>
+                <div class="conn-card__role" data-i18n="intelBoard.connSniffRole">Primary Analyst · 12 Reports Filed</div>
+              </div>
+            </div>
+            <div class="conn-fact" data-i18n="intelBoard.connSniffFact1">Filed <strong>12 supplementary scent reports</strong> on Unit Two.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connSniffFact2">Each report concludes: <strong>this is a pattern</strong>.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connSniffFact3">Easter scent report: <strong>8 pages</strong>. New record. No conclusion.</div>
+          </div>
+
+          <div class="conn-card">
+            <div class="conn-card__header">
+              <img class="conn-card__portrait" src="/assets/img/operatives/colonel-flops.png" alt="Colonel Flops">
+              <div>
+                <div class="conn-card__name" data-i18n="intelBoard.connFlopsName">COL. FLOPS</div>
+                <div class="conn-card__role" data-i18n="intelBoard.connFlopsRole">Silence Reviewed × 34</div>
+              </div>
+            </div>
+            <div class="conn-fact" data-i18n="intelBoard.connFlopsFact1">Silence reviewed as evidence <strong>34 times</strong>. No conclusions.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connFlopsFact2">Unit Two called the silence <strong>"unhelpful"</strong>. Noted.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connFlopsFact3">Relationship: <strong>unconfirmed</strong>. Colonel Flops has not commented.</div>
+          </div>
+
+          <div class="conn-card">
+            <div class="conn-card__header">
+              <img class="conn-card__portrait" src="/assets/img/operatives/sergeant-bork.png" alt="Sgt. Bork">
+              <div>
+                <div class="conn-card__name" data-i18n="intelBoard.connBorkName">SGT. BORK</div>
+                <div class="conn-card__role" data-i18n="intelBoard.connBorkRole">Perimeter — No Shared Incidents</div>
+              </div>
+            </div>
+            <div class="conn-fact" data-i18n="intelBoard.connBorkFact1">Zero shared incident reports with Unit Two.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connBorkFact2">Eastern perimeter anchor — <strong>no snacks assigned</strong> to that sector.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connBorkFact3">Analysts note: <strong>the only operative with zero overlap</strong>.</div>
+          </div>
+
+          <div class="conn-card">
+            <div class="conn-card__header">
+              <img class="conn-card__portrait" src="/assets/img/operatives/corporal-zoom.png" alt="Cpl. Zoom">
+              <div>
+                <div class="conn-card__name" data-i18n="intelBoard.connZoomName">CPL. ZOOM</div>
+                <div class="conn-card__role" data-i18n="intelBoard.connZoomRole">Rapid Response — Post Coverage</div>
+              </div>
+            </div>
+            <div class="conn-fact" data-i18n="intelBoard.connZoomFact1">Covered Unit Two's post during <strong>3 proximity incidents</strong>.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connZoomFact2">Too fast to be implicated in any snack incidents. Unit Two: <strong>noted</strong>.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connZoomFact3">No shared reports. Zoom arrives too quickly for overlap.</div>
+          </div>
+
+          <div class="conn-card">
+            <div class="conn-card__header">
+              <img class="conn-card__portrait" src="/assets/img/operatives/agent-muffin.png" alt="Agent Muffin">
+              <div>
+                <div class="conn-card__name" data-i18n="intelBoard.connMuffinName">AGENT MUFFIN</div>
+                <div class="conn-card__role" data-i18n="intelBoard.connMuffinRole">Probationary — Treat Incident Shared</div>
+              </div>
+            </div>
+            <div class="conn-fact" data-i18n="intelBoard.connMuffinFact1">Both present at <strong>Operation Biscuit Perimeter</strong>.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connMuffinFact2">Muffin's 3 biscuit incidents occurred <strong>in Unit Two's sector</strong>.</div>
+            <div class="conn-fact" data-i18n="intelBoard.connMuffinFact3">Analysts note this with caution. <strong>Muffin appears genuinely unaware</strong>.</div>
+          </div>
+
+        </div>
+
+        <!-- CONCLUSION -->
+        <div class="conclusion-box">
+          <div class="conclusion-box__label" data-i18n="intelBoard.conclusionLabel">Investigation Conclusion — Current Status</div>
+          <div class="conclusion-box__text" data-i18n="intelBoard.conclusionText">NO CONCLUSION REACHED</div>
+          <div class="conclusion-box__sub" data-i18n="intelBoard.conclusionSub">17 reports · 0 disproven · Investigation ongoing · Unit Two: dietary variance</div>
+        </div>
+
+        <div style="margin-top:16px; padding:14px 18px; background:var(--bg-1); border:1px solid var(--border); border-left:2px solid rgba(212,133,10,0.25); border-radius:var(--radius);">
+          <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-3); margin-bottom:6px;" data-i18n="intelBoard.hintLabel">WF-IB · ANALYST NOTE · RESTRICTED</div>
+          <div style="font-size:12.5px; color:var(--text-3); line-height:1.75; font-style:italic;" data-i18n="intelBoard.hintText">One related file exists outside this board's classification level. Access requires a code. The code is hidden on this site. It is not a coincidence that the Easter Bunny is not on this board. She was considered. She was filed elsewhere. Those who look carefully will find the file. Those who find it: proceed with decorum.</div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+    // ── ANIMATE BEEF BREATH BARS ──
+    function animateBBI() {
+      const rows = document.querySelectorAll('.bbi-row');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const row = entry.target;
+            const fill = row.querySelector('.bbi-fill');
+            const pct = row.dataset.pct;
+            setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+            observer.unobserve(row);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      rows.forEach(row => observer.observe(row));
+    }
+
+    // ── DRAW CORKBOARD CONNECTIONS ──
+    function drawConnections() {
+      const board  = document.getElementById('corkboard');
+      const svg    = document.getElementById('corkboard-svg');
+      if (!board || !svg) return;
+
+      const bRect = board.getBoundingClientRect();
+
+      function center(id) {
+        const el = document.getElementById(id);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return {
+          x: r.left - bRect.left + r.width / 2,
+          y: r.top  - bRect.top  + r.height / 2
+        };
+      }
+
+      function line(from, to, cls = '') {
+        const a = center(from), b = center(to);
+        if (!a || !b) return;
+        const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        l.setAttribute('x1', a.x); l.setAttribute('y1', a.y);
+        l.setAttribute('x2', b.x); l.setAttribute('y2', b.y);
+        if (cls) l.classList.add(cls);
+        svg.appendChild(l);
+      }
+
+      svg.innerHTML = '';
+      svg.setAttribute('viewBox', `0 0 ${board.offsetWidth} ${board.offsetHeight}`);
+
+      // Red lines — subject to evidence
+      line('pin-subject', 'pin-foil');
+      line('pin-subject', 'pin-bbi');
+      line('pin-subject', 'pin-look');
+      line('pin-subject', 'pin-folsom');
+      line('pin-subject', 'pin-proximity');
+      line('pin-subject', 'pin-explanations');
+
+      // Blue lines — witnesses to subject
+      line('pin-treatz',  'pin-subject', 'blue');
+      line('pin-sniff',   'pin-subject', 'blue');
+      line('pin-sniff',   'pin-bbi',     'blue');
+
+      // Gray — Flops connection
+      line('pin-flops',   'pin-subject', 'gray');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      animateBBI();
+      // Small delay to ensure layout is complete before drawing lines
+      setTimeout(drawConnections, 200);
+      window.addEventListener('resize', drawConnections);
+    });
+  </script>
+
+</body>
+</html>

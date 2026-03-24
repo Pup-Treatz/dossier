@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force — Founded March 2025 following an incident in Berlin that remains only partially classified.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wraff.agency/about.html">
+  <meta property="og:title" content="WRAFF FORCE — Agency History">
+  <meta property="og:description" content="Founded March 2025 following an incident in Berlin that remains only partially classified.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero {
+      padding: 100px 0 64px;
+      position: relative;
+      z-index: 1;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-hero__eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--text-3);
+    }
+    .page-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 88px);
+      letter-spacing: 6px;
+      line-height: 1;
+      color: var(--text-0);
+      margin-bottom: 20px;
+    }
+    .page-hero__subtitle {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 24px;
+    }
+    .page-hero__lead {
+      font-size: 15px;
+      color: var(--text-1);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .two-col--wide { grid-template-columns: 2fr 1fr; }
+    .content-section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .content-section:last-child { border-bottom: none; }
+    .section-intro {
+      font-size: 15px;
+      color: var(--text-1);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .mandate-box {
+      background: var(--bg-1);
+      border: 1px solid var(--border-md);
+      border-left: 3px solid var(--silver-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 28px 32px;
+      margin-top: 32px;
+    }
+    .mandate-box__label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--silver-dim);
+      margin-bottom: 16px;
+    }
+    .mandate-box__text {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--text-0);
+      line-height: 1.4;
+    }
+    .stats-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .stats-sidebar__item {
+      background: var(--bg-1);
+      padding: 20px;
+      transition: background 0.15s;
+    }
+    .stats-sidebar__item:hover { background: var(--bg-2); }
+    .stats-sidebar__value {
+      font-family: var(--font-display);
+      font-size: 36px;
+      letter-spacing: 2px;
+      color: var(--silver);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stats-sidebar__label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-2);
+    }
+    .stats-sidebar__note {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-3);
+      margin-top: 3px;
+    }
+    .doctrine-list { display: flex; flex-direction: column; }
+    .doctrine-item {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .doctrine-item:last-child { border-bottom: none; }
+    .doctrine-item__num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-3);
+      flex-shrink: 0;
+      padding-top: 2px;
+      width: 32px;
+    }
+    .doctrine-item__title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 2px;
+      color: var(--text-0);
+      margin-bottom: 6px;
+    }
+    .doctrine-item__body {
+      font-size: 13.5px;
+      color: var(--text-1);
+      line-height: 1.7;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .value-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .value-card__num {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--silver-dim);
+      margin-bottom: 8px;
+      opacity: 0.35;
+    }
+    .value-card__title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      letter-spacing: 2px;
+      color: var(--text-0);
+      margin-bottom: 8px;
+    }
+    .value-card__body {
+      font-size: 13px;
+      color: var(--text-1);
+      line-height: 1.65;
+    }
+    .founding-statement {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .founding-statement::before {
+      content: '"';
+      position: absolute;
+      top: -20px; left: 20px;
+      font-family: var(--font-display);
+      font-size: 160px;
+      color: var(--border-md);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .founding-statement__text {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: var(--text-0);
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 20px;
+    }
+    .founding-statement__attribution {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+    @media (max-width: 900px) {
+      .two-col, .two-col--wide { grid-template-columns: 1fr; gap: 32px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .page-hero { padding: 80px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="main-nav"></div>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow">K9 Special Unit — Est. 2025</div>
+        <h1 class="page-hero__title" data-i18n="about.title">AGENCY</h1>
+        <div class="page-hero__subtitle" data-i18n="about.historyTitle">Agency History &amp; Operative Mandate</div>
+        <p class="page-hero__lead" data-i18n="about.lead">
+          Wraff Force is a specialized K9 tactical unit operating wherever the global snack supply is at risk.
+          Established in March 2025 following an incident in Berlin that remains only partially classified.
+          We do not discuss the details. The pretzels were unrecovered. We moved on.
+        </p>
+      </div>
+    </section>
+
+    <!-- FOUNDING & MANDATE -->
+    <section class="content-section">
+      <div class="wrap">
+        <div class="two-col--wide two-col">
+          <div>
+            <div class="sec-head">
+              <span class="sec-code">WF-AB-01</span>
+              <h2 class="sec-title" data-i18n="about.foundingTitle">FOUNDING</h2>
+            </div>
+            <p class="section-intro" data-i18n="about.foundingBody1">
+              On the afternoon of March 14, 2025, a pretzel stand in central Berlin was left unguarded
+              for a duration of 4 minutes and 17 seconds. When supervision resumed, three pretzels,
+              one bag of peanuts and one chocolate bar were missing. A single unidentified pawprint
+              was found in the salt shaker. No witnesses came forward. The case was closed as
+              unexplained snack loss.
+            </p>
+            <p class="section-intro" data-i18n="about.foundingBody2">
+              Puppy Treatz, primary operative and founding member, was present at the scene.
+              The incident was filed. The implications were noted. Three weeks later, Wraff Force
+              was established. The pretzel stand no longer exists. This is officially attributed
+              to renovation. No further questions are accepted on this matter.
+            </p>
+            <div class="mandate-box">
+              <div class="mandate-box__label" data-i18n="about.mandateLabel">Operative Mandate — WF-MANDATE-001</div>
+              <div class="mandate-box__text" data-i18n="about.mandateText">
+                To secure, protect and where necessary recover the global snack supply.
+                No biscuit left behind. No kibble left to fate. Wraff Force answers every call.
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-sidebar">
+            <div class="stats-sidebar__item">
+              <div class="stats-sidebar__value">2025</div>
+              <div class="stats-sidebar__label" data-i18n="about.statFounded">Year Founded</div>
+              <div class="stats-sidebar__note">Berlin Pretzel Incident, March</div>
+            </div>
+            <div class="stats-sidebar__item">
+              <div class="stats-sidebar__value">8</div>
+              <div class="stats-sidebar__label" data-i18n="about.statOperatives">Active Operatives</div>
+              <div class="stats-sidebar__note" data-i18n="about.statOperativesNote">1 honorary. 1 under observation.</div>
+            </div>
+            <div class="stats-sidebar__item">
+              <div class="stats-sidebar__value">21</div>
+              <div class="stats-sidebar__label" data-i18n="about.statMissions">Missions Completed</div>
+              <div class="stats-sidebar__note" data-i18n="about.statMissionsNote">73% snack recovery rate</div>
+            </div>
+            <div class="stats-sidebar__item">
+              <div class="stats-sidebar__value">23</div>
+              <div class="stats-sidebar__label" data-i18n="about.statIncidents">Incident Reports Filed</div>
+              <div class="stats-sidebar__note" data-i18n="about.statIncidentsNote">17 involve Unit Two</div>
+            </div>
+            <div class="stats-sidebar__item">
+              <div class="stats-sidebar__value">94%</div>
+              <div class="stats-sidebar__label" data-i18n="about.statManual">Field Manual Complete</div>
+              <div class="stats-sidebar__note" data-i18n="about.statManualNote">Squeaky toy section: not started</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="content-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-AB-02</span>
+          <h2 class="sec-title" data-i18n="about.timelineTitle">AGENCY TIMELINE</h2>
+        </div>
+        <div class="timeline">
+
+          <div class="tl-item tl-item--key">
+            <div class="tl-item__date" data-i18n="about.tl1date">March 2025</div>
+            <div class="tl-item__title" data-i18n="about.tl1title">The Berlin Pretzel Incident</div>
+            <div class="tl-item__body" data-i18n="about.tl1body">
+              An unguarded pretzel stand in Berlin was left unsupervised for 4 minutes and 17 seconds.
+              Three pretzels, one bag of peanuts and one chocolate bar vanished. One unidentified
+              pawprint was recovered from the salt shaker. No witnesses. Case closed as unexplained
+              snack loss. Wraff Force founded three weeks later.
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-item__date" data-i18n="about.tl2date">April 2025</div>
+            <div class="tl-item__title" data-i18n="about.tl2title">First Operatives Commissioned</div>
+            <div class="tl-item__body" data-i18n="about.tl2body">
+              Unit Two, Sergeant Bork and Lieutenant Sniff join as founding operatives.
+              Corporal Zoom joins two weeks later after a door-related incident delayed
+              their onboarding by 14 incident reports.
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-item__date" data-i18n="about.tl3date">May 2025</div>
+            <div class="tl-item__title" data-i18n="about.tl3title">Colonel Flops Commissioned</div>
+            <div class="tl-item__body" data-i18n="about.tl3body">
+              During a routine sweep, Unit Four located a small brown teddy bear alone in an open field.
+              The bear was named Colonel Flops without prior authorization. Command approved without
+              explanation. Colonel Flops was assigned to eastern gate. He has not moved since.
+              Unit Four also walked into a wall on the same mission. Both events are in the report.
+            </div>
+          </div>
+
+          <div class="tl-item tl-item--key">
+            <div class="tl-item__date" data-i18n="about.tl4date">June 2025</div>
+            <div class="tl-item__title" data-i18n="about.tl4title">The Holographic Treat Incident</div>
+            <div class="tl-item__body">
+              <span class="badge badge--red" style="margin-right:10px; margin-bottom:6px; display:inline-flex;">● <span data-i18n="badges.classified">Classified</span></span>
+              <span data-i18n="about.tl4body">File sealed. WF-TREAT-06. We do not discuss June 2025.
+              Operatives seeking further information are redirected to the snack inventory checklist.
+              That is the only response available.</span>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-item__date" data-i18n="about.tl5date">August 2025</div>
+            <div class="tl-item__title" data-i18n="about.tl5title">Agent Muffin &amp; Unit Five Join</div>
+            <div class="tl-item__body" data-i18n="about.tl5body">
+              Agent Muffin joins on probationary status following the highest enthusiasm rating
+              ever recorded during onboarding. One clean mission completed. Filed under: Anomaly.
+              Unit Five joins Cuddle Command, immediately locates Colonel Flops and holds him
+              for 3 minutes and 40 seconds. This is noted in both their files.
+            </div>
+          </div>
+
+          <div class="tl-item tl-item--key">
+            <div class="tl-item__date" data-i18n="about.tl6date">September 2025</div>
+            <div class="tl-item__title" data-i18n="about.tl6title">Operation Folsom — Berlin</div>
+            <div class="tl-item__body" data-i18n="about.tl6body">
+              First large-scale public deployment at Folsom Europe, Berlin. Full snack perimeter
+              established and held. Colonel Flops deployed to eastern gate — the rabbit hesitated.
+              A non-regulation squeaky toy was encountered in Sector Two. Unit Two's after-action
+              report remains sealed. Crowd reception: enthusiastic.
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-item__date" data-i18n="about.tl7date">March 2026</div>
+            <div class="tl-item__title" data-i18n="about.tl7title">Operation Easter</div>
+            <div class="tl-item__body" data-i18n="about.tl7body">
+              Annual Easter security deployment. Chocolate reserves secured at 73% recovery rate.
+              Unit Two found with foil wrapper fragments. Explanation filed. Review ongoing.
+              The Easter Bunny has been formally classified as a hostile presence.
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-item__date" data-i18n="about.tl8date">Ongoing</div>
+            <div class="tl-item__title" data-i18n="about.tl8title">Castrop-Rauxel / Habinghorst Kitchen Incident</div>
+            <div class="tl-item__body">
+              <span class="badge badge--amber" style="margin-right:10px; margin-bottom:6px; display:inline-flex;">● <span data-i18n="badges.ongoing">Ongoing</span></span>
+              <span data-i18n="about.tl8body">Nature of incident: under investigation.
+              A kitchen is involved. No further statement will be issued at this time.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- OPERATIVE DOCTRINE -->
+    <section class="content-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-AB-03</span>
+          <h2 class="sec-title" data-i18n="about.doctrineTitle">OPERATIVE DOCTRINE</h2>
+        </div>
+        <p class="section-intro" data-i18n="about.doctrineIntro">
+          Wraff Force operates under a strict set of tactical and behavioral principles.
+          These are not suggestions. They are doctrine. Several sections of the Field Manual
+          are still being finalized. This does not affect operational readiness.
+        </p>
+        <div class="two-col">
+          <div class="doctrine-list">
+            <div class="doctrine-item">
+              <div class="doctrine-item__num">01</div>
+              <div>
+                <div class="doctrine-item__title" data-i18n="about.doctrine1title">THE SNACK IS SACRED</div>
+                <div class="doctrine-item__body" data-i18n="about.doctrine1body">
+                  All snacks under Wraff Force jurisdiction are to be treated as mission-critical assets.
+                  No operative may consume a secured snack without explicit handler authorization.
+                  Consumption without authorization is logged. It is always logged.
+                </div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-item__num">02</div>
+              <div>
+                <div class="doctrine-item__title" data-i18n="about.doctrine2title">73% IS SUCCESS</div>
+                <div class="doctrine-item__body" data-i18n="about.doctrine2body">
+                  A snack recovery rate of 73% is the established benchmark for mission success.
+                  This figure was determined organically during Operation Crumb Recovery
+                  and has never been revised. It will not be revised.
+                </div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-item__num">03</div>
+              <div>
+                <div class="doctrine-item__title" data-i18n="about.doctrine3title">ALL RANKS ARE RESPECTED</div>
+                <div class="doctrine-item__body" data-i18n="about.doctrine3body">
+                  Colonel Flops holds the rank of Colonel. This rank is recognized. His counsel is sought.
+                  His silence is interpreted. He has never confirmed or denied any interpretation.
+                  This has not stopped anyone from asking.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="doctrine-list">
+            <div class="doctrine-item">
+              <div class="doctrine-item__num">04</div>
+              <div>
+                <div class="doctrine-item__title" data-i18n="about.doctrine4title">INCIDENTS ARE FILED</div>
+                <div class="doctrine-item__body" data-i18n="about.doctrine4body">
+                  All incidents — regardless of scale, cause or level of embarrassment —
+                  are to be documented and filed within 24 hours. 23 reports filed to date.
+                  17 involve Unit Two. All explanations were technically plausible.
+                </div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-item__num">05</div>
+              <div>
+                <div class="doctrine-item__title" data-i18n="about.doctrine5title">WE DO NOT DISCUSS JUNE 2025</div>
+                <div class="doctrine-item__body" data-i18n="about.doctrine5body">
+                  This is not a guideline. This is doctrine. The holographic treat incident
+                  is classified under WF-TREAT-06. The file is sealed.
+                  There is nothing further.
+                </div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-item__num">06</div>
+              <div>
+                <div class="doctrine-item__title" data-i18n="about.doctrine6title">CUDDLES ARE CONTRACTUAL</div>
+                <div class="doctrine-item__body" data-i18n="about.doctrine6body">
+                  Unit Five has established that cuddles with Colonel Flops constitute a legitimate
+                  operational activity. Command reviewed this assertion. Command filed it.
+                  The duration is recorded. Everyone has moved on.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE VALUES -->
+    <section class="content-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-AB-04</span>
+          <h2 class="sec-title" data-i18n="about.valuesTitle">CORE VALUES</h2>
+        </div>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-card__num">I</div>
+            <div class="value-card__title" data-i18n="about.value1title">LOYALTY</div>
+            <div class="value-card__body" data-i18n="about.value1body">
+              Unwavering commitment to the unit, the handler and the mission. In that order.
+              Unless treats are present. Then the order may vary.
+              This is acknowledged in the Field Manual.
+            </div>
+          </div>
+          <div class="value-card">
+            <div class="value-card__num">II</div>
+            <div class="value-card__title" data-i18n="about.value2title">PRECISION</div>
+            <div class="value-card__body" data-i18n="about.value2body">
+              Every movement is deliberate. Every sniff is intentional.
+              Every report is filed accurately. Except Appendix B.
+              Appendix B is redacted. This will not change.
+            </div>
+          </div>
+          <div class="value-card">
+            <div class="value-card__num">III</div>
+            <div class="value-card__title" data-i18n="about.value3title">INTEGRITY</div>
+            <div class="value-card__body" data-i18n="about.value3body">
+              Wraff Force operates with full transparency — within classification guidelines.
+              What can be disclosed, is disclosed. What cannot, is redacted.
+              The redactions are always necessary.
+            </div>
+          </div>
+          <div class="value-card">
+            <div class="value-card__num">IV</div>
+            <div class="value-card__title" data-i18n="about.value4title">RESILIENCE</div>
+            <div class="value-card__body" data-i18n="about.value4body">
+              Wraff Force has endured squeaky toys, holographic treats, foil wrapper incidents
+              and the ongoing Habinghorst Kitchen Situation. We are still here.
+              We are still filing reports. We will not stop.
+            </div>
+          </div>
+          <div class="value-card">
+            <div class="value-card__num">V</div>
+            <div class="value-card__title" data-i18n="about.value5title">SNACK SECURITY</div>
+            <div class="value-card__body" data-i18n="about.value5body">
+              The protection of snack reserves is not merely a mission objective.
+              It is a calling. No operative joined Wraff Force by accident.
+              The snacks called to them. They answered.
+            </div>
+          </div>
+          <div class="value-card">
+            <div class="value-card__num">VI</div>
+            <div class="value-card__title" data-i18n="about.value6title">DOCUMENTATION</div>
+            <div class="value-card__body" data-i18n="about.value6body">
+              If it happened, it is filed. If it is filed, it exists.
+              If it exists, it is subject to review. Unit Two is aware of this.
+              This has not changed Unit Two's behavior in any measurable way.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOUNDING STATEMENT + FURTHER READING -->
+    <section class="content-section">
+      <div class="wrap">
+        <div class="two-col">
+          <div>
+            <div class="sec-head">
+              <span class="sec-code">WF-AB-05</span>
+              <h2 class="sec-title" data-i18n="about.statementTitle">FOUNDING STATEMENT</h2>
+            </div>
+            <div class="founding-statement">
+              <div class="founding-statement__text" data-i18n="about.statementText">
+                Someone had to do it. The snacks were not going to protect themselves.
+                We looked at the gap. We looked at each other. We looked at the snacks.
+                We formed a unit. We filed the paperwork. Wraff Force exists because it had to.
+              </div>
+              <div class="founding-statement__attribution">
+                — Puppy Treatz, 09-K9-OPS · Primary Operative · Founding Member
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="sec-head">
+              <span class="sec-code">WF-AB-06</span>
+              <h2 class="sec-title" data-i18n="about.furtherTitle">FURTHER READING</h2>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <a href="/field-manual.html" class="card card--link" style="text-decoration:none;">
+                <div class="card__code">WF-FM-001</div>
+                <div class="card__title" data-i18n="fieldManual.title">FIELD MANUAL</div>
+                <div class="card__body" data-i18n="about.fieldManualDesc">
+                  Official operational regulations. 12 articles.
+                  Several sections incomplete. Squeaky toy protocol: not started.
+                </div>
+              </a>
+              <a href="/operatives.html" class="card card--link" style="text-decoration:none;">
+                <div class="card__code">WF-ROSTER</div>
+                <div class="card__title" data-i18n="operatives.title">OPERATIVES</div>
+                <div class="card__body" data-i18n="about.operativesDesc">
+                  Full unit roster. All 8 active operatives. Dossiers, status and
+                  behavioral profiles. Unit Two file: under ongoing review.
+                </div>
+              </a>
+              <a href="/incident-reports.html" class="card card--link" style="text-decoration:none;">
+                <div class="card__code">WF-IR-ARCHIVE</div>
+                <div class="card__title" data-i18n="incidentReports.title">INCIDENT REPORTS</div>
+                <div class="card__body" data-i18n="about.incidentDesc">
+                  23 filed incidents. Some sealed. All technically explained.
+                  WF-TREAT-06 is not available at standard clearance level.
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+</body>
+</html>

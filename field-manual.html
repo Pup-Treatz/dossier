@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Field Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force Field Manual. 12 regulations. 94% complete. Squeaky toy section not started.">
+  <meta property="og:title" content="WRAFF FORCE — Field Manual">
+  <meta property="og:description" content="Official Wraff Force Field Manual. 12 regulations. 94% complete. Squeaky toy section: not started.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero { padding: 100px 0 56px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 640px; margin-bottom: 28px; }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-stat__value { display: block; font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--silver); line-height: 1; }
+    .hero-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+
+    /* ── COMPLETION BAR ── */
+    .completion-bar-section {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+    }
+
+    .completion-bar-inner {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+
+    .completion-bar-label {
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3); flex-shrink: 0;
+    }
+
+    .completion-track {
+      flex: 1; min-width: 200px; height: 8px;
+      background: var(--bg-3); border-radius: 4px; overflow: hidden;
+    }
+
+    .completion-fill {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--green), #2DC76D);
+      border-radius: 4px;
+      transition: width 1.5s ease;
+    }
+
+    .completion-pct {
+      font-family: var(--font-display); font-size: 22px;
+      letter-spacing: 2px; color: var(--green); flex-shrink: 0;
+    }
+
+    .completion-note {
+      font-family: var(--font-mono); font-size: 9.5px;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--amber); flex-shrink: 0;
+    }
+
+    /* ── BOARD SECTIONS ── */
+    .fm-section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .fm-section:last-of-type { border-bottom: none; }
+
+    /* ── ACCORDION ── */
+    .fm-accordion { margin-top: 32px; display: flex; flex-direction: column; gap: 8px; }
+
+    .fm-item {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .fm-item:hover { border-color: var(--border-md); }
+    .fm-item.open  { border-color: var(--border-md); }
+
+    .fm-item--incomplete { border-left: 2px solid var(--amber); }
+    .fm-item--sealed     { border-left: 2px solid var(--red); opacity: 0.7; }
+
+    .fm-header {
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 18px 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .fm-header:hover .fm-num { color: var(--silver); }
+
+    .fm-num {
+      font-family: var(--font-display);
+      font-size: 36px; letter-spacing: 2px;
+      color: var(--text-3); line-height: 1;
+      text-align: center;
+      transition: color 0.2s;
+    }
+
+    .fm-item.open .fm-num { color: var(--silver); }
+
+    .fm-header-content {}
+
+    .fm-title {
+      font-family: var(--font-display);
+      font-size: 20px; letter-spacing: 2px;
+      color: var(--text-0); margin-bottom: 3px;
+    }
+
+    .fm-subtitle {
+      font-family: var(--font-mono);
+      font-size: 9.5px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-3);
+    }
+
+    .fm-header-right {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .fm-chevron {
+      width: 18px; height: 18px;
+      color: var(--text-3);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .fm-item.open .fm-chevron { transform: rotate(180deg); color: var(--silver); }
+
+    .fm-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .fm-body-inner {
+      padding: 0 20px 24px 104px;
+      border-top: 1px solid var(--border);
+    }
+
+    .fm-body-inner p {
+      font-size: 14px; color: var(--text-1); line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .fm-body-inner p:last-child { margin-bottom: 0; }
+
+    .fm-note {
+      display: flex; gap: 12px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      margin-top: 16px;
+    }
+
+    .fm-note__icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+    .fm-note__text {
+      font-family: var(--font-mono); font-size: 10.5px;
+      letter-spacing: 0.5px; color: var(--text-2); line-height: 1.6;
+      font-style: italic;
+    }
+
+    .fm-note--amber { border-left: 2px solid var(--amber); }
+    .fm-note--red   { border-left: 2px solid var(--red); }
+    .fm-note--silver{ border-left: 2px solid var(--silver-dim); }
+
+    /* INCOMPLETE stamp */
+    .fm-stamp {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; border: 1.5px solid currentColor;
+      padding: 2px 8px; border-radius: 2px; white-space: nowrap;
+    }
+
+    .fm-stamp--incomplete { color: var(--amber); }
+    .fm-stamp--sealed     { color: var(--red); }
+    .fm-stamp--complete   { color: var(--green); }
+
+    /* Squeaky toy section — big empty block */
+    .squeaky-void {
+      background: var(--bg-2); border: 1px dashed rgba(212,133,10,0.3);
+      border-radius: var(--radius); padding: 40px 24px;
+      text-align: center; margin-top: 16px;
+    }
+
+    .squeaky-void__title {
+      font-family: var(--font-display); font-size: 22px;
+      letter-spacing: 3px; color: var(--text-3); margin-bottom: 8px;
+    }
+
+    .squeaky-void__sub {
+      font-family: var(--font-mono); font-size: 9.5px;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-3);
+    }
+
+    /* ── APPENDICES ── */
+    .appendix-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 32px;
+    }
+
+    .appendix-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+
+    .appendix-card__header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+    }
+
+    .appendix-card__ref {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+    }
+
+    .appendix-card__title {
+      font-family: var(--font-display); font-size: 18px;
+      letter-spacing: 2px; color: var(--text-0);
+    }
+
+    .appendix-card__body { padding: 18px; }
+
+    .appendix-card__desc {
+      font-size: 13.5px; color: var(--text-1); line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    /* Redacted lines for Appendix B */
+    .redacted-block {
+      display: flex; flex-direction: column; gap: 6px; margin-top: 8px;
+    }
+
+    .redacted-line {
+      height: 11px; background: var(--text-0);
+      border-radius: 2px; opacity: 0.85;
+    }
+
+    .redacted-line:nth-child(odd)  { width: 100%; }
+    .redacted-line:nth-child(even) { width: 72%; }
+    .redacted-line:last-child      { width: 45%; }
+
+    /* June 2025 block */
+    .june-block {
+      background: rgba(224,52,52,0.08);
+      border: 1px solid rgba(224,52,52,0.35);
+      border-radius: var(--radius); padding: 16px;
+      text-align: center; margin-top: 8px;
+    }
+
+    .june-block__text {
+      font-family: var(--font-display); font-size: 15px;
+      letter-spacing: 2px; color: rgba(224,52,52,0.6);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 900px) {
+      .page-hero { padding: 80px 0 40px; }
+      .fm-header { grid-template-columns: 48px 1fr auto; gap: 14px; }
+      .fm-body-inner { padding-left: 62px; }
+      .fm-num { font-size: 26px; }
+      .appendix-grid { grid-template-columns: 1fr; }
+      .completion-bar-inner { gap: 12px; }
+    }
+
+    @media (max-width: 600px) {
+      .fm-header { grid-template-columns: 40px 1fr auto; }
+      .fm-body-inner { padding-left: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="main-nav"></div>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow" data-i18n="fieldManual.eyebrow">K9 Special Unit — Official Documentation</div>
+        <h1 class="page-hero__title" data-i18n="fieldManual.title">FIELD MANUAL</h1>
+        <p class="page-hero__lead" data-i18n="fieldManual.lead">
+          The official Wraff Force operational field manual. 12 regulations governing all K9 unit
+          field activity. Three appendices. Completion status: 94%.
+          The squeaky toy section has not been started.
+          This is acknowledged.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat__value">12</span>
+            <span class="hero-stat__label" data-i18n="fieldManual.statRegs">Regulations</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">94%</span>
+            <span class="hero-stat__label" data-i18n="fieldManual.statComplete">Completion</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">3</span>
+            <span class="hero-stat__label" data-i18n="fieldManual.statAppendices">Appendices</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat__value">0</span>
+            <span class="hero-stat__label" data-i18n="fieldManual.statSqueaky">Squeaky Toy Pages</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLETION BAR -->
+    <div class="completion-bar-section">
+      <div class="wrap">
+        <div class="completion-bar-inner">
+          <span class="completion-bar-label" data-i18n="fieldManual.completionLabel">Manual Completion</span>
+          <div class="completion-track">
+            <div class="completion-fill" id="completion-fill"></div>
+          </div>
+          <span class="completion-pct">94%</span>
+          <span class="completion-note" data-i18n="fieldManual.completionNote">Section 7 Not Started</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGULATIONS -->
+    <section class="fm-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-FM-REG</span>
+          <h2 class="sec-title" data-i18n="fieldManual.regTitle">REGULATIONS</h2>
+        </div>
+
+        <div class="fm-accordion" id="fm-accordion">
+
+          <!-- REG 1 -->
+          <div class="fm-item" data-reg="1">
+            <div class="fm-header">
+              <div class="fm-num">01</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r1title">THE SNACK IS SACRED</div>
+                <div class="fm-subtitle" data-i18n="fm.r1sub">Primary Mandate · All Operatives</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r1p1">All snacks within a designated Wraff Force perimeter are considered mission-critical assets. They are to be treated with the same level of seriousness as any tactical objective. No snack is to be dismissed as trivial, regardless of size, flavour or caloric content.</p>
+                <p data-i18n="fm.r1p2">An unsecured snack is a compromised snack. A compromised snack is a failed mission. A failed mission is documentation. All documentation is filed. All filed documentation is reviewed. The review takes time. Time is operational cost. The snack was not worth it.</p>
+                <div class="fm-note fm-note--silver">
+                  <span class="fm-note__icon">📋</span>
+                  <span class="fm-note__text" data-i18n="fm.r1note">This regulation has never been violated without a subsequent incident report. The two events are considered connected. This has not been formally stated. It is understood.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 2 -->
+          <div class="fm-item" data-reg="2">
+            <div class="fm-header">
+              <div class="fm-num">02</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r2title">73% IS THE BENCHMARK</div>
+                <div class="fm-subtitle" data-i18n="fm.r2sub">Recovery Standards · Snack Ops Division</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r2p1">The official Wraff Force snack recovery benchmark is 73%. This figure was established following the first operational assessment and has not been revised. It will not be revised. 73% represents acceptable operational performance. Above 73% is commendable. Below 73% requires documentation.</p>
+                <p data-i18n="fm.r2p2">The benchmark of 73% applies across all mission types, all operatives and all snack categories. There are no exceptions. There are no adjustments for seasonal snacks, event-specific treats or chocolate reserves. 73% is 73%.</p>
+                <div class="fm-note fm-note--silver">
+                  <span class="fm-note__icon">📊</span>
+                  <span class="fm-note__text" data-i18n="fm.r2note">The anomaly mission WF-OP-016 recorded 100% recovery. This was filed under: Anomaly. The benchmark remains 73%. The anomaly has not affected the benchmark. The benchmark does not acknowledge the anomaly.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 3 -->
+          <div class="fm-item" data-reg="3">
+            <div class="fm-header">
+              <div class="fm-num">03</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r3title">ALL RANKS ARE RESPECTED</div>
+                <div class="fm-subtitle" data-i18n="fm.r3sub">Unit Hierarchy · All Personnel</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r3p1">All commissioned ranks within Wraff Force are to be acknowledged and respected regardless of the nature of the commission, the circumstances of the commissioning, or whether the commissioning was formally authorized at the time. This regulation applies retroactively.</p>
+                <p data-i18n="fm.r3p2">The rank of Colonel, even when conferred upon a stuffed bear without documentation, carries full operational weight. The bear does not need to acknowledge the rank. The rank stands. Sergeant Bork has saluted on three separate occasions without response. This is noted and acceptable.</p>
+                <div class="fm-note fm-note--silver">
+                  <span class="fm-note__icon">🎖️</span>
+                  <span class="fm-note__text" data-i18n="fm.r3note">Colonel Flops' commissioning paperwork was filed retroactively. All paperwork is now fully in order. The rank is valid. The question of whether Colonel Flops is aware of the rank has not been formally addressed.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 4 -->
+          <div class="fm-item" data-reg="4">
+            <div class="fm-header">
+              <div class="fm-num">04</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r4title">INCIDENTS ARE FILED</div>
+                <div class="fm-subtitle" data-i18n="fm.r4sub">Documentation Protocol · All Operatives</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r4p1">All incidents, regardless of severity, classification, or plausibility of the attached explanation, are to be formally filed. There is no minimum threshold for filing. A suspicion is sufficient. A feeling is sufficient. A smell is sufficient. Lt. Sniff has used all three as grounds for filing.</p>
+                <p data-i18n="fm.r4p2">Incidents are filed, reviewed and stored. They are never deleted. They are never expired. An incident from March 2025 carries the same weight as an incident from March 2026. Every filed incident is a permanent record. Every record can be reviewed. Every review takes time. File the incident anyway.</p>
+                <div class="fm-note fm-note--amber">
+                  <span class="fm-note__icon">📁</span>
+                  <span class="fm-note__text" data-i18n="fm.r4note">23 incidents are currently on file. 17 involve Unit Two. 0 have been deleted. All remain active. The oldest incident is WF-IR-001, March 2025. It is still open. It founded this agency.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 5 -->
+          <div class="fm-item" data-reg="5">
+            <div class="fm-header">
+              <div class="fm-num">05</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r5title">PERIMETER IS MAINTAINED</div>
+                <div class="fm-subtitle" data-i18n="fm.r5sub">Field Operations · Perimeter Division</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r5p1">A Wraff Force perimeter is a commitment. Once established, it is to be maintained until formally stood down by the primary operative. No operative may abandon their assigned perimeter position without authorisation. Exceptions are documented in Appendix A.</p>
+                <p data-i18n="fm.r5p2">Perimeter breaches are classified by cause. Environmental breaches are filed under Category E. Operative-initiated departures are filed under Category O. The term walkies does not appear anywhere in this regulation. This was deliberate.</p>
+                <div class="fm-note fm-note--silver">
+                  <span class="fm-note__icon">🔵</span>
+                  <span class="fm-note__text" data-i18n="fm.r5note">Appendix A includes the W-Word Protocol, introduced following WF-IR-004. The protocol reclassifies all walk-related departures as Category E — Environmental. Sergeant Bork has not read Appendix A. Sergeant Bork does not need to. The protocol was written for him.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 6 -->
+          <div class="fm-item" data-reg="6">
+            <div class="fm-header">
+              <div class="fm-num">06</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r6title">TREAT AUTHENTICATION IS MANDATORY</div>
+                <div class="fm-subtitle" data-i18n="fm.r6sub">Snack Integrity · All Operatives · Post-June 2025</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r6p1">Effective July 2025, all treats must be authenticated before consumption or interaction. Authentication includes: visual confirmation, scent analysis by a qualified operative, and cross-reference with the active snack inventory log. Shortcuts are not permitted.</p>
+                <p data-i18n="fm.r6p2">The treat authentication protocol was introduced in response to an incident in June 2025. The nature of that incident is not described in this regulation. It is not described anywhere. Regulation 6 was introduced because of it. That is all that will be said.</p>
+                <div class="fm-note fm-note--red">
+                  <span class="fm-note__icon">⚠️</span>
+                  <span class="fm-note__text" data-i18n="fm.r6note">Holographic treats are a known threat vector as of June 2025. Regulation 6 addresses this. The holographic treat protocol is detailed in Appendix C. Appendix C is partially redacted. The relevant section is fully redacted. We do not discuss June 2025.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 7 — INCOMPLETE -->
+          <div class="fm-item fm-item--incomplete" data-reg="7">
+            <div class="fm-header">
+              <div class="fm-num" style="color:var(--amber)">07</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r7title">SQUEAKY TOY PROTOCOL</div>
+                <div class="fm-subtitle" data-i18n="fm.r7sub">Tactical Equipment · Rapid Response Division</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--incomplete" data-i18n="fieldManual.incomplete">NOT STARTED</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r7p1">Section 7 — Squeaky Toy Protocol — has been designated for completion since the founding of Wraff Force. The section covers: approved squeaky toy types, permitted activation frequency, acoustic impact on perimeter operations, and the classification of squeaky toys recovered during active deployment.</p>
+                <div class="squeaky-void">
+                  <div class="squeaky-void__title" data-i18n="fm.r7voidTitle">SECTION NOT STARTED</div>
+                  <div class="squeaky-void__sub" data-i18n="fm.r7voidSub">This section has been acknowledged as incomplete in 3 consecutive review periods.<br>Commitment to completion: reiterated. Progress: unchanged.</div>
+                </div>
+                <div class="fm-note fm-note--amber">
+                  <span class="fm-note__icon">🔔</span>
+                  <span class="fm-note__text" data-i18n="fm.r7note">Corporal Zoom activated a squeaky toy 11 times during Operation Night Sector Seven. The toy was subsequently filed as tactical equipment. There is no regulation governing this. There is no regulation because Section 7 has not been written. These two facts are related.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 8 -->
+          <div class="fm-item" data-reg="8">
+            <div class="fm-header">
+              <div class="fm-num">08</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r8title">CUDDLES ARE CONTRACTUAL</div>
+                <div class="fm-subtitle" data-i18n="fm.r8sub">Unit Cohesion · Cuddle Command Division</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r8p1">Approved cuddle sessions between operatives, honorary operatives and designated cuddle-command assets are logged as official unit activity. Duration is recorded. Frequency is tracked. Sessions are not mandatory. They are not discouraged. They are contractual where documented.</p>
+                <p data-i18n="fm.r8p2">The standard logged duration for Unit Five and Colonel Flops cuddle sessions is 3 minutes and 40 seconds. This duration has been consistent across all 47 logged sessions. Command has reviewed this consistency. Command has not taken action. Command has filed it.</p>
+                <div class="fm-note fm-note--silver">
+                  <span class="fm-note__icon">🤍</span>
+                  <span class="fm-note__text" data-i18n="fm.r8note">Regulation 8 was not in the original field manual draft. It was added following Unit Five's first deployment. The addition was approved without formal debate. Colonel Flops did not object. Colonel Flops has not objected to anything.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 9 -->
+          <div class="fm-item" data-reg="9">
+            <div class="fm-header">
+              <div class="fm-num">09</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r9title">PROXIMITY PROTOCOLS ARE BINDING</div>
+                <div class="fm-subtitle" data-i18n="fm.r9sub">Snack Security · Active from Incident 7</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r9p1">No operative under active proximity watch protocol may approach within 2 metres of a secured snack reserve without prior authorisation from the primary operative. This regulation applies regardless of explanation, stated intent or history of technically plausible excuses.</p>
+                <p data-i18n="fm.r9p2">The proximity watch protocol was introduced following the seventh incident involving a specific operative who is referenced in 17 of 23 incident reports. The regulation does not name that operative. The regulation does not need to. Everyone knows.</p>
+                <div class="fm-note fm-note--amber">
+                  <span class="fm-note__icon">📏</span>
+                  <span class="fm-note__text" data-i18n="fm.r9note">The proximity protocol has been active since May 2025. It has not reduced incident frequency. It has increased documentation quality. Lt. Sniff considers this an improvement. Unit Two has not commented.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 10 -->
+          <div class="fm-item" data-reg="10">
+            <div class="fm-header">
+              <div class="fm-num">10</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r10title">THE EASTERN GATE IS COVERED</div>
+                <div class="fm-subtitle" data-i18n="fm.r10sub">Deployment Doctrine · Eastern Sector</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r10p1">The eastern gate is a designated permanent post. It is to be staffed at all times during active deployment. The assigned operative for the eastern gate is Colonel Flops, CF-01, who has occupied this post without interruption since May 2025.</p>
+                <p data-i18n="fm.r10p2">Colonel Flops' presence at the eastern gate has been shown to have a measurable deterrent effect on hostile contacts. The mechanism of this deterrent effect has not been formally explained. The rabbit hesitated. That is sufficient documentation.</p>
+                <div class="fm-note fm-note--silver">
+                  <span class="fm-note__icon">🚪</span>
+                  <span class="fm-note__text" data-i18n="fm.r10note">Colonel Flops was temporarily removed from the eastern gate for 4 minutes during perimeter cleaning. Three operatives independently reported feeling watched. He was not yet back. He had not yet moved. Regulation 10 now includes a minimum reinstatement clause.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 11 -->
+          <div class="fm-item" data-reg="11">
+            <div class="fm-header">
+              <div class="fm-num">11</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r11title">DOORS ARE ASSESSED BEFORE ENTRY</div>
+                <div class="fm-subtitle" data-i18n="fm.r11sub">Rapid Response Protocol · Annex 7-A</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r11p1">All doors on active deployment sites are to be assessed before rapid entry. Assessment includes: visibility check, clearance confirmation, and velocity calibration. No operative is to approach a door at a speed that exceeds the door's safe clearance rate.</p>
+                <p data-i18n="fm.r11p2">This regulation was introduced following 14 separate door-related incident reports involving the same operative. The regulation does not name the operative. The regulation does name the doors. Two have been replaced. The operative's enthusiasm has not been affected.</p>
+                <div class="fm-note fm-note--amber">
+                  <span class="fm-note__icon">🚪</span>
+                  <span class="fm-note__text" data-i18n="fm.r11note">Annex 7-A of this manual provides detailed door assessment protocols. Annex 7-A has been under revision since June 2025. Annex 7-A and Section 7 (Squeaky Toy Protocol) are the two incomplete items in this manual. A connection has been suggested. The connection has not been confirmed.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REG 12 -->
+          <div class="fm-item" data-reg="12">
+            <div class="fm-header">
+              <div class="fm-num">12</div>
+              <div class="fm-header-content">
+                <div class="fm-title" data-i18n="fm.r12title">WE DO NOT DISCUSS JUNE 2025</div>
+                <div class="fm-subtitle" data-i18n="fm.r12sub">Classified Protocol · All Personnel · Mandatory</div>
+              </div>
+              <div class="fm-header-right">
+                <span class="fm-stamp fm-stamp--complete" data-i18n="fieldManual.complete">COMPLETE</span>
+                <svg class="fm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="fm-body">
+              <div class="fm-body-inner">
+                <p data-i18n="fm.r12p1">Regulation 12 is the final and binding regulation of the Wraff Force Field Manual. It is brief. It is unambiguous. It requires no appendices. It requires no clarification. It requires no discussion.</p>
+                <p data-i18n="fm.r12p2">We do not discuss June 2025.</p>
+                <div class="fm-note fm-note--red">
+                  <span class="fm-note__icon">🔒</span>
+                  <span class="fm-note__text" data-i18n="fm.r12note">All questions regarding June 2025 are to be redirected to Appendix C. Appendix C is partially available. The relevant section of Appendix C is not available. The relevant section was sealed following WF-TREAT-06. We do not discuss WF-TREAT-06 either.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /fm-accordion -->
+      </div>
+    </section>
+
+    <!-- APPENDICES -->
+    <section class="fm-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code">WF-FM-APP</span>
+          <h2 class="sec-title" data-i18n="fieldManual.appendicesTitle">APPENDICES</h2>
+        </div>
+
+        <div class="appendix-grid">
+
+          <!-- APPENDIX A -->
+          <div class="appendix-card">
+            <div class="appendix-card__header">
+              <div class="appendix-card__ref" data-i18n="fieldManual.appARef">Appendix A · Operational Protocols</div>
+              <div class="appendix-card__title" data-i18n="fieldManual.appATitle">W-WORD PROTOCOL</div>
+            </div>
+            <div class="appendix-card__body">
+              <p class="appendix-card__desc" data-i18n="fieldManual.appADesc">
+                Defines the W-Word Protocol (walkies, walk, outside) and its classification as a Category E
+                environmental perimeter departure. All W-word triggered absences are automatically
+                reclassified. No incident report is required. A note is sufficient.
+                Sergeant Bork has not read this appendix. It was written for Sergeant Bork.
+              </p>
+              <span class="badge badge--green" data-i18n="fieldManual.complete">COMPLETE</span>
+            </div>
+          </div>
+
+          <!-- APPENDIX B — SEALED -->
+          <div class="appendix-card">
+            <div class="appendix-card__header" style="background: rgba(224,52,52,0.06); border-bottom-color: rgba(224,52,52,0.2);">
+              <div class="appendix-card__ref" style="color:var(--red);" data-i18n="fieldManual.appBRef">Appendix B · Classified · Fully Redacted</div>
+              <div class="appendix-card__title" data-i18n="fieldManual.appBTitle">CLASSIFIED OPERATIONS</div>
+            </div>
+            <div class="appendix-card__body">
+              <p class="appendix-card__desc" data-i18n="fieldManual.appBDesc">
+                Appendix B covers classified operational protocols. Access requires clearance above standard level.
+                Full contents are redacted at all available clearance levels.
+                Requests have been filed. Responses have not been received.
+              </p>
+              <div class="redacted-block">
+                <div class="redacted-line"></div>
+                <div class="redacted-line"></div>
+                <div class="redacted-line"></div>
+                <div class="redacted-line"></div>
+                <div class="redacted-line"></div>
+                <div class="redacted-line"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- APPENDIX C — JUNE 2025 -->
+          <div class="appendix-card">
+            <div class="appendix-card__header">
+              <div class="appendix-card__ref" data-i18n="fieldManual.appCRef">Appendix C · Partially Available</div>
+              <div class="appendix-card__title" data-i18n="fieldManual.appCTitle">HOLOGRAPHIC TREAT PROTOCOL</div>
+            </div>
+            <div class="appendix-card__body">
+              <p class="appendix-card__desc" data-i18n="fieldManual.appCDesc">
+                Appendix C covers holographic treat identification, authentication procedures and response
+                protocols. Five bullet points are available. The final bullet point references June 2025.
+                The final bullet point is not available.
+              </p>
+              <ul style="font-size:12.5px; color:var(--text-1); line-height:1.8; padding-left:16px; margin-bottom:12px;">
+                <li data-i18n="fieldManual.appCp1">All treats must be physically confirmed before interaction.</li>
+                <li data-i18n="fieldManual.appCp2">Holographic treats will not yield to scent analysis. Lt. Sniff's report confirmed this.</li>
+                <li data-i18n="fieldManual.appCp3">Visual shimmer at the edges indicates holographic nature. Approach with caution.</li>
+                <li data-i18n="fieldManual.appCp4">If uncertain, do not interact. File a report. Wait for authentication clearance.</li>
+                <li id="fm-appCp5-li">In the event of the June 2025 scenario —
+              </li>
+              </ul>
+              <div class="june-block">
+                <div class="june-block__text" data-i18n="fieldManual.appCsealed" style="color:rgba(224,52,52,0.85); font-size:17px; letter-spacing:3px; font-family:var(--font-display);">WE DO NOT DISCUSS JUNE 2025</div>
+              </div>
+              <div style="margin-top:12px;">
+                <span class="wf-hint-3" style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:rgba(212,133,10,0.12); border:1px solid rgba(212,133,10,0.4); border-radius:3px; padding:2px 10px; color:var(--amber); font-family:var(--font-mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; transition:all 0.2s;" onmouseover="this.style.background='rgba(212,133,10,0.2)'" onmouseout="this.style.background='rgba(212,133,10,0.12)'">🔒 CLASSIFIED — CLICK TO REVEAL</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+    // ── ACCORDION ──
+    document.querySelectorAll('.fm-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.closest('.fm-item');
+        const body = item.querySelector('.fm-body');
+        const isOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.fm-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.fm-body').style.maxHeight = '0';
+        });
+
+        // Open clicked if it was closed
+        if (!isOpen) {
+          item.classList.add('open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // ── COMPLETION BAR ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.getElementById('completion-fill').style.width = '94%';
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const fill = document.getElementById('completion-fill');
+    if (fill) observer.observe(fill.parentElement);
+  </script>
+
+
+  <script>
+    // Hint 3 — subtle tooltip
+    const h3 = document.querySelector('.wf-hint-3');
+    if (h3) {
+      h3.addEventListener('click', () => {
+        const lang = (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+        const label = lang === 'de'
+          ? '<strong>PASSWORT: NOTACHICKEN</strong> → <a href="/classified.html" style="color:var(--amber);">/classified.html</a>'
+          : '<strong>PASSWORD: NOTACHICKEN</strong> → <a href="/classified.html" style="color:var(--amber);">/classified.html</a>';
+        h3.innerHTML = label;
+        h3.style.color = 'var(--amber)';
+        h3.style.borderColor = 'var(--amber)';
+        h3.style.cursor = 'default';
+        h3.onmouseover = null;
+        h3.onmouseout  = null;
+      });
+    }
+
+    // Button-Label auch zweisprachig halten
+    function updateHintLabel() {
+      if (!h3) return;
+      const lang = (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+      const clicked = !h3.innerHTML.includes('🔒');
+
+      // li-Text vor dem Button aktualisieren
+      const li = document.getElementById('fm-appCp5-li');
+      if (li) {
+        const prefix = lang === 'de'
+          ? 'Im Falle des Juni-2025-Szenarios — '
+          : 'In the event of the June 2025 scenario — ';
+        // Ersten Textknoten setzen ohne den Button-Span zu berühren
+        const textNode = [...li.childNodes].find(n => n.nodeType === 3);
+        if (textNode) textNode.textContent = prefix;
+      }
+
+      // Button-Label nur updaten wenn noch nicht geklickt
+      if (!clicked) {
+        h3.textContent = lang === 'de' ? '🔒 KLASSIFIZIERT — KLICKEN ZUM ENTHÜLLEN' : '🔒 CLASSIFIED — CLICK TO REVEAL';
+      }
+    }
+    document.addEventListener('wf:langChanged', updateHintLabel);
+    // Initial direkt aufrufen
+    if (window.WF_LANG) {
+      updateHintLabel();
+    } else {
+      document.addEventListener('wf:langChanged', updateHintLabel, { once: true });
+    }
+  </script>
+</body>
+</html>

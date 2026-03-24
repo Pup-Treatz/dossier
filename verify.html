@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Credential Verification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <meta name="robots" content="noindex">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0E1117;
+      --bg-1:    #1A1E24;
+      --bg-2:    #20252D;
+      --border:  rgba(255,255,255,0.08);
+      --silver:  #CCD8E4;
+      --silver-dim: #8A9AAA;
+      --text-0:  #EDF0F3;
+      --text-1:  #C8D2DC;
+      --text-2:  #96A2B0;
+      --text-3:  #6A7888;
+      --green:   #1A9E5C;
+      --green-bright: #2DC76D;
+      --amber:   #D4850A;
+      --red:     #E03434;
+      --font-mono: 'DM Mono', monospace;
+      --font-display: 'Bebas Neue', sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-0);
+      font-family: var(--font-mono);
+      overflow: hidden;
+    }
+
+    /* ── MAIN STAGE ── */
+    .stage {
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+
+    /* Background grid */
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    /* Vignette */
+    .bg-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none;
+    }
+
+    /* ── SCAN FRAME ── */
+    .scan-frame {
+      position: relative; z-index: 10;
+      width: min(340px, 88vw);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0;
+    }
+
+    /* Header */
+    .scan-header {
+      width: 100%;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .scan-header__label {
+      font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .scan-header__session {
+      font-size: 8px; letter-spacing: 1px; color: var(--text-3);
+    }
+
+    /* Portrait area */
+    .scan-portrait-wrap {
+      width: 100%; position: relative;
+      background: var(--bg-2);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .scan-portrait {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      filter: brightness(0.7) saturate(0.4);
+      transition: filter 1s ease;
+    }
+
+    .scan-portrait.revealed {
+      filter: brightness(1) saturate(1);
+    }
+
+    /* Scan line animation */
+    .scan-line {
+      position: absolute; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--green-bright), transparent);
+      box-shadow: 0 0 12px var(--green-bright), 0 0 24px rgba(45,199,109,0.4);
+      top: -4px;
+      animation: scanDown 1.8s ease-in-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes scanDown {
+      0%   { top: 0%; opacity: 1; }
+      95%  { top: 100%; opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* Corner brackets */
+    .scan-corner {
+      position: absolute; width: 20px; height: 20px;
+      border-color: var(--green-bright); border-style: solid;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .scan-corner.visible { opacity: 1; }
+    .scan-corner--tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .scan-corner--tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+    .scan-corner--bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+    .scan-corner--br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    /* Status overlay on portrait */
+    .scan-status-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 12px 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      opacity: 0; transition: opacity 0.5s;
+    }
+
+    .scan-status-overlay.visible { opacity: 1; }
+
+    .scan-match-text {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--green-bright); margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .scan-codename {
+      font-family: var(--font-display); font-size: 22px;
+      letter-spacing: 3px; color: var(--text-0);
+    }
+
+    /* Data strip */
+    .scan-data {
+      width: 100%;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-top: none; border-bottom: none;
+      padding: 14px 16px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      opacity: 0; transition: opacity 0.5s;
+    }
+
+    .scan-data.visible { opacity: 1; }
+
+    .scan-data-item__label {
+      font-size: 7.5px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 3px;
+    }
+
+    .scan-data-item__value {
+      font-size: 11px; letter-spacing: 1px; color: var(--text-1);
+    }
+
+    /* Progress bar */
+    .scan-progress-wrap {
+      width: 100%;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-top: 1px solid rgba(45,199,109,0.2);
+      padding: 12px 16px;
+    }
+
+    .scan-progress-label {
+      font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 8px;
+      display: flex; justify-content: space-between;
+    }
+
+    .scan-progress-track {
+      height: 3px; background: var(--bg-2); border-radius: 2px; overflow: hidden;
+    }
+
+    .scan-progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--green-bright));
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+
+    /* Log terminal */
+    .scan-log {
+      width: 100%;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      padding: 10px 16px 14px;
+      min-height: 64px;
+    }
+
+    .scan-log-line {
+      font-size: 9px; letter-spacing: 1px;
+      color: var(--text-3); line-height: 1.8;
+      opacity: 0; transition: opacity 0.3s;
+    }
+
+    .scan-log-line.visible { opacity: 1; }
+    .scan-log-line.green   { color: var(--green-bright); }
+    .scan-log-line.amber   { color: var(--amber); }
+    .scan-log-line.white   { color: var(--text-1); }
+
+    /* Redirect message */
+    .scan-redirect {
+      position: absolute; bottom: 32px;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-3); opacity: 0; transition: opacity 0.5s;
+      z-index: 10;
+    }
+
+    .scan-redirect.visible { opacity: 1; }
+
+    /* WOOF flash */
+    .woof-flash {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; z-index: 100;
+      opacity: 0;
+    }
+
+    .woof-flash__text {
+      font-family: var(--font-display); font-size: clamp(80px, 20vw, 140px);
+      letter-spacing: 8px; color: var(--green-bright);
+      text-shadow: 0 0 40px rgba(45,199,109,0.6);
+    }
+
+    /* Logo top */
+    .scan-logo {
+      position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 10px; z-index: 10;
+      opacity: 0; transition: opacity 0.5s;
+    }
+
+    .scan-logo.visible { opacity: 1; }
+
+    .scan-logo img { width: 28px; height: 28px; object-fit: contain; }
+
+    .scan-logo__text {
+      font-family: var(--font-display); font-size: 16px;
+      letter-spacing: 4px; color: var(--silver);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="bg-grid"></div>
+    <div class="bg-vignette"></div>
+
+    <!-- Logo -->
+    <div class="scan-logo" id="scan-logo">
+      <img src="/assets/img/logo/Logo_trs.png" alt="Wraff Force">
+      <span class="scan-logo__text">WRAFF FORCE</span>
+    </div>
+
+    <!-- Main scan frame -->
+    <div class="scan-frame" id="scan-frame">
+
+      <div class="scan-header">
+        <span class="scan-header__label">K9 · CREDENTIAL NODE</span>
+        <span class="scan-header__session" id="session-id">SESSION: INIT</span>
+      </div>
+
+      <div class="scan-portrait-wrap" id="portrait-wrap">
+        <img class="scan-portrait" id="scan-portrait"
+             src="/assets/img/operatives/treatz.png"
+             alt="Operative">
+        <div class="scan-line" id="scan-line"></div>
+        <div class="scan-corner scan-corner--tl" id="corner-tl"></div>
+        <div class="scan-corner scan-corner--tr" id="corner-tr"></div>
+        <div class="scan-corner scan-corner--bl" id="corner-bl"></div>
+        <div class="scan-corner scan-corner--br" id="corner-br"></div>
+        <div class="scan-status-overlay" id="scan-status-overlay">
+          <div class="scan-match-text" id="match-text">■■■ SCANNING ■■■</div>
+          <div class="scan-codename" id="scan-codename">09-K9-OPS</div>
+        </div>
+      </div>
+
+      <div class="scan-data" id="scan-data">
+        <div class="scan-data-item">
+          <div class="scan-data-item__label">Codename</div>
+          <div class="scan-data-item__value">PUPPY TREATZ</div>
+        </div>
+        <div class="scan-data-item">
+          <div class="scan-data-item__label">Clearance</div>
+          <div class="scan-data-item__value">WRAFF-3</div>
+        </div>
+        <div class="scan-data-item">
+          <div class="scan-data-item__label">Division</div>
+          <div class="scan-data-item__value">SNACK OPS</div>
+        </div>
+        <div class="scan-data-item">
+          <div class="scan-data-item__label">Status</div>
+          <div class="scan-data-item__value" style="color:var(--green-bright);">● ACTIVE</div>
+        </div>
+      </div>
+
+      <div class="scan-progress-wrap" id="scan-progress-wrap">
+        <div class="scan-progress-label">
+          <span id="progress-label">INITIALIZING</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="scan-progress-track">
+          <div class="scan-progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="scan-log" id="scan-log">
+        <div class="scan-log-line" id="log-1">› Initializing secure K9 link…</div>
+        <div class="scan-log-line" id="log-2">› Reading credential signature…</div>
+        <div class="scan-log-line" id="log-3">› Cross-referencing K9 registry…</div>
+        <div class="scan-log-line green" id="log-4">✓ MATCH FOUND — ACTIVE OPERATIVE VERIFIED</div>
+        <div class="scan-log-line white" id="log-5">› Redirecting to HQ…</div>
+      </div>
+
+    </div>
+
+    <!-- WOOF flash -->
+    <div class="woof-flash" id="woof-flash">
+      <div class="woof-flash__text">WOOF.</div>
+    </div>
+
+    <!-- Redirect note -->
+    <div class="scan-redirect" id="scan-redirect">
+      Redirecting to HQ in <span id="redirect-count">3</span>s…
+    </div>
+
+  </div>
+
+  <script>
+    // ── SESSION ID ──
+    const sessionId = 'K9-' + Math.random().toString(36).substring(2,6).toUpperCase() + '-' + Date.now().toString().slice(-4);
+    document.getElementById('session-id').textContent = 'SESSION: ' + sessionId;
+
+    // ── ANIMATION SEQUENCE ──
+    function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    function setProgress(pct, label) {
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-pct').textContent = pct + '%';
+      if (label) document.getElementById('progress-label').textContent = label;
+    }
+
+    async function runScan() {
+      await delay(300);
+
+      // Show logo
+      document.getElementById('scan-logo').classList.add('visible');
+      await delay(400);
+
+      // Show corners
+      ['corner-tl','corner-tr','corner-bl','corner-br'].forEach((id, i) => {
+        setTimeout(() => document.getElementById(id).classList.add('visible'), i * 80);
+      });
+
+      // Show status overlay
+      await delay(400);
+      document.getElementById('scan-status-overlay').classList.add('visible');
+
+      // Log line 1
+      document.getElementById('log-1').classList.add('visible');
+      setProgress(10, 'INITIALIZING');
+      await delay(600);
+
+      // Start scan line
+      document.getElementById('scan-line').style.animationPlayState = 'running';
+      setProgress(30, 'SCANNING CREDENTIAL');
+      document.getElementById('log-2').classList.add('visible');
+      await delay(700);
+
+      // Progress climbing
+      setProgress(55, 'READING SIGNATURE');
+      await delay(500);
+      setProgress(75, 'CROSS-REFERENCING');
+      document.getElementById('log-3').classList.add('visible');
+      await delay(700);
+
+      // Match found!
+      setProgress(100, 'VERIFIED');
+      document.getElementById('match-text').textContent = '✓ MATCH FOUND';
+      document.getElementById('match-text').style.color = 'var(--green-bright)';
+      document.getElementById('scan-portrait').classList.add('revealed');
+      document.getElementById('log-4').classList.add('visible');
+      await delay(300);
+
+      // Show data
+      document.getElementById('scan-data').classList.add('visible');
+      await delay(400);
+
+      // WOOF flash
+      const woof = document.getElementById('woof-flash');
+      woof.style.transition = 'opacity 0.15s';
+      woof.style.opacity = '1';
+      await delay(300);
+      woof.style.transition = 'opacity 0.4s';
+      woof.style.opacity = '0';
+      await delay(400);
+
+      // Redirect
+      document.getElementById('log-5').classList.add('visible');
+      document.getElementById('scan-redirect').classList.add('visible');
+
+      // Countdown
+      let count = 3;
+      document.getElementById('redirect-count').textContent = count;
+      await delay(1000);
+      count = 2;
+      document.getElementById('redirect-count').textContent = count;
+      await delay(1000);
+      count = 1;
+      document.getElementById('redirect-count').textContent = count;
+      await delay(1000);
+
+      // Go
+      window.location.href = '/';
+    }
+
+    runScan();
+  </script>
+</body>
+</html>

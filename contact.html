@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta property="og:title" content="WRAFF FORCE — Contact">
+  <meta property="og:description" content="Contact Wraff Force. Reach primary operative Puppy Treatz.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .page-hero { padding: 100px 0 56px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 600px; }
+
+    .contact-section { padding: 64px 0; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 32px;
+    }
+
+    /* Contact channels */
+    .contact-channels { display: flex; flex-direction: column; gap: 12px; }
+
+    .contact-channel {
+      display: flex; align-items: center; gap: 20px;
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+
+    .contact-channel:hover {
+      border-color: var(--border-md);
+      background: var(--bg-2);
+      transform: translateX(4px);
+    }
+
+    .contact-channel__icon {
+      width: 44px; height: 44px; border-radius: var(--radius);
+      background: var(--bg-3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 18px;
+    }
+
+    .contact-channel__info { flex: 1; }
+
+    .contact-channel__platform {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 3px;
+    }
+
+    .contact-channel__handle {
+      font-family: var(--font-display); font-size: 18px;
+      letter-spacing: 1.5px; color: var(--text-0);
+    }
+
+    .contact-channel__desc {
+      font-size: 12px; color: var(--text-2); margin-top: 2px;
+    }
+
+    .contact-channel__arrow {
+      font-family: var(--font-mono); font-size: 14px;
+      color: var(--text-3); flex-shrink: 0;
+      transition: color 0.15s, transform 0.15s;
+    }
+
+    .contact-channel:hover .contact-channel__arrow {
+      color: var(--silver); transform: translateX(4px);
+    }
+
+    /* Operative card */
+    .contact-op-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      position: sticky; top: 80px;
+    }
+
+    .contact-op-card__img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; object-position: top;
+      display: block; border-bottom: 1px solid var(--border);
+    }
+
+    .contact-op-card__body { padding: 20px 22px; }
+
+    .contact-op-card__label {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 6px;
+    }
+
+    .contact-op-card__name {
+      font-family: var(--font-display); font-size: 26px;
+      letter-spacing: 2px; color: var(--text-0); margin-bottom: 4px;
+    }
+
+    .contact-op-card__sub {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-2); margin-bottom: 14px;
+    }
+
+    .contact-op-card__note {
+      font-size: 13px; color: var(--text-1); line-height: 1.7;
+      border-top: 1px solid var(--border); padding-top: 14px;
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) {
+      .page-hero { padding: 80px 0 40px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-op-card { position: static; }
+      .contact-op-card__img { aspect-ratio: 16/7; }
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow" data-i18n="contact.eyebrow">K9 Special Unit — Communications</div>
+        <h1 class="page-hero__title" data-i18n="contact.title">CONTACT</h1>
+        <p class="page-hero__lead" data-i18n="contact.lead">
+          Direct contact with primary operative Puppy Treatz, 09-K9-OPS.
+          All channels are monitored. Response times vary depending on proximity
+          to active snack scenarios. Average response time: reasonable.
+          Treat bribes are not required. They are, however, noted.
+        </p>
+      </div>
+    </section>
+
+    <section class="contact-section">
+      <div class="wrap">
+        <div class="contact-grid">
+
+          <!-- CHANNELS -->
+          <div>
+            <div class="sec-head" style="margin-bottom:0;">
+              <span class="sec-code">WF-COM-01</span>
+              <h2 class="sec-title" data-i18n="contact.channelsTitle">CONTACT CHANNELS</h2>
+            </div>
+            <div class="contact-channels" style="margin-top:28px;">
+
+              <a href="https://www.instagram.com/puppy_treatz" target="_blank" rel="noopener" class="contact-channel">
+                <div class="contact-channel__icon">📸</div>
+                <div class="contact-channel__info">
+                  <div class="contact-channel__platform">Instagram</div>
+                  <div class="contact-channel__handle">@puppy_treatz</div>
+                  <div class="contact-channel__desc" data-i18n="contact.instagramDesc">Primary public channel. Operational updates, field imagery, pupplay community.</div>
+                </div>
+                <div class="contact-channel__arrow">→</div>
+              </a>
+
+              <a href="/cdn-cgi/l/email-protection#fa958a89ba8d889b9c9cd49b9d9f949983" class="contact-channel">
+                <div class="contact-channel__icon">✉️</div>
+                <div class="contact-channel__info">
+                  <div class="contact-channel__platform">Email</div>
+                  <div class="contact-channel__handle"><span class="__cf_email__" data-cfemail="91fee1e2d1e6e3f0f7f7bff0f6f4fff2e8">[email&#160;protected]</span></div>
+                  <div class="contact-channel__desc" data-i18n="contact.emailDesc">Official operations channel. Formal inquiries, incident reports, collaboration requests.</div>
+                </div>
+                <div class="contact-channel__arrow">→</div>
+              </a>
+
+              <a href="https://t.me/Pup_Treatz" target="_blank" rel="noopener" class="contact-channel">
+                <div class="contact-channel__icon">✈️</div>
+                <div class="contact-channel__info">
+                  <div class="contact-channel__platform">Telegram</div>
+                  <div class="contact-channel__handle">@Pup_Treatz</div>
+                  <div class="contact-channel__desc" data-i18n="contact.telegramDesc">Direct line to primary operative. For field communications, mission coordination and treat-adjacent emergencies.</div>
+                </div>
+                <div class="contact-channel__arrow">→</div>
+              </a>
+
+            </div>
+
+            <!-- Note -->
+            <div class="info-box" style="margin-top:24px;">
+              <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; color:var(--text-2); line-height:1.7;" data-i18n="contact.note">
+                Wraff Force is part of the pupplay community in North Rhine-Westphalia and beyond.
+                If you're a pup, handler, or fellow operative looking to connect — all channels are open.
+                Unit Two's contact requests are reviewed with additional scrutiny.
+                This is standard procedure.
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIVE CARD -->
+          <div>
+            <div class="contact-op-card">
+              <img class="contact-op-card__img" src="/assets/img/operatives/treatz.png" alt="Puppy Treatz">
+              <div class="contact-op-card__body">
+                <div class="contact-op-card__label" data-i18n="contact.primaryOperative">Primary Operative</div>
+                <div class="contact-op-card__name">PUPPY TREATZ</div>
+                <div class="contact-op-card__sub">09-K9-OPS · NRW, Germany · Shiba Inu × Border Collie</div>
+                <div style="margin-bottom:14px;">
+                  <span class="badge badge--green">● <span data-i18n="badges.onDuty">On Duty</span></span>
+                </div>
+                <div class="contact-op-card__note" data-i18n="contact.operativeNote">
+                  Primary operative and founding member of Wraff Force. Active in the pupplay community
+                  in NRW and across Europe. Open to contact with fellow pups, handlers and operatives worldwide.
+                  Initial contact: may be reserved. Subsequent contact: significantly less reserved.
+                  This is documented in the dossier.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

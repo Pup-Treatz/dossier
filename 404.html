@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Sector Not Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+
+  <style>
+    .not-found {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .not-found__grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .not-found__vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none;
+    }
+
+    .not-found__inner {
+      position: relative; z-index: 10;
+      max-width: 560px;
+    }
+
+    .not-found__code {
+      font-family: var(--font-display);
+      font-size: clamp(96px, 20vw, 180px);
+      letter-spacing: 8px; line-height: 1;
+      color: var(--bg-2);
+      -webkit-text-stroke: 1px rgba(200,212,224,0.1);
+      margin-bottom: 0;
+      user-select: none;
+    }
+
+    .not-found__eyebrow {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 16px;
+    }
+
+    .not-found__title {
+      font-family: var(--font-display); font-size: clamp(28px, 5vw, 48px);
+      letter-spacing: 4px; color: var(--text-0); margin-bottom: 16px;
+    }
+
+    .not-found__desc {
+      font-size: 14px; color: var(--text-2); line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .not-found__links {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+
+    .not-found__unit-two {
+      margin-top: 48px;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+      color: var(--text-3); font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+
+  <div class="not-found">
+    <div class="not-found__grid"></div>
+    <div class="not-found__vignette"></div>
+
+    <div class="not-found__inner">
+      <div class="not-found__code">404</div>
+      <div class="not-found__eyebrow" data-i18n="notFound.eyebrow">WF-ERROR-404 · Sector Not Found</div>
+      <h1 class="not-found__title" data-i18n="notFound.title">THIS SECTOR DOES NOT EXIST</h1>
+      <p class="not-found__desc" data-i18n="notFound.desc">
+        The requested sector could not be located in the Wraff Force registry.
+        Either the sector was never established, has been sealed following a June 2025 incident,
+        or Unit Two was involved. A report has been filed.
+        Return to HQ immediately.
+      </p>
+      <div class="not-found__links">
+        <a href="/" class="btn btn--primary" data-i18n="notFound.returnHQ">← Return to HQ</a>
+        <a href="/operatives.html" class="btn btn--secondary" data-i18n="notFound.viewPersonal">View Personnel</a>
+      </div>
+      <div class="not-found__unit-two" data-i18n="notFound.unitTwo">
+        Unit Two has been notified of this error. Unit Two's explanation: dietary variance.
+      </div>
+    </div>
+  </div>
+
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
