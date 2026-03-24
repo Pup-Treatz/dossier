@@ -330,7 +330,10 @@
     .active-incident__name { font-family: var(--font-display); font-size: 15px; letter-spacing: 1.5px; color: var(--text-0); flex: 1; }
     .active-incident__location { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-2); white-space: nowrap; }
 
-    @media (max-width: 1024px) { .operative-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+    /* GEHEIM auf Mobile ausblenden — ist im Hamburger-Menü */
+    @media (max-width: 900px) { .wf-nav__classified { display: none !important; } }
+
+        @media (max-width: 1024px) { .operative-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid-4 { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 900px) { .page-hero { padding: 80px 0 32px; } .threat-list { grid-template-columns: 1fr 1fr; } .treat-alert-levels { grid-template-columns: repeat(3, 1fr); } .treat-alert-levels-labels { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 600px) { .operative-grid { grid-template-columns: 1fr 1fr; } .stats-grid-4 { grid-template-columns: 1fr 1fr; } .threat-list { grid-template-columns: 1fr; } }
   </style>
@@ -419,7 +422,7 @@
                 <circle class="threat-dot threat-dot--active" cx="63.1" cy="49.2" r="1.0"/>
                 <line x1="62.0" y1="50.0" x2="58.5" y2="53.5" stroke="rgba(224,52,52,0.4)" stroke-width="0.2" stroke-dasharray="0.6 0.4"/>
                 <text x="58.2" y="55.5" font-family="DM Mono, monospace" font-size="2.0" fill="rgba(224,52,52,0.95)" letter-spacing="0.3" font-weight="500" text-anchor="middle">CASTROP-RAUXEL</text>
-                <text x="58.2" y="57.7" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(224,52,52,0.55)" letter-spacing="0.2" text-anchor="middle">WF-OP-019 · ACTIVE</text>
+                <text id="map-label-active" x="58.2" y="57.7" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(224,52,52,0.55)" letter-spacing="0.2" text-anchor="middle">WF-OP-019 · ACTIVE</text>
               </g>
 
               <!-- Köln — Label nach LINKS-UNTEN (weiter unten als Castrop) -->
@@ -437,7 +440,7 @@
                 <circle class="threat-dot threat-dot--elevated" cx="71.8" cy="46.6" r="0.9"/>
                 <line x1="73.0" y1="45.6" x2="76.5" y2="42.5" stroke="rgba(212,133,10,0.4)" stroke-width="0.2" stroke-dasharray="0.6 0.4"/>
                 <text x="76.8" y="42.0" font-family="DM Mono, monospace" font-size="2.0" fill="rgba(212,133,10,0.95)" letter-spacing="0.3">BERLIN</text>
-                <text x="76.8" y="44.2" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(212,133,10,0.5)" letter-spacing="0.2">ELEVATED</text>
+                <text id="map-label-elevated" x="76.8" y="44.2" font-family="DM Mono, monospace" font-size="1.6" fill="rgba(212,133,10,0.5)" letter-spacing="0.2">ELEVATED</text>
               </g>
 
               <!-- London — Label nach LINKS-OBEN -->
@@ -658,6 +661,20 @@
 
   </main>
   <div id="main-footer"></div>
+
+  <script>
+    // ── KARTEN-LABELS ZWEISPRACHIG ──
+    function updateMapLabels() {
+      const lang = (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+      const el1 = document.getElementById('map-label-active');
+      const el2 = document.getElementById('map-label-elevated');
+      if (el1) el1.textContent = lang === 'de' ? 'WF-OP-019 · AKTIV' : 'WF-OP-019 · ACTIVE';
+      if (el2) el2.textContent = lang === 'de' ? 'ERHÖHT' : 'ELEVATED';
+    }
+    document.addEventListener('wf:langChanged', updateMapLabels);
+    if (window.WF_LANG) updateMapLabels();
+    else document.addEventListener('wf:langChanged', updateMapLabels, { once: true });
+  </script>
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/main.js"></script>
 
@@ -684,7 +701,7 @@
     let currentLevel = 2;
 
     function getLang() {
-      return document.documentElement.getAttribute('data-lang') || 'en';
+      return (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
     }
 
     function updateAlert(level) {
@@ -731,8 +748,14 @@
       if (currentLevel < 5) updateAlert(currentLevel + 1);
     });
 
-    // Init
-    updateAlert(2);
+    // Init — warten bis i18n geladen
+    function initAlert() { updateAlert(currentLevel); }
+    if (window.WF_LANG) {
+      initAlert();
+    } else {
+      document.addEventListener('wf:langChanged', initAlert, { once: true });
+    }
+    document.addEventListener('wf:langChanged', () => updateAlert(currentLevel));
   </script>
 
   <script>
