@@ -528,6 +528,7 @@ main {
 
   .wf-nav__links         { display: none; }
   .wf-nav__hamburger     { display: flex; }
+  .wf-nav__classified    { display: none; }
 
   .wf-footer__inner {
     flex-direction: column;
