@@ -1123,7 +1123,7 @@
     "sidebarRatingsTitle": "Classifications",
     "listEyebrow": "WF-RECRUIT-02",
     "listTitle": "APPLICANT LIST",
-    "listLead": "Public overview of all submitted applications. Results are visible to everyone.",
+    "listLead": "The 9 most recent applications. For the full registry including search and filter, see the applicant list.",
     "listEmpty": "NO APPLICATIONS RECEIVED. BE THE FIRST.",
     "originUnknown": "Origin: unknown",
     "ratingApproved": "FORWARDING RECOMMENDED",
@@ -1139,6 +1139,7 @@
     "colName": "CALLSIGN",
     "colOrigin": "ORIGIN",
     "colRating": "CLASSIFICATION",
-    "colDate": "DATE"
+    "colDate": "DATE",
+    "openFormBtn": "APPLY NOW →"
   }
 }

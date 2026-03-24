@@ -1092,7 +1092,7 @@
     "sidebarRatingsTitle": "Einstufungen",
     "listEyebrow": "WF-RECRUIT-02",
     "listTitle": "BEWERBERLISTE",
-    "listLead": "Öffentliche Übersicht aller eingereichten Bewerbungen. Ergebnisse sind für alle einsehbar.",
+    "listLead": "Die 9 neuesten Bewerbungen. Vollständige Liste mit Suche und Filter: Bewerberübersicht.",
     "listEmpty": "KEINE BEWERBUNGEN EINGEGANGEN. SEI DER ERSTE.",
     "originUnknown": "Herkunft: unbekannt",
     "ratingApproved": "WEITERLEITUNG EMPFOHLEN",
@@ -1108,6 +1108,7 @@
     "colName": "DECKNAME",
     "colOrigin": "HERKUNFT",
     "colRating": "EINSTUFUNG",
-    "colDate": "DATUM"
+    "colDate": "DATUM",
+    "openFormBtn": "JETZT BEWERBEN →"
   }
 }
