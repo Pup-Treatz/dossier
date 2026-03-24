@@ -22,7 +22,7 @@
           <li><a href="/about.html"      data-i18n="nav.agency">AGENCY</a></li>
           <li><a href="/operatives.html" data-i18n="nav.operatives">OPERATIVES</a></li>
           <li class="wf-nav__has-dropdown">
-            <a href="/operations.html" data-i18n="nav.operations">OPERATIONS</a>
+            <a role="button" data-i18n="nav.operations" style="cursor:default;">OPERATIONS</a>
             <div class="wf-nav__dropdown">
               <div class="wf-nav__dropdown-inner">
                 <a href="/operations.html"       data-i18n="nav.missionArchive">Mission Archive</a>
@@ -33,7 +33,7 @@
           </li>
           <li><a href="/status.html" data-i18n="nav.status">STATUS</a></li>
           <li class="wf-nav__has-dropdown">
-            <a href="/field-manual.html" data-i18n="nav.files">FILES</a>
+            <a role="button" data-i18n="nav.files" style="cursor:default;">FILES</a>
             <div class="wf-nav__dropdown">
               <div class="wf-nav__dropdown-inner">
                 <a href="/field-manual.html" data-i18n="nav.fieldManual">Field Manual</a>
@@ -64,12 +64,12 @@
     <div class="wf-mobile-menu" id="mobileMenu">
       <a href="/about.html"       data-i18n="nav.agency">AGENCY</a>
       <a href="/operatives.html"  data-i18n="nav.operatives">OPERATIVES</a>
-      <a href="/operations.html"  data-i18n="nav.operations">OPERATIONS</a>
+      <span class="wf-mobile-menu__section" data-i18n="nav.operations">OPERATIONS</span>
       <a href="/operations.html"      data-i18n="nav.missionArchive" style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Mission Archive</a>
       <a href="/incident-reports.html" data-i18n="nav.incidentReports" style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Incident Reports</a>
       <a href="/intel-board.html"      data-i18n="nav.intelBoard"      style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Intel Board</a>
       <a href="/status.html"      data-i18n="nav.status">STATUS</a>
-      <a href="/field-manual.html" data-i18n="nav.files">FILES</a>
+      <span class="wf-mobile-menu__section" data-i18n="nav.files">FILES</span>
       <a href="/field-manual.html"     data-i18n="nav.fieldManual"     style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Field Manual</a>
       <a href="/anthem-hall.html"      data-i18n="nav.anthemHall"      style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Anthem Hall</a>
       <a href="/contact.html"     data-i18n="nav.contact">CONTACT</a>
