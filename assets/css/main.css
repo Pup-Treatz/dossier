@@ -374,7 +374,6 @@ main {
 
 /* Mobile overlay menu */
 .wf-mobile-overlay {
-  display: none;
   position: fixed;
   inset: 0;
   z-index: 300;
@@ -382,12 +381,14 @@ main {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+  display: flex;
 }
 
 .wf-mobile-overlay.open {
-  display: flex;
   opacity: 1;
+  pointer-events: all;
 }
 
 .wf-mobile-overlay__inner {
@@ -584,8 +585,8 @@ main {
 
   .wf-nav__inner         { padding: 0 16px; gap: 0; justify-content: space-between; }
   .wf-nav__links         { display: none; }
-  .wf-nav__right         { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-  .wf-nav__hamburger     { display: flex; margin-left: 4px; }
+  .wf-nav__right         { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .wf-nav__hamburger     { display: flex; margin-left: 0; }
   .wf-nav__classified    { display: none; }
   .lang-toggle           { display: flex; }
 
