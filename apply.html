@@ -710,57 +710,80 @@
   }
 
   // ── AI EVALUATION ──
-  async function evaluateApplication(data) {
-    const isRabbit = data.breed.toLowerCase().includes('kaninchen');
+  function evaluateApplication(data) {
+    const lang = getLang();
+    const isDE = lang === 'de';
+    const breed = (data.breed || '').toLowerCase();
 
-    if (isRabbit) {
+    // ── KANINCHEN: sofortige Ablehnung ──
+    if (breed.includes('kaninchen') || breed.includes('rabbit') || breed.includes('hase')) {
       return {
-        rating: 'BEWERBUNG ABGELEHNT',
-        protocol: `Bewerbung von ${data.callsign} wurde automatisch abgelehnt. Rasse: Kaninchen. Klassifikation: WF-HOSTILE-ADJACENT. Eine weitere Prüfung ist nicht erforderlich. Verweis an: Bärbel-Ermittlungsakte. Diese Entscheidung ist endgültig. Widersprüche werden nicht entgegengenommen.`
+        rating: isDE ? 'BEWERBUNG ABGELEHNT' : 'APPLICATION REJECTED',
+        protocol: isDE
+          ? `Bewerbung von ${data.callsign} wurde automatisch abgelehnt. Rasse: Kaninchen. Klassifikation: WF-HOSTILE-ADJACENT. Eine weitere Prüfung ist nicht erforderlich. Verweis an: Bärbel-Ermittlungsakte. Diese Entscheidung ist endgültig. Widersprüche werden nicht entgegengenommen.`
+          : `Application by ${data.callsign} automatically rejected. Breed: Rabbit. Classification: WF-HOSTILE-ADJACENT. No further review required. Refer to: Bärbel Investigation File. This decision is final. Appeals will not be accepted.`
       };
     }
 
+    // ── SCORING ──
     const loreScore = [data.lq1, data.lq2, data.lq3].filter(a => a === 'correct').length;
+    let score = loreScore * 2;
 
-    const prompt = `Du bist das offizielle Wraff Force Bewerbungssystem. Werte die folgende Bewerbung aus und erstelle ein offizielles Beurteilungsprotokoll.
+    const snackText = (data.snack || '').toLowerCase();
+    const suspiciousSnack = ['nehmen','essen','fressen','eat','take','grab','sofort','immediately','natürlich','obviously','consume'].some(w => snackText.includes(w));
+    const goodSnack = ['warten','melden','protokoll','sichern','wait','report','secure','abstand','ignore'].some(w => snackText.includes(w));
+    if (suspiciousSnack) score -= 2;
+    if (goodSnack) score += 2;
 
-BEWERBERDATEN:
-- Deckname: ${data.callsign}
-- Herkunft: ${data.origin || 'nicht angegeben'}
-- Rasse: ${data.breed || 'nicht angegeben'}
-- Primäre Stärke: ${data.strength || 'nicht angegeben'}
-- Reaktion auf unbeaufsichtigtes Leckerli: "${data.snack}"
-- Aufenthaltsort am 12. Juni 2025: "${data.june}"
-- Allgemeinwissen-Score: ${loreScore}/3 korrekte Antworten
-- Motivation: "${data.motivation}"
+    const juneText = (data.june || '').toLowerCase();
+    const suspiciousJune = ['weiß nicht','keine ahnung','zuhause','home','schlafen','sleeping'].some(w => juneText.includes(w));
+    if (suspiciousJune) score -= 1;
+    if (juneText.length > 20) score += 1;
 
-ANWEISUNGEN:
-Antworte NUR mit einem JSON-Objekt, keine Markdown-Backticks, kein sonstiger Text.
-Schreibe das Protokoll auf ${getLang() === 'de' ? 'Deutsch' : 'Englisch'}.
-Wähle eine Einstufung basierend auf den Antworten:
-- "WEITERLEITUNG EMPFOHLEN" (gute Antworten, Lore-Score 2-3, überzeugende Motivation)
-- "AKTE UNTER VORBEHALT" (mittelmäßige Antworten, Lore-Score 1-2)
-- "UNTER BEOBACHTUNG" (verdächtige Antworten beim Leckerli-Test, ähnlich wie Unit Two)
-- "BEWERBUNG ABGELEHNT" (unbrauchbar, komplett falsche Lore-Antworten, keine Motivation)
+    const motText = (data.motivation || '').toLowerCase();
+    if (motText.length > 30) score += 1;
+    if (['snack','leckerli','treat','sicherheit','security'].some(w => motText.includes(w))) score += 1;
+    if (breed.includes('mensch') || breed.includes('human')) score -= 1;
 
-Schreibe das Protokoll im bürokratisch-militärischen Wraff Force Stil: sachlich, leicht absurd, mit subtilen Hinweisen auf die Lore. 3-4 Sätze. Auf Deutsch.
+    // ── PROTOKOLL-VARIANTEN ──
+    const protocols = {
+      approved: {
+        de: [`${data.callsign} demonstriert überdurchschnittliches Snack-Sicherheitsbewusstsein und korrekte Lore-Kenntnisse. Allgemeinwissen-Score: ${loreScore}/3. Verhalten bei Leckerli-Szenarien: protokollkonform. Empfehlung: Einberufung zur Probezeit. Beef Breath Index: noch nicht erfasst.`,
+             `Ausgezeichnete Ergebnisse. ${data.callsign} kennt die Lore, respektiert das Protokoll und hat eine überzeugende Erklärung für den 12. Juni 2025 geliefert. Score: ${loreScore}/3. Weiterleitung an Puppy Treatz empfohlen. Colonel Flops hat geschwiegen — das ist als Zustimmung gewertet worden.`],
+        en: [`${data.callsign} demonstrates above-average snack security awareness and correct lore knowledge. General knowledge score: ${loreScore}/3. Behaviour in treat scenarios: protocol-compliant. Recommendation: probationary recruitment. Beef Breath Index: not yet recorded.`,
+             `Outstanding results. ${data.callsign} knows the lore, respects protocol and has provided a convincing account of 12 June 2025. Score: ${loreScore}/3. Forwarding to Puppy Treatz recommended. Colonel Flops remained silent — this has been interpreted as consent.`]
+      },
+      reserve: {
+        de: [`${data.callsign} erfüllt Grundvoraussetzungen mit Einschränkungen. Allgemeinwissen-Score: ${loreScore}/3. Einige Antworten erfordern Nachprüfung. Akte zur weiteren Auswertung weitergeleitet. Einberufung ausstehend. Colonel Flops wurde nicht konsultiert.`,
+             `Gemischtes Ergebnis. Score: ${loreScore}/3. Snack-Protokollkenntnisse: ausreichend. Motivation: vorhanden. Akte verbleibt unter Vorbehalt bis zur vollständigen Überprüfung. Beef Breath Index: unauffällig. Vorerst.`],
+        en: [`${data.callsign} meets basic requirements with reservations. General knowledge score: ${loreScore}/3. Some answers require follow-up. File forwarded to command for further evaluation. Recruitment pending.`,
+             `Mixed result. Score: ${loreScore}/3. Snack protocol knowledge: sufficient. Motivation: present. File retained under reservation pending full review. Beef Breath Index: unremarkable. For now.`]
+      },
+      watch: {
+        de: [`${data.callsign} zeigt auffällige Reaktionsmuster bei unbeaufsichtigten Snack-Szenarien. Allgemeinwissen-Score: ${loreScore}/3. Verhaltenskorrelation mit Unit Two: erhöht. Beef Breath Index wird engmaschig überwacht. Akte bleibt aktiv.`,
+             `Besorgniserregende Antworten im Verhaltenstest. ${data.callsign} wurde zur Beobachtung vorgemerkt. Score: ${loreScore}/3. Die Antwort auf die Leckerli-Frage wurde dreifach geprüft. Ergebnis: auffällig. Perimeter-Abstand zu gesicherten Snacks: vorgeschrieben.`],
+        en: [`${data.callsign} shows conspicuous response patterns in unsupervised snack scenarios. General knowledge score: ${loreScore}/3. Behavioural correlation with Unit Two: elevated. Beef Breath Index under close monitoring. File remains active.`,
+             `Concerning answers in the behavioural assessment. ${data.callsign} flagged for observation. Score: ${loreScore}/3. The treat response was reviewed three times. Result: suspicious. Mandatory perimeter distance from secured snacks has been noted.`]
+      },
+      rejected: {
+        de: [`${data.callsign} erfüllt die Mindestanforderungen der Wraff Force nicht. Allgemeinwissen-Score: ${loreScore}/3. Snack-Protokollkenntnisse: unzureichend. Bewerbung archiviert. Erneute Bewerbung nach 73 Tagen möglich. Diese Zahl wurde nicht zufällig gewählt.`,
+             `Ablehnung. Score: ${loreScore}/3. ${data.callsign} konnte weder Lore-Kenntnisse noch Protokollbewusstsein nachweisen. Die Antwort auf die Leckerli-Frage wurde als operatives Sicherheitsrisiko eingestuft. Akte geschlossen. Keine weiteren Kommentare.`],
+        en: [`${data.callsign} does not meet the minimum requirements of Wraff Force. General knowledge score: ${loreScore}/3. Snack protocol knowledge: insufficient. Application archived. Reapplication possible after 73 days. This number was not chosen randomly.`,
+             `Rejected. Score: ${loreScore}/3. ${data.callsign} demonstrated neither lore knowledge nor protocol awareness. The treat response was classified as an operational security risk. File closed. No further comments.`]
+      }
+    };
 
-Format:
-{"rating": "EINSTUFUNG", "protocol": "Protokolltext"}`;
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    const result = await response.json();
-    const text = result.content[0].text.replace(/```json|```/g, '').trim();
-    return JSON.parse(text);
+    if (score >= 7) {
+      return { rating: isDE ? 'WEITERLEITUNG EMPFOHLEN' : 'FORWARDING RECOMMENDED', protocol: pick(protocols.approved[lang] || protocols.approved.de) };
+    } else if (score >= 4) {
+      return { rating: isDE ? 'AKTE UNTER VORBEHALT' : 'FILE UNDER RESERVATION', protocol: pick(protocols.reserve[lang] || protocols.reserve.de) };
+    } else if (score >= 1 || suspiciousSnack) {
+      return { rating: isDE ? 'UNTER BEOBACHTUNG' : 'UNDER OBSERVATION', protocol: pick(protocols.watch[lang] || protocols.watch.de) };
+    } else {
+      return { rating: isDE ? 'BEWERBUNG ABGELEHNT' : 'APPLICATION REJECTED', protocol: pick(protocols.rejected[lang] || protocols.rejected.de) };
+    }
   }
 
   // ── FORM SUBMIT ──
@@ -787,7 +810,7 @@ Format:
     };
 
     try {
-      const evaluation = await evaluateApplication(data);
+      const evaluation = evaluateApplication(data);
       const applicants = await loadApplicants();
       const num = `WF-APP-2025-${String(applicants.length + 1).padStart(3, '0')}`;
       const date = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
