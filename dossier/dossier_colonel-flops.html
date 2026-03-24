@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Dossier: Colonel Flops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force operative dossier — Colonel Flops. Active Operative (Honorary). Two commendations. Both accepted in silence.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wraff.agency/dossier/colonel-flops.html">
+  <meta property="og:title" content="WRAFF FORCE — Dossier: Colonel Flops">
+  <meta property="og:description" content="Active Operative (Honorary). Two commendations. Both accepted in silence. CF-01.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .dossier-header {
+      padding: 80px 0 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .dossier-back {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+      transition: color 0.15s;
+    }
+
+    .dossier-back:hover { color: var(--text-1); }
+
+    .dossier-top {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 48px;
+      align-items: start;
+      padding-bottom: 56px;
+    }
+
+    .dossier-portrait-wrap { position: relative; }
+
+    .dossier-portrait {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-md);
+    }
+
+    /* Honorary — silver top glow */
+    .dossier-portrait--honorary {
+      border-color: rgba(200,212,224,0.25);
+      box-shadow: 0 0 32px rgba(200,212,224,0.06);
+    }
+
+    .dossier-portrait-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      padding: 20px 14px 12px;
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .dossier-portrait-id {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .dossier-name {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 72px);
+      letter-spacing: 4px;
+      line-height: 1;
+      color: var(--text-0);
+      margin-bottom: 8px;
+    }
+
+    .dossier-designation {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 28px;
+    }
+
+    .dossier-classification {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dossier-class-label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .profile-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .profile-row {
+      background: var(--bg-1);
+      padding: 12px 16px;
+      transition: background 0.15s;
+    }
+
+    .profile-row:hover { background: var(--bg-2); }
+    .profile-row--full { grid-column: 1 / -1; }
+
+    .profile-row__label {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 4px;
+    }
+
+    .profile-row__value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--text-0);
+    }
+
+    .profile-row__value--normal {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      letter-spacing: 0;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    /* ── CLASSIFIED PRIOR SERVICE ── */
+    .prior-service-box {
+      background: var(--bg-1);
+      border: 1px solid rgba(200,212,224,0.15);
+      border-left: 2px solid var(--silver-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+
+    .prior-service-box__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--silver-dim);
+      margin-bottom: 8px;
+    }
+
+    .prior-service-box__text {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    /* ── DOSSIER CONTENT ── */
+    .dossier-content { position: relative; z-index: 1; }
+
+    .dossier-section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dossier-section:last-child { border-bottom: none; }
+
+    .section-two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .behavior-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .behavior-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .behavior-card--strength { border-top: 2px solid var(--green); }
+    .behavior-card--weakness { border-top: 2px solid var(--amber); }
+    .behavior-card--gag      { border-top: 2px solid var(--silver-dim); }
+
+    .behavior-card__type {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .behavior-card--strength .behavior-card__type { color: var(--green); }
+    .behavior-card--weakness .behavior-card__type { color: var(--amber); }
+    .behavior-card--gag      .behavior-card__type { color: var(--silver-dim); }
+
+    .behavior-card__title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      color: var(--text-0);
+      margin-bottom: 6px;
+    }
+
+    .behavior-card__body {
+      font-size: 12.5px;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    .mission-list { display: flex; flex-direction: column; }
+
+    .mission-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .mission-item:last-child { border-bottom: none; }
+
+    .mission-item__code {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      padding-top: 2px;
+    }
+
+    .mission-item__title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      color: var(--text-0);
+      margin-bottom: 4px;
+    }
+
+    .mission-item__body {
+      font-size: 13px;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    .incident-list { display: flex; flex-direction: column; }
+
+    .incident-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .incident-item:last-child { border-bottom: none; }
+
+    .incident-item__ref {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+      text-transform: uppercase;
+    }
+
+    .incident-item__desc {
+      font-size: 13px;
+      color: var(--text-1);
+    }
+
+    .network-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .network-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .network-card:hover { border-color: var(--border-md); background: var(--bg-2); }
+
+    .network-card__portrait {
+      width: 44px;
+      height: 44px;
+      border-radius: 2px;
+      object-fit: cover;
+      object-position: top;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .network-card__name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      color: var(--text-0);
+      margin-bottom: 2px;
+    }
+
+    .network-card__role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .network-card__note {
+      font-size: 11.5px;
+      color: var(--text-2);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .sidebar-box {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-box__title {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-stat:last-child { border-bottom: none; }
+
+    .sidebar-stat__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+
+    .sidebar-stat__value {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: var(--silver);
+    }
+
+    /* Commendation display */
+    .commendation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .commendation-item {
+      background: var(--bg-2);
+      border: 1px solid rgba(200,212,224,0.12);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    .commendation-item__ref {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 2px;
+      color: var(--silver-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .commendation-item__title {
+      font-size: 13px;
+      color: var(--text-0);
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .commendation-item__note {
+      font-size: 12px;
+      color: var(--text-2);
+      font-style: italic;
+    }
+
+    @media (max-width: 1024px) {
+      .dossier-top { grid-template-columns: 280px 1fr; gap: 32px; }
+      .section-two-col { grid-template-columns: 1fr; }
+      .behavior-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .dossier-top { grid-template-columns: 1fr; }
+      .dossier-portrait { aspect-ratio: 4/3; }
+      .profile-table { grid-template-columns: 1fr; }
+      .behavior-grid { grid-template-columns: 1fr; }
+      .network-grid { grid-template-columns: 1fr 1fr; }
+      .mission-item { grid-template-columns: 80px 1fr auto; }
+      .incident-item { grid-template-columns: 1fr auto; }
+      .incident-item__ref { display: none; }
+    }
+
+    @media (max-width: 500px) {
+      .network-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── COLONEL FLOPS EASTER EGG ── */
+    .dossier-portrait-wrap { cursor: pointer; }
+
+    .dossier-portrait--honorary {
+      transition: filter 0.3s, transform 0.3s;
+    }
+    .dossier-portrait-wrap:hover .dossier-portrait--honorary {
+      filter: brightness(1.08) contrast(1.05);
+    }
+    .dossier-portrait-wrap:active .dossier-portrait--honorary {
+      transform: scale(0.98);
+    }
+
+    /* Overlay */
+    @keyframes flopsReveal {
+      0%   { opacity: 0; transform: scale(0.95); }
+      15%  { opacity: 1; transform: scale(1.01); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes flopsCursor {
+      0%, 49%  { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    @keyframes flopsLineIn {
+      from { transform: scaleX(0); transform-origin: left; }
+      to   { transform: scaleX(1); transform-origin: left; }
+    }
+
+    .flops-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(10,12,16,0.92);
+      display: flex; align-items: center; justify-content: center;
+      animation: flopsReveal 0.35s ease forwards;
+      cursor: pointer;
+    }
+    .flops-overlay__panel {
+      background: var(--bg-1);
+      border: 1px solid var(--border-md);
+      border-top: 2px solid var(--silver-dim);
+      border-radius: var(--radius);
+      padding: 40px 48px;
+      max-width: 560px; width: 90%;
+      position: relative;
+    }
+    .flops-overlay__code {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px;
+      color: var(--text-3); text-transform: uppercase; margin-bottom: 24px;
+    }
+    .flops-overlay__portrait {
+      width: 72px; height: 72px; border-radius: 2px;
+      object-fit: cover; object-position: top;
+      border: 1px solid var(--border-md);
+      margin-bottom: 20px;
+      filter: grayscale(0.3);
+    }
+    .flops-overlay__title {
+      font-family: var(--font-display); font-size: 28px; letter-spacing: 3px;
+      color: var(--text-0); margin-bottom: 4px;
+    }
+    .flops-overlay__subtitle {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      color: var(--text-3); text-transform: uppercase; margin-bottom: 24px;
+    }
+    .flops-overlay__rule {
+      height: 1px; margin-bottom: 24px;
+      background: repeating-linear-gradient(90deg, var(--border-md) 0, var(--border-md) 5px, transparent 5px, transparent 10px);
+      animation: flopsLineIn 0.6s ease 0.3s both;
+    }
+    .flops-overlay__assessment {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
+      color: var(--text-2); line-height: 1.9; margin-bottom: 28px;
+    }
+    .flops-overlay__assessment strong {
+      color: var(--text-0); font-weight: 500;
+    }
+    .flops-overlay__cursor {
+      display: inline-block; width: 8px; height: 13px;
+      background: var(--silver-dim); vertical-align: middle;
+      animation: flopsCursor 1s step-end infinite;
+      margin-left: 2px;
+    }
+    .flops-overlay__footer {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px;
+      color: var(--text-3); text-transform: uppercase;
+      border-top: 1px solid var(--border); padding-top: 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .flops-overlay__close {
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px;
+      color: var(--text-3); text-transform: uppercase;
+      background: none; border: 1px solid var(--border-md);
+      border-radius: var(--radius); padding: 5px 12px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .flops-overlay__close:hover { color: var(--text-0); border-color: var(--silver-dim); }
+  </style>
+</head>
+<body>
+
+  <div id="main-nav"></div>
+
+  <main>
+
+    <!-- DOSSIER HEADER -->
+    <section class="dossier-header">
+      <div class="wrap">
+
+        <a href="/operatives.html" class="dossier-back"><span data-i18n="dossier.backToRoster">← Back to Roster</span></a>
+
+        <div class="dossier-top">
+
+          <!-- PORTRAIT -->
+          <div class="dossier-portrait-wrap" id="flops-portrait-wrap">
+            <img
+              class="dossier-portrait dossier-portrait--honorary"
+              src="/assets/img/operatives/colonel-flops.png"
+              alt="Colonel Flops — CF-01">
+            <div class="dossier-portrait-label">
+              <div class="dossier-portrait-id">CF-01 · HONORARY COMMISSION · EASTERN GATE</div>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="dossier-info">
+
+            <div class="dossier-classification">
+              <span class="honorary-badge" style="display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:8.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--silver-dim); border:1px solid rgba(200,212,224,0.2); border-radius:2px; padding:3px 9px; background:rgba(200,212,224,0.05);">★ HONORARY COMMISSION</span>
+              <span class="dossier-class-label" data-i18n="dossier.coverTitle">OPERATIVE FILE</span>
+            </div>
+
+            <div class="dossier-name">COLONEL FLOPS</div>
+            <div class="dossier-designation">Psychological Operations Asset · Eastern Gate · Honorary</div>
+
+            <div class="profile-table">
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldId">Operative ID</div>
+                <div class="profile-row__value">CF-01</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldStatus">Status</div>
+                <div class="profile-row__value">
+                  <span class="badge badge--green">● <span data-i18n="badges.deployed">Deployed</span></span>
+                </div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldDivision">Division</div>
+                <div class="profile-row__value" data-i18n="operatives.divisions.psychOps">Psych Ops</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldRank">Rank</div>
+                <div class="profile-row__value">Colonel (Honorary)</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldType">Type</div>
+                <div class="profile-row__value">Stuffed Bear / Polyester</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldLocation">Assigned Position</div>
+                <div class="profile-row__value">Eastern Gate</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldCommission">Commission</div>
+                <div class="profile-row__value" data-i18n="dossier.flopsCommissioned">May 2025</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldCommendations">Commendations</div>
+                <div class="profile-row__value">2 — Both Accepted In Silence</div>
+              </div>
+              <div class="profile-row profile-row--full">
+                <div class="profile-row__label" data-i18n="dossier.fieldSummary">Operative Summary</div>
+                <div class="profile-row__value--normal" data-i18n="dossier.flopsSummary">
+                  Found alone in an open field during a routine sweep, May 2025.
+                  Named Colonel Flops by Unit Four without prior authorization.
+                  Assigned to eastern gate by command without documented rationale.
+                  Has not moved. Has not spoken. Has not needed to.
+                  Two commendations issued. Both accepted in silence.
+                  Prior service record: classified.
+                </div>
+              </div>
+            </div>
+
+            <!-- Prior service classified note -->
+            <div class="prior-service-box">
+              <div class="prior-service-box__label" data-i18n="dossier.priorServiceLabel">Prior Service Record</div>
+              <div class="prior-service-box__text" data-i18n="dossier.priorServiceText">
+                Prior service record is classified at a level exceeding current access clearance.
+                Requests for further information have been submitted. Responses have not been received.
+                Colonel Flops has been asked directly. Colonel Flops did not answer.
+                This was interpreted as confirmation. This interpretation is not official.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOSSIER CONTENT -->
+    <div class="dossier-content">
+
+      <!-- BEHAVIORAL ANALYSIS -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="section-two-col">
+            <div>
+              <div class="sec-head">
+                <span class="sec-code">WF-DA-01</span>
+                <h2 class="sec-title" data-i18n="dossier.behaviorTitle">BEHAVIORAL ANALYSIS</h2>
+              </div>
+              <div class="behavior-grid">
+
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.flopsStrength1title">PSYCHOLOGICAL PRESENCE</div>
+                  <div class="behavior-card__body" data-i18n="dossier.flopsStrength1body">
+                    Documented deterrent effect on hostile contacts at eastern gate.
+                    The rabbit hesitated at Folsom. No further explanation has been offered.
+                    None has been requested.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.flopsStrength2title">OPERATIONAL STABILITY</div>
+                  <div class="behavior-card__body" data-i18n="dossier.flopsStrength2body">
+                    Has never abandoned his post. Has never filed a complaint. Has never
+                    required debriefing. Zero incident reports originating from eastern gate.
+                    Benchmark for all other operatives.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.flopsStrength3title">STRATEGIC SILENCE</div>
+                  <div class="behavior-card__body" data-i18n="dossier.flopsStrength3body">
+                    Has never confirmed or denied any intelligence assessment, relationship
+                    or operational interpretation. Button eyes convey nothing.
+                    This has been described as "deeply unsettling" by Unit Two. Filed.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Limitation</div>
+                  <div class="behavior-card__title" data-i18n="dossier.flopsWeakness1title">MOBILITY</div>
+                  <div class="behavior-card__body" data-i18n="dossier.flopsWeakness1body">
+                    Colonel Flops does not move independently. Deployment requires
+                    physical relocation by another operative. This has never been
+                    described as a problem. It has simply been noted.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Limitation</div>
+                  <div class="behavior-card__title" data-i18n="dossier.flopsWeakness2title">VERBAL REPORTING</div>
+                  <div class="behavior-card__body" data-i18n="dossier.flopsWeakness2body">
+                    Has submitted zero written or verbal field reports to date.
+                    Command has interpreted his silence as satisfactory.
+                    No further reporting requirements have been issued.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.flopsGagTitle">THE MOST REVIEWED FILE</div>
+                  <div class="behavior-card__body" data-i18n="dossier.flopsGagBody">
+                    Colonel Flops' silence is the single most reviewed document in the
+                    Unit Two investigation. Analysts have examined it 34 times.
+                    No conclusions have been drawn. The silence remains pending.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div>
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.operativeStats">Operative Statistics</div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statMissions">Deployments</span>
+                  <span class="sidebar-stat__value">7</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statIncidents">Incidents Filed</span>
+                  <span class="sidebar-stat__value">0</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statCommendations">Commendations</span>
+                  <span class="sidebar-stat__value">2</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statReports">Field Reports</span>
+                  <span class="sidebar-stat__value">0</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statComplaints">Complaints</span>
+                  <span class="sidebar-stat__value">0</span>
+                </div>
+              </div>
+
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.commendationsTitle">Commendations</div>
+                <div class="commendation-list">
+                  <div class="commendation-item">
+                    <div class="commendation-item__ref">WF-COM-001 · Sep 2025</div>
+                    <div class="commendation-item__title" data-i18n="dossier.flopsCom1title">Folsom Deterrent Action</div>
+                    <div class="commendation-item__note" data-i18n="dossier.flopsCom1note">The rabbit hesitated. Commendation issued. Accepted in silence.</div>
+                  </div>
+                  <div class="commendation-item">
+                    <div class="commendation-item__ref">WF-COM-002 · Mar 2026</div>
+                    <div class="commendation-item__title" data-i18n="dossier.flopsCom2title">Sustained Eastern Gate Presence</div>
+                    <div class="commendation-item__note" data-i18n="dossier.flopsCom2note">365 days at post. No deviations. Commendation issued. Accepted in silence.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MISSION LOG -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-02</span>
+            <h2 class="sec-title" data-i18n="dossier.missionTitle">DEPLOYMENT LOG</h2>
+          </div>
+          <div class="mission-list">
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-012</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.flopsM1title">Operation Folsom — Berlin</div>
+                <div class="mission-item__body" data-i18n="dossier.flopsM1body">
+                  First large-scale public deployment. Assigned to eastern gate on personal
+                  authority of Puppy Treatz. Held position for full duration of operation.
+                  One rabbit approached. The rabbit hesitated. The rabbit withdrew.
+                  Colonel Flops did not move. Colonel Flops did not need to.
+                </div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-015</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.flopsM2title">Operation No Fool — April Perimeter</div>
+                <div class="mission-item__body" data-i18n="dossier.flopsM2body">
+                  Deployed as psychological anchor during April 1st integrity operation.
+                  Treat authenticity checks were conducted in his presence.
+                  No operative attempted a false treat claim while Colonel Flops was watching.
+                  This is considered significant. It has not been officially documented as such.
+                </div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-018</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.flopsM3title">Operation Easter — Chocolate Security</div>
+                <div class="mission-item__body" data-i18n="dossier.flopsM3body">
+                  Deployed at primary chocolate reserve perimeter.
+                  Unit Two was found at the perimeter. Unit Two noted Colonel Flops was present.
+                  Unit Two filed an explanation. The explanation did not mention Colonel Flops.
+                  This omission has been noted.
+                </div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- INCIDENT LOG -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-03</span>
+            <h2 class="sec-title" data-i18n="dossier.incidentsTitle">INCIDENT LOG</h2>
+          </div>
+          <div class="incident-list">
+
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-014</div>
+              <div class="incident-item__desc" data-i18n="dossier.flopsI1">
+                Commissioned without formal review. Named without documented authorization.
+                Assigned to eastern gate verbally. All paperwork filed retroactively by Puppy Treatz.
+                Status: closed. No further action required.
+              </div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-017</div>
+              <div class="incident-item__desc" data-i18n="dossier.flopsI2">
+                Unit Five located Colonel Flops and held him for 3 minutes 40 seconds.
+                Described as contractual. Colonel Flops permitted this.
+                Duration recorded. No objection filed. No comment issued.
+              </div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-020</div>
+              <div class="incident-item__desc" data-i18n="dossier.flopsI3">
+                Colonel Flops was relocated from eastern gate for 4 minutes during
+                perimeter cleaning. Upon return, three operatives independently
+                reported feeling "watched." Colonel Flops had not moved. He was not yet back.
+                This incident is under review.
+              </div>
+              <span class="badge badge--amber" data-i18n="incidentReports.ongoing">ONGOING</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- NETWORK -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-04</span>
+            <h2 class="sec-title" data-i18n="dossier.networkTitle">OPERATIVE NETWORK</h2>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; margin-bottom:28px; max-width:680px;" data-i18n="dossier.flopsNetworkIntro">
+            Colonel Flops has not confirmed any of the following relationships.
+            Colonel Flops has not denied any of the following relationships.
+            All assessments below are based on field observation and are considered unofficial.
+            Colonel Flops is aware of this document. His response has been noted.
+          </p>
+          <div class="network-grid">
+
+            <a href="/dossier/dossier_treatz.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/treatz.png" alt="Puppy Treatz">
+              <div>
+                <div class="network-card__name">TREATZ</div>
+                <div class="network-card__role">09-K9-OPS · Snack Ops</div>
+                <div class="network-card__note" data-i18n="dossier.flopsNet1">Responsible for naming, commissioning and eastern gate assignment. Colonel Flops has not thanked him. Colonel Flops has not complained either.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/dossier_unit-two.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-two.png" alt="Unit Two">
+              <div>
+                <div class="network-card__name">UNIT TWO</div>
+                <div class="network-card__role">02-K9-OPS · Under Observation</div>
+                <div class="network-card__note" data-i18n="dossier.flopsNet2">Colonel Flops' silence is the most reviewed document in the Unit Two investigation. Unit Two has described the silence as "unhelpful." The silence is ongoing.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/dossier_unit-five.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-five.png" alt="Unit Five">
+              <div>
+                <div class="network-card__name">UNIT FIVE</div>
+                <div class="network-card__role">44-K9-OPS · Cuddle Command</div>
+                <div class="network-card__note" data-i18n="dossier.flopsNet3">Named Colonel Flops. Cuddles are described as contractual at 3 min 40 sec per session. Colonel Flops has permitted every session. This is the closest thing to a confirmed relationship on file.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/dossier_sergeant-bork.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/sergeant-bork.png" alt="Sergeant Bork">
+              <div>
+                <div class="network-card__name">SGT. BORK</div>
+                <div class="network-card__role">03-K9-OPS · Perimeter</div>
+                <div class="network-card__note" data-i18n="dossier.flopsNet4">Stationed nearest to eastern gate. Has saluted Colonel Flops on three separate occasions. Colonel Flops did not return the salute. Bork saluted again anyway.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/dossier_lieutenant-sniff.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="Lieutenant Sniff">
+              <div>
+                <div class="network-card__name">LT. SNIFF</div>
+                <div class="network-card__role">07-K9-OPS · Scent Intel</div>
+                <div class="network-card__note" data-i18n="dossier.flopsNet5">Attempted full scent analysis of Colonel Flops on two occasions. Results: polyester, cotton filling, trace amounts of field dust. Lt. Sniff filed a 4-page report. Conclusions: inconclusive.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/dossier_agent-muffin.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/agent-muffin.png" alt="Agent Muffin">
+              <div>
+                <div class="network-card__name">AGENT MUFFIN</div>
+                <div class="network-card__role">19-K9-OPS · Probationary</div>
+                <div class="network-card__note" data-i18n="dossier.flopsNet6">Attempted to give Colonel Flops a treat on first day. The treat was placed in front of him. The treat remained there for 6 hours. It was eventually filed as an unsecured snack incident.</div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- BALLAD SECTION -->
+      <section class="dossier-section" style="border-top: 1px solid var(--border);">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">CF-01-AUDIO</span>
+            <h2 class="sec-title" data-i18n="dossier.flopsBalladTitle">OFFICIAL FIELD COMPOSITION</h2>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-1); line-height:1.75; max-width:680px; margin:12px 0 24px;" data-i18n="dossier.flopsBalladDesc">
+            The only Wraff Force composition dedicated to a single operative.
+            Begins as a quiet ballad — piano, sparse strings, the musical equivalent of a small brown bear
+            sitting very still at an eastern gate. Builds through commendation, through 47 cuddle sessions
+            with Unit Five, to a full orchestral statement that has been described as surprisingly emotional
+            for a song about a stuffed animal. Colonel Flops has heard this piece.
+            Colonel Flops did not comment. This was expected. It was also correct.
+          </p>
+
+          <!-- PLAYER -->
+          <div style="background:var(--bg-1); border:1px solid var(--border); border-top:2px solid var(--silver-dim); border-radius:var(--radius); overflow:hidden;">
+            <div style="padding:18px 24px 14px; border-bottom:1px solid var(--border); background:var(--bg-2);">
+              <div style="font-family:var(--font-mono); font-size:8.5px; letter-spacing:3px; text-transform:uppercase; color:var(--silver-dim); margin-bottom:6px;" data-i18n="dossier.flopsBalladRef">WF-AH-08 · DEDICATED COMPOSITION · CF-01</div>
+              <div style="font-family:var(--font-display); font-size:22px; letter-spacing:2px; color:var(--text-0); margin-bottom:3px;" data-i18n="dossier.flopsBalladSongTitle">THE BALLAD OF COLONEL FLOPS</div>
+              <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--silver-dim);" data-i18n="dossier.flopsBalladSongSub">Hybrid Ballad to Orchestral · The Only Song Written For Him</div>
+            </div>
+            <div style="padding:14px 24px; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:18px; background:var(--bg-2);">
+              <button id="flops-play-btn" style="width:52px; height:52px; border-radius:50%; border:1px solid var(--silver-dim); background:var(--bg-3); color:var(--text-0); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.15s;" onmouseover="this.style.borderColor='var(--silver)';this.style.background='var(--bg-4)'" onmouseout="this.style.borderColor='var(--silver-dim)';this.style.background='var(--bg-3)'">
+                <svg id="flops-play-icon" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;"><polygon points="5,3 19,12 5,21"/></svg>
+              </button>
+              <div>
+                <div style="position:relative; height:6px; background:var(--bg-0); border-radius:3px; cursor:pointer; margin-bottom:8px; border:1px solid var(--border);" id="flops-progress-wrap">
+                  <div id="flops-progress" style="height:100%; border-radius:3px; width:0%; background:var(--silver-dim); pointer-events:none; transition:background 0.2s;"></div>
+                  <div id="flops-thumb" style="position:absolute; top:50%; transform:translate(-50%,-50%); width:14px; height:14px; border-radius:50%; background:var(--silver); border:2px solid var(--bg-2); pointer-events:none; opacity:0; transition:opacity 0.15s;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:9.5px; color:var(--text-3);">
+                  <span id="flops-time-cur" style="color:var(--text-1);">0:00</span>
+                  <span id="flops-time-total">—:——</span>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px; flex-shrink:0; background:var(--bg-1); border:1px solid var(--border); border-radius:var(--radius); padding:8px 12px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--text-2);flex-shrink:0;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <input id="flops-vol" type="range" min="0" max="1" step="0.05" value="0.8" style="-webkit-appearance:none; appearance:none; width:72px; height:4px; background:var(--bg-3); border-radius:2px; cursor:pointer; outline:none;">
+              </div>
+            </div>
+            <audio id="flops-audio" src="/assets/audio/wf-ballad-flops.mp3" preload="metadata"></audio>
+          </div>
+
+          <!-- NOTE -->
+          <div style="margin-top:16px; padding:12px 16px; background:var(--bg-1); border:1px solid var(--border); border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-2); line-height:1.7; font-style:italic;" data-i18n="dossier.flopsBalladNote">
+              Sergeant Bork saluted during the first playback. The salute was not requested.
+              Unit Five began the session 14 seconds before the piece ended.
+              Colonel Flops was already at the eastern gate.
+              He did not move. He did not comment.
+              The piece was considered a success.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <div id="main-footer"></div>
+
+
+  <script>
+    // ── COLONEL FLOPS EASTER EGG ──
+    function getLang() {
+      return (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+    }
+
+    const flopsLines = {
+      en: [
+        { label: "SUBJECT", value: "Colonel Flops · CF-01 · Honorary Commission" },
+        { label: "ASSESSMENT DATE", value: "Ongoing. No end date defined." },
+        { label: "ANALYST", value: "Lt. Sniff · 07-K9-OPS" },
+        { label: "FINDINGS", value: "Colonel Flops was present during all assessments.<br>Colonel Flops did not comment.<br>Colonel Flops has never commented.<br>The silence of Colonel Flops has been reviewed 14 times.<br>The review is ongoing." },
+        { label: "PSYCH EVAL", value: "Inscrutable. Possibly omniscient. Definitely watching." },
+        { label: "CONCLUSION", value: "<strong>No conclusion reached.</strong><br>Colonel Flops has been informed.<br>Colonel Flops has not responded.<br>This is consistent with all prior interactions." },
+        { label: "STATUS", value: "<strong>UNDER OBSERVATION.</strong> As always." },
+      ],
+      de: [
+        { label: "SUBJEKT", value: "Colonel Flops · CF-01 · Honorarkommission" },
+        { label: "BEWERTUNGSDATUM", value: "Laufend. Kein Enddatum definiert." },
+        { label: "ANALYST", value: "Lt. Sniff · 07-K9-OPS" },
+        { label: "ERGEBNISSE", value: "Colonel Flops war bei allen Bewertungen anwesend.<br>Colonel Flops hat nicht kommentiert.<br>Colonel Flops hat noch nie kommentiert.<br>Das Schweigen von Colonel Flops wurde 14 Mal überprüft.<br>Die Überprüfung läuft." },
+        { label: "PSYCH-EVAL", value: "Undurchdringlich. Möglicherweise allwissend. Beobachtet definitiv." },
+        { label: "FAZIT", value: "<strong>Kein Fazit erreicht.</strong><br>Colonel Flops wurde informiert.<br>Colonel Flops hat nicht geantwortet.<br>Dies ist konsistent mit allen früheren Interaktionen." },
+        { label: "STATUS", value: "<strong>UNTER BEOBACHTUNG.</strong> Wie immer." },
+      ]
+    };
+
+    function openFlopsOverlay() {
+      const lang = getLang();
+      const lines = flopsLines[lang] || flopsLines.en;
+
+      const closeLabel = lang === 'de' ? 'SCHLIESSEN' : 'CLOSE FILE';
+      const codeLabel  = lang === 'de' ? 'WF-PSYCH-CF01 · INTERNE BEWERTUNG · VERTRAULICH' : 'WF-PSYCH-CF01 · INTERNAL ASSESSMENT · CONFIDENTIAL';
+      const titleSub   = lang === 'de' ? 'CF-01 · PSYCH-OPS · OSTTOR' : 'CF-01 · PSYCH OPS · EASTERN GATE';
+      const footerNote = lang === 'de' ? 'Klicken zum Schließen' : 'Click anywhere to close';
+
+      const rowsHtml = lines.map(l =>
+        `<div style="margin-bottom:12px;">
+          <div style="font-size:8px;letter-spacing:2px;color:var(--text-3);text-transform:uppercase;margin-bottom:3px;">${l.label}</div>
+          <div style="font-size:12px;color:var(--text-1);line-height:1.7;">${l.value}</div>
+        </div>`
+      ).join('');
+
+      const overlay = document.createElement('div');
+      overlay.className = 'flops-overlay';
+      overlay.id = 'flops-overlay';
+      overlay.innerHTML = `
+        <div class="flops-overlay__panel" onclick="event.stopPropagation()">
+          <div class="flops-overlay__code">${codeLabel}</div>
+          <img class="flops-overlay__portrait" src="/assets/img/operatives/colonel-flops.png" alt="Colonel Flops">
+          <div class="flops-overlay__title">COLONEL FLOPS</div>
+          <div class="flops-overlay__subtitle">${titleSub}</div>
+          <div class="flops-overlay__rule"></div>
+          <div class="flops-overlay__assessment">${rowsHtml}<span class="flops-overlay__cursor"></span></div>
+          <div class="flops-overlay__footer">
+            <span>${footerNote}</span>
+            <button class="flops-overlay__close" onclick="closeFlopsOverlay()">${closeLabel}</button>
+          </div>
+        </div>`;
+
+      overlay.addEventListener('click', closeFlopsOverlay);
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFlopsOverlay() {
+      const overlay = document.getElementById('flops-overlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.transition = 'opacity 0.2s';
+        setTimeout(() => { overlay.remove(); document.body.style.overflow = ''; }, 200);
+      }
+    }
+
+    // ESC schließt
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeFlopsOverlay();
+    });
+
+    document.getElementById('flops-portrait-wrap').addEventListener('click', openFlopsOverlay);
+  </script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script>
+    // Ballad of Colonel Flops — Audio Player
+    const fa=document.getElementById('flops-audio'),
+          fb=document.getElementById('flops-play-btn'),
+          fi=document.getElementById('flops-play-icon'),
+          fp=document.getElementById('flops-progress'),
+          ft=document.getElementById('flops-thumb'),
+          fw=document.getElementById('flops-progress-wrap'),
+          fc=document.getElementById('flops-time-cur'),
+          fd=document.getElementById('flops-time-total'),
+          fv=document.getElementById('flops-vol');
+    const PLAY=`<polygon points="5,3 19,12 5,21"/>`,
+          PAUSE=`<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`,
+          fmt=s=>`${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+    fa.addEventListener('loadedmetadata',()=>fd.textContent=fmt(fa.duration));
+    fa.addEventListener('timeupdate',()=>{if(!fa.duration)return;const p=(fa.currentTime/fa.duration)*100;fp.style.width=p+'%';ft.style.left=p+'%';fc.textContent=fmt(fa.currentTime);});
+    fa.addEventListener('ended',()=>{fi.innerHTML=PLAY;fp.style.width='0%';fc.textContent='0:00';});
+    fb.addEventListener('click',()=>{if(fa.paused){fa.play();fi.innerHTML=PAUSE;fp.style.background='var(--silver)';}else{fa.pause();fi.innerHTML=PLAY;fp.style.background='var(--silver-dim)';}});
+    fw.addEventListener('click',e=>{if(!fa.duration)return;const r=fw.getBoundingClientRect();fa.currentTime=((e.clientX-r.left)/r.width)*fa.duration;});
+    fw.addEventListener('mouseenter',()=>ft.style.opacity='1');
+    fw.addEventListener('mouseleave',()=>ft.style.opacity='0');
+    fv.addEventListener('input',()=>fa.volume=fv.value);
+    fa.volume=0.8;
+  </script>
+
+</body>
+</html>

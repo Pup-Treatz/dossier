@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Dossier: Unit Two</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WRAFF FORCE — Dossier: Unit Two">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    .dossier-header { padding: 80px 0 0; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .dossier-back { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 32px; transition: color 0.15s; }
+    .dossier-back:hover { color: var(--text-1); }
+    .dossier-top { display: grid; grid-template-columns: 340px 1fr; gap: 48px; align-items: start; padding-bottom: 56px; }
+    .dossier-portrait-wrap { position: relative; }
+    .dossier-portrait { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top center; display: block; border-radius: var(--radius); border: 1px solid var(--border-md); }
+    .dossier-portrait-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); padding: 20px 14px 12px; border-radius: 0 0 var(--radius) var(--radius); }
+    .dossier-portrait-id { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .dossier-name { font-family: var(--font-display); font-size: clamp(42px, 5vw, 72px); letter-spacing: 4px; line-height: 1; color: var(--text-0); margin-bottom: 8px; }
+    .dossier-designation { font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-2); margin-bottom: 28px; }
+    .dossier-classification { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .dossier-class-label { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-3); }
+    .profile-table { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 28px; }
+    .profile-row { background: var(--bg-1); padding: 12px 16px; transition: background 0.15s; }
+    .profile-row:hover { background: var(--bg-2); }
+    .profile-row--full { grid-column: 1 / -1; }
+    .profile-row__label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+    .profile-row__value { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; color: var(--text-0); }
+    .profile-row__value--normal { font-family: var(--font-body); font-size: 13.5px; color: var(--text-1); line-height: 1.6; }
+    .prior-service-box { background: var(--bg-1); border: 1px solid rgba(200,212,224,0.15); border-left: 2px solid var(--silver-dim); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin-bottom: 28px; }
+    .prior-service-box__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--silver-dim); margin-bottom: 8px; }
+    .prior-service-box__text { font-size: 13px; color: var(--text-2); line-height: 1.65; font-style: italic; }
+    .dossier-content { position: relative; z-index: 1; }
+    .dossier-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+    .dossier-section:last-child { border-bottom: none; }
+    .section-two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; align-items: start; }
+    .behavior-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+    .behavior-card { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .behavior-card--strength { border-top: 2px solid var(--green); }
+    .behavior-card--weakness { border-top: 2px solid var(--amber); }
+    .behavior-card--gag { border-top: 2px solid var(--silver-dim); }
+    .behavior-card__type { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .behavior-card--strength .behavior-card__type { color: var(--green); }
+    .behavior-card--weakness .behavior-card__type { color: var(--amber); }
+    .behavior-card--gag .behavior-card__type { color: var(--silver-dim); }
+    .behavior-card__title { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 6px; }
+    .behavior-card__body { font-size: 12.5px; color: var(--text-1); line-height: 1.6; }
+    .mission-list { display: flex; flex-direction: column; }
+    .mission-item { display: grid; grid-template-columns: 100px 1fr auto; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: start; }
+    .mission-item:last-child { border-bottom: none; }
+    .mission-item__code { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; padding-top: 2px; }
+    .mission-item__title { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 4px; }
+    .mission-item__body { font-size: 13px; color: var(--text-1); line-height: 1.6; }
+    .incident-list { display: flex; flex-direction: column; }
+    .incident-item { display: grid; grid-template-columns: 120px 1fr auto; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border); align-items: center; }
+    .incident-item:last-child { border-bottom: none; }
+    .incident-item__ref { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; }
+    .incident-item__desc { font-size: 13px; color: var(--text-1); }
+    .network-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .network-card { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; gap: 12px; align-items: flex-start; text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+    .network-card:hover { border-color: var(--border-md); background: var(--bg-2); }
+    .network-card__portrait { width: 44px; height: 44px; border-radius: 2px; object-fit: cover; object-position: top; flex-shrink: 0; border: 1px solid var(--border); }
+    .network-card__name { font-family: var(--font-display); font-size: 15px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 2px; }
+    .network-card__role { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); text-transform: uppercase; margin-bottom: 4px; }
+    .network-card__note { font-size: 11.5px; color: var(--text-2); line-height: 1.5; font-style: italic; }
+    .sidebar-box { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; }
+    .sidebar-box__title { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .sidebar-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .sidebar-stat:last-child { border-bottom: none; }
+    .sidebar-stat__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--text-2); text-transform: uppercase; }
+    .sidebar-stat__value { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; color: var(--silver); }
+    .profile-row__value.amber { color: var(--amber); }
+    @media (max-width: 1024px) { .dossier-top { grid-template-columns: 280px 1fr; gap: 32px; } .section-two-col { grid-template-columns: 1fr; } .behavior-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .dossier-top { grid-template-columns: 1fr; } .dossier-portrait { aspect-ratio: 4/3; } .profile-table { grid-template-columns: 1fr; } .behavior-grid { grid-template-columns: 1fr; } .network-grid { grid-template-columns: 1fr 1fr; } .mission-item { grid-template-columns: 80px 1fr auto; } .incident-item { grid-template-columns: 1fr auto; } .incident-item__ref { display: none; } }
+    @media (max-width: 500px) { .network-grid { grid-template-columns: 1fr; } }
+
+    /* ── UNIT TWO HOVER SURVEILLANCE ── */
+    .dossier-portrait-wrap {
+      position: relative; cursor: default;
+    }
+
+    /* REC-Indikator */
+    .ut-rec {
+      position: absolute; top: 10px; right: 10px;
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px;
+      color: var(--red); text-transform: uppercase;
+      opacity: 0; transition: opacity 0.2s;
+      pointer-events: none; z-index: 5;
+    }
+    .ut-rec__dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--red);
+      animation: recBlink 1s step-end infinite;
+    }
+    @keyframes recBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+    /* Scan-Linie */
+    .ut-scan {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(224,52,52,0.6), transparent);
+      top: -2px; pointer-events: none; z-index: 5;
+      opacity: 0;
+    }
+
+    /* Surveillance-Overlay unten */
+    .ut-surveillance {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+      padding: 20px 12px 12px;
+      border-radius: 0 0 var(--radius) var(--radius);
+      opacity: 0; transition: opacity 0.25s;
+      pointer-events: none; z-index: 4;
+    }
+    .ut-surveillance__line {
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.5px;
+      color: rgba(224,52,52,0.9); text-transform: uppercase;
+      display: block; margin-bottom: 2px;
+    }
+    .ut-surveillance__line--dim {
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* Crosshair-Ecken */
+    .ut-corner {
+      position: absolute; width: 12px; height: 12px;
+      pointer-events: none; z-index: 6;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .ut-corner--tl { top: 8px;  left: 8px;  border-top: 1.5px solid var(--red); border-left: 1.5px solid var(--red); }
+    .ut-corner--tr { top: 8px;  right: 8px; border-top: 1.5px solid var(--red); border-right: 1.5px solid var(--red); }
+    .ut-corner--bl { bottom: 8px; left: 8px;  border-bottom: 1.5px solid var(--red); border-left: 1.5px solid var(--red); }
+    .ut-corner--br { bottom: 8px; right: 8px; border-bottom: 1.5px solid var(--red); border-right: 1.5px solid var(--red); }
+
+    @keyframes utScan {
+      0%   { top: 0%;   opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .dossier-portrait-wrap:hover .ut-rec         { opacity: 1; }
+    .dossier-portrait-wrap:hover .ut-surveillance { opacity: 1; }
+    .dossier-portrait-wrap:hover .ut-corner       { opacity: 1; }
+    .dossier-portrait-wrap:hover .ut-scan {
+      opacity: 1;
+      animation: utScan 2s linear infinite;
+    }
+    .dossier-portrait-wrap:hover .dossier-portrait {
+      filter: contrast(1.08) saturate(0.85);
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+    <section class="dossier-header">
+      <div class="wrap">
+        <a href="/operatives.html" class="dossier-back"><span data-i18n="dossier.backToRoster">← Back to Roster</span></a>
+        <div class="dossier-top">
+          <div class="dossier-portrait-wrap">
+            <img class="dossier-portrait" src="/assets/img/operatives/unit-two.png" alt="Unit Two">
+            <div class="ut-rec"><div class="ut-rec__dot"></div>REC</div>
+            <div class="ut-scan"></div>
+            <div class="ut-corner ut-corner--tl"></div>
+            <div class="ut-corner ut-corner--tr"></div>
+            <div class="ut-corner ut-corner--bl"></div>
+            <div class="ut-corner ut-corner--br"></div>
+            <div class="ut-surveillance">
+              <span class="ut-surveillance__line" id="ut-surv-line1">SUBJECT: UNIT TWO · 02-K9-OPS</span>
+              <span class="ut-surveillance__line" id="ut-surv-line2">STATUS: UNDER OBSERVATION</span>
+              <span class="ut-surveillance__line ut-surveillance__line--dim" id="ut-surv-line3">INCIDENTS: 17 · NO CONCLUSION</span>
+            </div>
+            <div class="dossier-portrait-label">
+              <div class="dossier-portrait-id">02-K9-OPS · PROXIMITY WATCH</div>
+            </div>
+          </div>
+          <div class="dossier-info">
+            <div class="dossier-classification">
+              <span class="badge badge--red">● <span data-i18n="dossier.accessLevel">ACCESS LEVEL: TOP TREAT</span></span>
+              <span class="dossier-class-label" data-i18n="dossier.coverTitle">OPERATIVE FILE</span>
+            </div>
+            
+            <div class="dossier-name">UNIT TWO</div>
+            <div class="dossier-designation">Snack Retrieval · 02-K9-OPS · Under Observation</div>
+            <div class="profile-table">
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldId">Operative ID</div>
+                <div class="profile-row__value">02-K9-OPS</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldStatus">Status</div>
+                <div class="profile-row__value"><span class="badge badge--amber">● <span data-i18n="badges.underObservation">Under Observation</span></span></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldDivision">Division</div>
+                <div class="profile-row__value" data-i18n="operatives.divisions.snackRetrieval">Operative</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldRank">Rank</div>
+                <div class="profile-row__value">Operative</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldType">Type</div>
+                <div class="profile-row__value">Black Labrador</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldLocation">Base of Operations</div>
+                <div class="profile-row__value">Wraff Force HQ — All Sectors</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldCommission">Commission</div>
+                <div class="profile-row__value" data-i18n="dossier.unitTwoCommissioned">April 2025</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldClearance">Clearance</div>
+                <div class="profile-row__value">STANDARD-2 — Under Review</div>
+              </div>
+              <div class="profile-row profile-row--full">
+                <div class="profile-row__label" data-i18n="dossier.fieldSummary">Operative Summary</div>
+                <div class="profile-row__value--normal" data-i18n="dossier.unitTwoSummary">17 incident reports filed. All explanations technically plausible. Consistently first to arrive at snack-adjacent locations. Beef breath index elevated on 17 of 19 occasions. Investigation ongoing. No conclusion has been reached. Unit Two is aware of this.</div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="dossier-content">
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="section-two-col">
+            <div>
+              <div class="sec-head">
+                <span class="sec-code">WF-DA-01</span>
+                <h2 class="sec-title" data-i18n="dossier.behaviorTitle">BEHAVIORAL ANALYSIS</h2>
+              </div>
+              <div class="behavior-grid">
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.unitTwoS1t">SNACK PROXIMITY</div>
+                  <div class="behavior-card__body" data-i18n="dossier.unitTwoS1b">Consistently arrives at snack locations faster than any other operative. Response time to unsecured treat scenarios: under 90 seconds. Mechanism: unknown.</div>
+                </div>
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.unitTwoS2t">PLAUSIBLE DENIABILITY</div>
+                  <div class="behavior-card__body" data-i18n="dossier.unitTwoS2b">All 17 incident reports contain technically plausible explanations. Not a single explanation has been disproven. Lt. Sniff has called this statistically implausible. The reports remain open.</div>
+                </div>
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Weakness</div>
+                  <div class="behavior-card__title" data-i18n="dossier.unitTwoW1t">BEEF BREATH INDEX</div>
+                  <div class="behavior-card__body" data-i18n="dossier.unitTwoW1b">Elevated readings on 17 of 19 occasions. Correlation with snack-adjacent incidents: 89%. Unit Two's explanation: dietary variance. Lt. Sniff's assessment: this is a pattern.</div>
+                </div>
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Weakness</div>
+                  <div class="behavior-card__title" data-i18n="dossier.unitTwoW2t">PROXIMITY PROTOCOLS</div>
+                  <div class="behavior-card__body" data-i18n="dossier.unitTwoW2b">Cannot be within 2 metres of secured snack reserves without triggering a proximity alert. Protocol introduced after incident 7. Has not reduced incident frequency.</div>
+                </div>
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.unitTwoG1t">ALWAYS FIRST</div>
+                  <div class="behavior-card__body" data-i18n="dossier.unitTwoG1b">Unit Two is always the first operative to arrive at any snack-related incident. Always. Command has noted this. Unit Two has an explanation. Command is reviewing it.</div>
+                </div>
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.unitTwoG2t">THE LOOK</div>
+                  <div class="behavior-card__body" data-i18n="dossier.unitTwoG2b">Multiple operatives have reported that Unit Two gives a specific look when near secured snacks. The look has been described as innocent. Lt. Sniff: that is not what innocent looks like.</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.operativeStats">Operative Statistics</div>
+                
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statMissions">Missions</span>
+                  <span class="sidebar-stat__value">21</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statIncidents">Incidents Filed</span>
+                  <span class="sidebar-stat__value">17</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statExplanations">Explanations</span>
+                  <span class="sidebar-stat__value">17</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statDisproven">Disproven</span>
+                  <span class="sidebar-stat__value">0</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statReviewsOpen">Reviews Open</span>
+                  <span class="sidebar-stat__value">17</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-02</span>
+            <h2 class="sec-title" data-i18n="dossier.missionTitle">MISSION LOG</h2>
+          </div>
+          <div class="mission-list">
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-003</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.unitTwoM1t">Operation Crumb Recovery</div>
+                <div class="mission-item__body" data-i18n="dossier.unitTwoM1b">Deployed for snack recovery operation. Achieved 73% recovery rate. Remaining 27% unaccounted for. Unit Two was present for full duration. Unit Two's report: filed. Contents: reviewed.</div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-012</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.unitTwoM2t">Operation Folsom — Berlin</div>
+                <div class="mission-item__body" data-i18n="dossier.unitTwoM2b">Deployed at Folsom Europe. After-action report filed and immediately sealed. Foil wrapper fragments found on Unit Two's paws post-mission. Explanation: pre-existing environmental contamination.</div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-018</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.unitTwoM3t">Operation Easter — Chocolate Security</div>
+                <div class="mission-item__body" data-i18n="dossier.unitTwoM3b">Deployed at chocolate reserve perimeter. Colonel Flops also present. Unit Two's report did not mention Colonel Flops. This omission was noted. Review ongoing.</div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-03</span>
+            <h2 class="sec-title" data-i18n="dossier.incidentsTitle">INCIDENT LOG</h2>
+          </div>
+          <div class="incident-list">
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-003</div>
+              <div class="incident-item__desc" data-i18n="dossier.unitTwoI1">Found within 1 metre of secured biscuit reserve. Explanation: checking perimeter integrity. Accepted. Filed. 16 similar incidents followed.</div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-011</div>
+              <div class="incident-item__desc" data-i18n="dossier.unitTwoI2">Beef breath index reading: critical. Timing: 4 minutes after snack inventory showed discrepancy. Explanation: dietary variance. Lt. Sniff: this is incident 11.</div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-017</div>
+              <div class="incident-item__desc" data-i18n="dossier.unitTwoI3">Colonel Flops' silence reviewed as evidence. Unit Two present during review. Unit Two did not comment. This was noted. Colonel Flops also did not comment. This was also noted.</div>
+              <span class="badge badge--amber" data-i18n="incidentReports.ongoing">ONGOING</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-04</span>
+            <h2 class="sec-title" data-i18n="dossier.networkTitle">OPERATIVE NETWORK</h2>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; margin-bottom:28px; max-width:680px;" data-i18n="dossier.unitTwoNetworkIntro"></p>
+          <div class="network-grid">
+            <a href="/dossier/dossier_treatz.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/treatz.png" alt="TREATZ">
+              <div>
+                <div class="network-card__name">TREATZ</div>
+                <div class="network-card__role">09-K9-OPS · Snack Ops</div>
+                <div class="network-card__note" data-i18n="dossier.unitTwoNet_treatz"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_colonel-flops.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/colonel-flops.png" alt="COL. FLOPS">
+              <div>
+                <div class="network-card__name">COL. FLOPS</div>
+                <div class="network-card__role">CF-01 · Psych Ops</div>
+                <div class="network-card__note" data-i18n="dossier.unitTwoNet_colonel_flops"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_sergeant-bork.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/sergeant-bork.png" alt="SGT. BORK">
+              <div>
+                <div class="network-card__name">SGT. BORK</div>
+                <div class="network-card__role">03-K9-OPS · Perimeter</div>
+                <div class="network-card__note" data-i18n="dossier.unitTwoNet_sergeant_bork"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_lieutenant-sniff.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="LT. SNIFF">
+              <div>
+                <div class="network-card__name">LT. SNIFF</div>
+                <div class="network-card__role">07-K9-OPS · Scent Intel</div>
+                <div class="network-card__note" data-i18n="dossier.unitTwoNet_lieutenant_sniff"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_corporal-zoom.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/corporal-zoom.png" alt="CPL. ZOOM">
+              <div>
+                <div class="network-card__name">CPL. ZOOM</div>
+                <div class="network-card__role">11-K9-OPS · Rapid Response</div>
+                <div class="network-card__note" data-i18n="dossier.unitTwoNet_corporal_zoom"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_unit-five.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-five.png" alt="UNIT FIVE">
+              <div>
+                <div class="network-card__name">UNIT FIVE</div>
+                <div class="network-card__role">44-K9-OPS · Cuddle Command</div>
+                <div class="network-card__note" data-i18n="dossier.unitTwoNet_unit_five"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="main-footer"></div>
+
+  <script>
+    // ── UNIT TWO SURVEILLANCE HOVER ──
+    function getLang() {
+      return (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+    }
+
+    const survTexts = {
+      en: ['SUBJECT: UNIT TWO · 02-K9-OPS', 'STATUS: UNDER OBSERVATION', 'INCIDENTS: 17 · NO CONCLUSION'],
+      de: ['SUBJEKT: UNIT TWO · 02-K9-OPS', 'STATUS: UNTER BEOBACHTUNG', 'VORFÄLLE: 17 · KEIN FAZIT']
+    };
+
+    function updateSurvTexts() {
+      const lang = getLang();
+      const texts = survTexts[lang] || survTexts.en;
+      const el1 = document.getElementById('ut-surv-line1');
+      const el2 = document.getElementById('ut-surv-line2');
+      const el3 = document.getElementById('ut-surv-line3');
+      if (el1) el1.textContent = texts[0];
+      if (el2) el2.textContent = texts[1];
+      if (el3) el3.textContent = texts[2];
+    }
+
+    document.addEventListener('wf:langChanged', updateSurvTexts);
+    // Initial nach i18n
+    if (window.WF_LANG) {
+      updateSurvTexts();
+    } else {
+      document.addEventListener('wf:langChanged', updateSurvTexts, { once: true });
+    }
+  </script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

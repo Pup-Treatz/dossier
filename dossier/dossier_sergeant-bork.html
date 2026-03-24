@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Dossier: Sergeant Bork</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WRAFF FORCE — Dossier: Sergeant Bork">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    .dossier-header { padding: 80px 0 0; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+    .dossier-back { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 32px; transition: color 0.15s; }
+    .dossier-back:hover { color: var(--text-1); }
+    .dossier-top { display: grid; grid-template-columns: 340px 1fr; gap: 48px; align-items: start; padding-bottom: 56px; }
+    .dossier-portrait-wrap { position: relative; }
+    .dossier-portrait { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top center; display: block; border-radius: var(--radius); border: 1px solid var(--border-md); }
+    .dossier-portrait-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); padding: 20px 14px 12px; border-radius: 0 0 var(--radius) var(--radius); }
+    .dossier-portrait-id { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .dossier-name { font-family: var(--font-display); font-size: clamp(42px, 5vw, 72px); letter-spacing: 4px; line-height: 1; color: var(--text-0); margin-bottom: 8px; }
+    .dossier-designation { font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-2); margin-bottom: 28px; }
+    .dossier-classification { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .dossier-class-label { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-3); }
+    .profile-table { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 28px; }
+    .profile-row { background: var(--bg-1); padding: 12px 16px; transition: background 0.15s; }
+    .profile-row:hover { background: var(--bg-2); }
+    .profile-row--full { grid-column: 1 / -1; }
+    .profile-row__label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+    .profile-row__value { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; color: var(--text-0); }
+    .profile-row__value--normal { font-family: var(--font-body); font-size: 13.5px; color: var(--text-1); line-height: 1.6; }
+    .prior-service-box { background: var(--bg-1); border: 1px solid rgba(200,212,224,0.15); border-left: 2px solid var(--silver-dim); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin-bottom: 28px; }
+    .prior-service-box__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--silver-dim); margin-bottom: 8px; }
+    .prior-service-box__text { font-size: 13px; color: var(--text-2); line-height: 1.65; font-style: italic; }
+    .dossier-content { position: relative; z-index: 1; }
+    .dossier-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+    .dossier-section:last-child { border-bottom: none; }
+    .section-two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; align-items: start; }
+    .behavior-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+    .behavior-card { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .behavior-card--strength { border-top: 2px solid var(--green); }
+    .behavior-card--weakness { border-top: 2px solid var(--amber); }
+    .behavior-card--gag { border-top: 2px solid var(--silver-dim); }
+    .behavior-card__type { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .behavior-card--strength .behavior-card__type { color: var(--green); }
+    .behavior-card--weakness .behavior-card__type { color: var(--amber); }
+    .behavior-card--gag .behavior-card__type { color: var(--silver-dim); }
+    .behavior-card__title { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 6px; }
+    .behavior-card__body { font-size: 12.5px; color: var(--text-1); line-height: 1.6; }
+    .mission-list { display: flex; flex-direction: column; }
+    .mission-item { display: grid; grid-template-columns: 100px 1fr auto; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: start; }
+    .mission-item:last-child { border-bottom: none; }
+    .mission-item__code { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; padding-top: 2px; }
+    .mission-item__title { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 4px; }
+    .mission-item__body { font-size: 13px; color: var(--text-1); line-height: 1.6; }
+    .incident-list { display: flex; flex-direction: column; }
+    .incident-item { display: grid; grid-template-columns: 120px 1fr auto; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border); align-items: center; }
+    .incident-item:last-child { border-bottom: none; }
+    .incident-item__ref { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-3); text-transform: uppercase; }
+    .incident-item__desc { font-size: 13px; color: var(--text-1); }
+    .network-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .network-card { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; gap: 12px; align-items: flex-start; text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+    .network-card:hover { border-color: var(--border-md); background: var(--bg-2); }
+    .network-card__portrait { width: 44px; height: 44px; border-radius: 2px; object-fit: cover; object-position: top; flex-shrink: 0; border: 1px solid var(--border); }
+    .network-card__name { font-family: var(--font-display); font-size: 15px; letter-spacing: 1.5px; color: var(--text-0); margin-bottom: 2px; }
+    .network-card__role { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); text-transform: uppercase; margin-bottom: 4px; }
+    .network-card__note { font-size: 11.5px; color: var(--text-2); line-height: 1.5; font-style: italic; }
+    .sidebar-box { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; }
+    .sidebar-box__title { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .sidebar-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .sidebar-stat:last-child { border-bottom: none; }
+    .sidebar-stat__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--text-2); text-transform: uppercase; }
+    .sidebar-stat__value { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; color: var(--silver); }
+    
+    @media (max-width: 1024px) { .dossier-top { grid-template-columns: 280px 1fr; gap: 32px; } .section-two-col { grid-template-columns: 1fr; } .behavior-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .dossier-top { grid-template-columns: 1fr; } .dossier-portrait { aspect-ratio: 4/3; } .profile-table { grid-template-columns: 1fr; } .behavior-grid { grid-template-columns: 1fr; } .network-grid { grid-template-columns: 1fr 1fr; } .mission-item { grid-template-columns: 80px 1fr auto; } .incident-item { grid-template-columns: 1fr auto; } .incident-item__ref { display: none; } }
+    @media (max-width: 500px) { .network-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+    <section class="dossier-header">
+      <div class="wrap">
+        <a href="/operatives.html" class="dossier-back"><span data-i18n="dossier.backToRoster">← Back to Roster</span></a>
+        <div class="dossier-top">
+          <div class="dossier-portrait-wrap">
+            <img class="dossier-portrait" src="/assets/img/operatives/sergeant-bork.png" alt="Sergeant Bork">
+            <div class="dossier-portrait-label">
+              <div class="dossier-portrait-id">03-K9-OPS</div>
+            </div>
+          </div>
+          <div class="dossier-info">
+            <div class="dossier-classification">
+              <span class="badge badge--red">● <span data-i18n="dossier.accessLevel">ACCESS LEVEL: TOP TREAT</span></span>
+              <span class="dossier-class-label" data-i18n="dossier.coverTitle">OPERATIVE FILE</span>
+            </div>
+            
+            <div class="dossier-name">SGT. BORK</div>
+            <div class="dossier-designation">Perimeter Security · 03-K9-OPS · Active</div>
+            <div class="profile-table">
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldId">Operative ID</div>
+                <div class="profile-row__value">03-K9-OPS</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldStatus">Status</div>
+                <div class="profile-row__value"><span class="badge badge--green">● <span data-i18n="badges.onDuty">On Duty</span></span></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldDivision">Division</div>
+                <div class="profile-row__value" data-i18n="operatives.divisions.perimeter">Sergeant</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldRank">Rank</div>
+                <div class="profile-row__value">Sergeant</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldType">Type</div>
+                <div class="profile-row__value">German Shepherd</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldLocation">Base of Operations</div>
+                <div class="profile-row__value">Wraff Force HQ — Perimeter</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldCommission">Commission</div>
+                <div class="profile-row__value" data-i18n="dossier.borkCommissioned">April 2025</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldClearance">Clearance</div>
+                <div class="profile-row__value">STANDARD-2</div>
+              </div>
+              <div class="profile-row profile-row--full">
+                <div class="profile-row__label" data-i18n="dossier.fieldSummary">Operative Summary</div>
+                <div class="profile-row__value--normal" data-i18n="dossier.borkSummary">Founding operative. Most reliable perimeter anchor in the unit. Cannot process the words walk, walkies or outside without immediately vacating the area. Command has incorporated all walks into the official mission timeline. This has not been described as an inconvenience.</div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="dossier-content">
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="section-two-col">
+            <div>
+              <div class="sec-head">
+                <span class="sec-code">WF-DA-01</span>
+                <h2 class="sec-title" data-i18n="dossier.behaviorTitle">BEHAVIORAL ANALYSIS</h2>
+              </div>
+              <div class="behavior-grid">
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.borkS1t">PERIMETER DISCIPLINE</div>
+                  <div class="behavior-card__body" data-i18n="dossier.borkS1b">Holds perimeter position with absolute consistency. Has never abandoned a post for any reason other than the W-word. That exception is documented and accepted.</div>
+                </div>
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.borkS2t">DETERRENT PRESENCE</div>
+                  <div class="behavior-card__body" data-i18n="dossier.borkS2b">German Shepherd in tactical vest. Full olive gear. Patches visible. The perimeter holds itself in Bork's presence. No further analysis required.</div>
+                </div>
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Weakness</div>
+                  <div class="behavior-card__title" data-i18n="dossier.borkW1t">THE W-WORD PROTOCOL</div>
+                  <div class="behavior-card__body" data-i18n="dossier.borkW1b">Triggers immediate departure upon hearing walk, walkies or outside. Range: up to 40 metres. Volume threshold: whisper. Command does not use these words in briefings.</div>
+                </div>
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Weakness</div>
+                  <div class="behavior-card__title" data-i18n="dossier.borkW2t">BRIEFING ATTENDANCE</div>
+                  <div class="behavior-card__body" data-i18n="dossier.borkW2b">Three briefings have ended early due to accidental W-word usage by junior operatives. New briefing protocol introduced. Incident rate: reduced. Not eliminated.</div>
+                </div>
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.borkG1t">SCHEDULED DEPARTURES</div>
+                  <div class="behavior-card__body" data-i18n="dossier.borkG1b">All walks are now scheduled as tactical perimeter surveys and logged as active duty. Bork departs on schedule. Returns on schedule. The mission timeline has never been cleaner.</div>
+                </div>
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.borkG2t">THE EARS</div>
+                  <div class="behavior-card__body" data-i18n="dossier.borkG2b">Bork's ears rotate independently in the direction of any sound. This has proven useful for threat detection. It has also caused three false alarms involving a crisp packet.</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.operativeStats">Operative Statistics</div>
+                
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statMissions">Missions</span>
+                  <span class="sidebar-stat__value">18</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statIncidents">Incidents</span>
+                  <span class="sidebar-stat__value">4</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statWWord">W-Word Incidents</span>
+                  <span class="sidebar-stat__value">3</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statAbandon">Post Abandonments</span>
+                  <span class="sidebar-stat__value">3</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statCommendations">Commendations</span>
+                  <span class="sidebar-stat__value">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-02</span>
+            <h2 class="sec-title" data-i18n="dossier.missionTitle">MISSION LOG</h2>
+          </div>
+          <div class="mission-list">
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-005</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.borkM1t">Operation Crumb Recovery — Perimeter Hold</div>
+                <div class="mission-item__body" data-i18n="dossier.borkM1b">Assigned outer perimeter. Held position for full duration. Three W-word incidents reported during adjacent civilian activity. All three resulted in temporary perimeter gap. All three were covered by Corporal Zoom.</div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-012</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.borkM2t">Operation Folsom — Berlin</div>
+                <div class="mission-item__body" data-i18n="dossier.borkM2b">Eastern perimeter anchor. Full duration deployment. No W-word incidents recorded. Debrief note: civilian attendee said the word walks during a conversation nearby. Bork's ear rotated. He did not move. Commendation issued.</div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-03</span>
+            <h2 class="sec-title" data-i18n="dossier.incidentsTitle">INCIDENT LOG</h2>
+          </div>
+          <div class="incident-list">
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-005</div>
+              <div class="incident-item__desc" data-i18n="dossier.borkI1">Abandoned inner perimeter post during briefing. Civilian passed by and said the phrase going for a walk. Duration of absence: 12 minutes. Perimeter maintained by Corporal Zoom.</div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-008</div>
+              <div class="incident-item__desc" data-i18n="dossier.borkI2">Responded to W-word during active snack perimeter operation. Post temporarily unmanned. No snack loss occurred. Classified as near-miss. Protocol updated.</div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-04</span>
+            <h2 class="sec-title" data-i18n="dossier.networkTitle">OPERATIVE NETWORK</h2>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; margin-bottom:28px; max-width:680px;" data-i18n="dossier.borkNetworkIntro"></p>
+          <div class="network-grid">
+            <a href="/dossier/dossier_treatz.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/treatz.png" alt="TREATZ">
+              <div>
+                <div class="network-card__name">TREATZ</div>
+                <div class="network-card__role">09-K9-OPS · Snack Ops</div>
+                <div class="network-card__note" data-i18n="dossier.borkNet_treatz"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_colonel-flops.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/colonel-flops.png" alt="COL. FLOPS">
+              <div>
+                <div class="network-card__name">COL. FLOPS</div>
+                <div class="network-card__role">CF-01 · Psych Ops</div>
+                <div class="network-card__note" data-i18n="dossier.borkNet_colonel_flops"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_unit-two.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-two.png" alt="UNIT TWO">
+              <div>
+                <div class="network-card__name">UNIT TWO</div>
+                <div class="network-card__role">02-K9-OPS · Snack Retrieval</div>
+                <div class="network-card__note" data-i18n="dossier.borkNet_unit_two"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_corporal-zoom.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/corporal-zoom.png" alt="CPL. ZOOM">
+              <div>
+                <div class="network-card__name">CPL. ZOOM</div>
+                <div class="network-card__role">11-K9-OPS · Rapid Response</div>
+                <div class="network-card__note" data-i18n="dossier.borkNet_corporal_zoom"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_lieutenant-sniff.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="LT. SNIFF">
+              <div>
+                <div class="network-card__name">LT. SNIFF</div>
+                <div class="network-card__role">07-K9-OPS · Scent Intel</div>
+                <div class="network-card__note" data-i18n="dossier.borkNet_lieutenant_sniff"></div>
+              </div>
+            </a>
+            <a href="/dossier/dossier_unit-five.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-five.png" alt="UNIT FIVE">
+              <div>
+                <div class="network-card__name">UNIT FIVE</div>
+                <div class="network-card__role">44-K9-OPS · Cuddle Command</div>
+                <div class="network-card__note" data-i18n="dossier.borkNet_unit_five"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

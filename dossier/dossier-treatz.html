@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Dossier: Puppy Treatz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/img/logo/site.webmanifest">
+  <meta name="description" content="Wraff Force operative dossier — Puppy Treatz. Primary operative and founding member. 09-K9-OPS.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wraff.agency/dossier/dossier_treatz.html">
+  <meta property="og:title" content="WRAFF FORCE — Dossier: Puppy Treatz">
+  <meta property="og:description" content="Primary operative and founding member. Present at the Berlin Pretzel Incident. All subsequent Wraff Force activity traces back to this moment.">
+  <meta property="og:image" content="https://wraff.agency/assets/img/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ── DOSSIER HEADER ── */
+    .dossier-header {
+      padding: 80px 0 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .dossier-back {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+      transition: color 0.15s;
+    }
+
+    .dossier-back:hover { color: var(--text-1); }
+
+    .dossier-top {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 48px;
+      align-items: start;
+      padding-bottom: 56px;
+    }
+
+    /* Portrait */
+    .dossier-portrait-wrap {
+      position: relative;
+    }
+
+    .dossier-portrait {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-md);
+    }
+
+    .dossier-portrait-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 20px 14px 12px;
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .dossier-portrait-id {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Right side info */
+    .dossier-info {}
+
+    .dossier-classification {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dossier-class-label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .dossier-name {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 72px);
+      letter-spacing: 4px;
+      line-height: 1;
+      color: var(--text-0);
+      margin-bottom: 8px;
+    }
+
+    .dossier-designation {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 28px;
+    }
+
+    /* Profile table */
+    .profile-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .profile-row {
+      background: var(--bg-1);
+      padding: 12px 16px;
+      transition: background 0.15s;
+    }
+
+    .profile-row:hover { background: var(--bg-2); }
+
+    .profile-row--full {
+      grid-column: 1 / -1;
+    }
+
+    .profile-row__label {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 4px;
+    }
+
+    .profile-row__value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--text-0);
+    }
+
+    .profile-row__value--normal {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      letter-spacing: 0;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    /* Dossier actions */
+    .dossier-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ── DOSSIER CONTENT ── */
+    .dossier-content {
+      padding: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dossier-section {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dossier-section:last-child { border-bottom: none; }
+
+    /* Two column layout for sections */
+    .section-two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ── BEHAVIORAL ANALYSIS ── */
+    .behavior-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .behavior-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .behavior-card--strength { border-top: 2px solid var(--green); }
+    .behavior-card--weakness { border-top: 2px solid var(--amber); }
+    .behavior-card--gag      { border-top: 2px solid var(--silver-dim); }
+
+    .behavior-card__type {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .behavior-card--strength .behavior-card__type { color: var(--green); }
+    .behavior-card--weakness .behavior-card__type { color: var(--amber); }
+    .behavior-card--gag      .behavior-card__type { color: var(--silver-dim); }
+
+    .behavior-card__title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      color: var(--text-0);
+      margin-bottom: 6px;
+    }
+
+    .behavior-card__body {
+      font-size: 12.5px;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    /* ── MISSION LOG ── */
+    .mission-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .mission-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .mission-item:last-child { border-bottom: none; }
+
+    .mission-item__code {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      padding-top: 2px;
+    }
+
+    .mission-item__title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      color: var(--text-0);
+      margin-bottom: 4px;
+    }
+
+    .mission-item__body {
+      font-size: 13px;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    /* ── INCIDENT LOG ── */
+    .incident-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .incident-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .incident-item:last-child { border-bottom: none; }
+
+    .incident-item__ref {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+      text-transform: uppercase;
+    }
+
+    .incident-item__desc {
+      font-size: 13px;
+      color: var(--text-1);
+    }
+
+    /* ── NETWORK ── */
+    .network-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .network-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .network-card:hover {
+      border-color: var(--border-md);
+      background: var(--bg-2);
+    }
+
+    .network-card__portrait {
+      width: 44px;
+      height: 44px;
+      border-radius: 2px;
+      object-fit: cover;
+      object-position: top;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .network-card__info {}
+
+    .network-card__name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      color: var(--text-0);
+      margin-bottom: 2px;
+    }
+
+    .network-card__role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .network-card__note {
+      font-size: 11.5px;
+      color: var(--text-2);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ── SIDEBAR BOX ── */
+    .sidebar-box {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-box__title {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-stat:last-child { border-bottom: none; }
+
+    .sidebar-stat__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+
+    .sidebar-stat__value {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: var(--silver);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .dossier-top { grid-template-columns: 280px 1fr; gap: 32px; }
+      .section-two-col { grid-template-columns: 1fr; }
+      .behavior-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .dossier-top { grid-template-columns: 1fr; gap: 24px; }
+      .dossier-portrait { aspect-ratio: 4/3; }
+      .profile-table { grid-template-columns: 1fr; }
+      .behavior-grid { grid-template-columns: 1fr; }
+      .network-grid { grid-template-columns: 1fr 1fr; }
+      .mission-item { grid-template-columns: 80px 1fr auto; }
+      .incident-item { grid-template-columns: 1fr auto; }
+      .incident-item__ref { display: none; }
+    }
+
+    @media (max-width: 500px) {
+      .network-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="main-nav"></div>
+
+  <main>
+
+    <!-- DOSSIER HEADER -->
+    <section class="dossier-header">
+      <div class="wrap">
+
+        <a href="/operatives.html" class="dossier-back">← <span data-i18n="dossier.backToRoster">Back to Roster</span></a>
+
+        <div class="dossier-top">
+
+          <!-- PORTRAIT -->
+          <div class="dossier-portrait-wrap">
+            <img
+              class="dossier-portrait"
+              src="/assets/img/operatives/treatz.png"
+              alt="Puppy Treatz — 09-K9-OPS">
+            <div class="dossier-portrait-label">
+              <div class="dossier-portrait-id">09-K9-OPS · WRAFF-ALPHA-CLASSIFIED</div>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="dossier-info">
+
+            <div class="dossier-classification">
+              <span class="badge badge--red">● <span data-i18n="dossier.accessLevel">ACCESS LEVEL: TOP TREAT</span></span>
+              <span class="dossier-class-label" data-i18n="dossier.coverTitle">OPERATIVE FILE</span>
+            </div>
+
+            <div class="dossier-name">PUPPY TREATZ</div>
+            <div class="dossier-designation">Primary Operative · Snack Ops · Founding Member</div>
+
+            <div class="profile-table">
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldId">Operative ID</div>
+                <div class="profile-row__value">09-K9-OPS</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldStatus">Status</div>
+                <div class="profile-row__value">
+                  <span class="badge badge--green">● <span data-i18n="badges.onDuty">On Duty</span></span>
+                </div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldDivision">Division</div>
+                <div class="profile-row__value" data-i18n="operatives.divisions.snackOps">Snack Ops</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldRank">Rank</div>
+                <div class="profile-row__value">Primary Operative</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldType">Type</div>
+                <div class="profile-row__value">Human / Pupplayer</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldLocation">Base of Operations</div>
+                <div class="profile-row__value">North Rhine-Westphalia, DE</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldCommission">Commission</div>
+                <div class="profile-row__value">March 2025</div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-row__label" data-i18n="dossier.fieldClearance">Clearance</div>
+                <div class="profile-row__value">WRAFF-ALPHA-CLASSIFIED</div>
+              </div>
+              <div class="profile-row profile-row--full">
+                <div class="profile-row__label" data-i18n="dossier.fieldSummary">Operative Summary</div>
+                <div class="profile-row__value--normal" data-i18n="dossier.treatzSummary">
+                  Founding member and primary operative of Wraff Force. Present at the Berlin Pretzel Incident,
+                  March 2025. Established the unit in response. All Wraff Force activity traces back to this
+                  individual. Active in the pupplay community in North Rhine-Westphalia and beyond.
+                  Open to contact with fellow operatives and pups worldwide.
+                </div>
+              </div>
+            </div>
+
+            <div class="dossier-actions">
+              <a href="/contact.html" class="btn btn--primary" data-i18n="dossier.contactOperative">Contact Operative →</a>
+              <a href="/operations.html" class="btn btn--secondary" data-i18n="dossier.viewMissions">View Missions</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOSSIER CONTENT -->
+    <div class="dossier-content">
+
+      <!-- BEHAVIORAL ANALYSIS -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="section-two-col">
+            <div>
+              <div class="sec-head">
+                <span class="sec-code">WF-DA-01</span>
+                <h2 class="sec-title" data-i18n="dossier.behaviorTitle">BEHAVIORAL ANALYSIS</h2>
+              </div>
+              <div class="behavior-grid">
+
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.treatzStrength1title">TACTICAL AWARENESS</div>
+                  <div class="behavior-card__body" data-i18n="dossier.treatzStrength1body">
+                    Demonstrates exceptional situational awareness in snack-adjacent environments.
+                    First to identify unguarded treat scenarios. Response time: immediate.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--strength">
+                  <div class="behavior-card__type" data-i18n="dossier.strength">Strength</div>
+                  <div class="behavior-card__title" data-i18n="dossier.treatzStrength2title">UNIT COHESION</div>
+                  <div class="behavior-card__body" data-i18n="dossier.treatzStrength2body">
+                    Founded and maintains Wraff Force as a cohesive tactical unit. Operational
+                    structure, mission doctrine and 73% recovery benchmark all originate here.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Weakness</div>
+                  <div class="behavior-card__title" data-i18n="dossier.treatzWeakness1title">PRETZEL PROXIMITY</div>
+                  <div class="behavior-card__body" data-i18n="dossier.treatzWeakness1body">
+                    Documented difficulty maintaining operational composure in the presence
+                    of unsecured pretzels. Origin of the Berlin Incident. Filed. Not forgotten.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--weakness">
+                  <div class="behavior-card__type" data-i18n="dossier.weakness">Noted Weakness</div>
+                  <div class="behavior-card__title" data-i18n="dossier.treatzWeakness2title">PAPERWORK VELOCITY</div>
+                  <div class="behavior-card__body" data-i18n="dossier.treatzWeakness2body">
+                    Mission debrief reports submitted on time. Field manual completion
+                    at 94%. Squeaky toy section has not been started. Acknowledged.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.treatzGagTitle">THE FOUNDING PARADOX</div>
+                  <div class="behavior-card__body" data-i18n="dossier.treatzGagBody">
+                    Founded a global snack security unit in direct response to a snack incident
+                    they were present for. Command has noted the irony. Command has not acted on it.
+                  </div>
+                </div>
+
+                <div class="behavior-card behavior-card--gag">
+                  <div class="behavior-card__type" data-i18n="dossier.notable">Notable Pattern</div>
+                  <div class="behavior-card__title" data-i18n="dossier.treatzGag2Title">COMMUNITY ANCHOR</div>
+                  <div class="behavior-card__body" data-i18n="dossier.treatzGag2Body">
+                    Consistently draws new contacts to the unit through event presence and
+                    tactical outfit visibility. Treats as currency. Gear as introduction.
+                    Unit Two was not recruited this way. Unit Two just appeared.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div>
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.operativeStats">Operative Statistics</div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statMissions">Missions</span>
+                  <span class="sidebar-stat__value">21</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statRecovery">Recovery Rate</span>
+                  <span class="sidebar-stat__value">73%</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statIncidents">Incidents</span>
+                  <span class="sidebar-stat__value">3</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statCommendations">Commendations</span>
+                  <span class="sidebar-stat__value">0</span>
+                </div>
+                <div class="sidebar-stat">
+                  <span class="sidebar-stat__label" data-i18n="dossier.statYears">Years Active</span>
+                  <span class="sidebar-stat__value">1</span>
+                </div>
+              </div>
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.location">Location</div>
+                <div style="font-size:13px; color:var(--text-1); line-height:1.6;">
+                  <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:1px; color:var(--text-3); margin-bottom:6px; text-transform:uppercase;">Base of Operations</div>
+                  North Rhine-Westphalia<br>
+                  Germany<br>
+                  <span style="color:var(--text-3); font-size:11px; font-style:italic;">Active at events across DE and EU</span>
+                </div>
+              </div>
+              <div class="sidebar-box">
+                <div class="sidebar-box__title" data-i18n="dossier.contact">Contact</div>
+                <a href="/contact.html" class="btn btn--secondary" style="width:100%; justify-content:center; margin-bottom:8px;" data-i18n="dossier.contactOperative">Contact Operative →</a>
+                <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; color:var(--text-3); text-transform:uppercase; text-align:center; margin-top:8px;" data-i18n="dossier.contactNote">Instagram · Telegram · ops@wraff.agency</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MISSION LOG -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-02</span>
+            <h2 class="sec-title" data-i18n="dossier.missionTitle">MISSION LOG</h2>
+          </div>
+          <div class="mission-list">
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-001</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.treatzM1title">The Berlin Pretzel Incident</div>
+                <div class="mission-item__body" data-i18n="dossier.treatzM1body">
+                  Present at the founding incident. Pretzel stand unsupervised for 4 min 17 sec.
+                  Three pretzels, one chocolate bar unaccounted for. One pawprint recovered.
+                  Wraff Force established three weeks later as direct response.
+                </div>
+              </div>
+              <span class="badge badge--gray" data-i18n="dossier.missionStatusFounded">FOUNDING EVENT</span>
+            </div>
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-012</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.treatzM2title">Operation Folsom — Berlin</div>
+                <div class="mission-item__body" data-i18n="dossier.treatzM2body">
+                  First large-scale public deployment. Led snack perimeter operation at Folsom Europe.
+                  Perimeter held. Colonel Flops deployed to eastern gate on personal authority.
+                  The rabbit hesitated. Mission outcome: successful.
+                </div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-018</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.treatzM3title">Operation Easter — Chocolate Security</div>
+                <div class="mission-item__body" data-i18n="dossier.treatzM3body">
+                  Annual chocolate reserve protection deployment. 73% recovery rate maintained.
+                  Easter Bunny formally classified as hostile following operational contact.
+                  Unit Two found with foil wrapper fragments. Review ongoing.
+                </div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+
+            <div class="mission-item">
+              <div class="mission-item__code">WF-OP-021</div>
+              <div>
+                <div class="mission-item__title" data-i18n="dossier.treatzM4title">Operation No Fool — April Perimeter</div>
+                <div class="mission-item__body" data-i18n="dossier.treatzM4body">
+                  April 1st snack integrity operation. Holographic treat protocol reviewed and
+                  applied. Treat authenticity confirmed before approach. All operatives
+                  maintained composure. The June 2025 incident was not repeated.
+                </div>
+              </div>
+              <span class="badge badge--green" data-i18n="operations.success">SUCCESS</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- INCIDENT LOG -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-03</span>
+            <h2 class="sec-title" data-i18n="dossier.incidentsTitle">INCIDENT LOG</h2>
+          </div>
+          <div class="incident-list">
+
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-001</div>
+              <div class="incident-item__desc" data-i18n="dossier.treatzI1">
+                Present at unguarded pretzel stand, Berlin. Duration: 4 min 17 sec.
+                Three pretzels, one chocolate bar missing. One pawprint recovered.
+                Explanation: "I was in the area." Resulted in founding of Wraff Force.
+              </div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-009</div>
+              <div class="incident-item__desc" data-i18n="dossier.treatzI2">
+                Field manual Section 7 (Squeaky Toy Protocol) noted as not started for the
+                third consecutive review period. Commitment to completion: reiterated.
+                Progress: unchanged. Status: ongoing.
+              </div>
+              <span class="badge badge--amber" data-i18n="incidentReports.ongoing">ONGOING</span>
+            </div>
+
+            <div class="incident-item">
+              <div class="incident-item__ref">WF-IR-014</div>
+              <div class="incident-item__desc" data-i18n="dossier.treatzI3">
+                Colonel Flops commissioning authorized without formal review process.
+                Name approved without documented rationale. Eastern gate assignment
+                made verbally. All subsequent paperwork filed retroactively.
+              </div>
+              <span class="badge badge--gray" data-i18n="incidentReports.closed">CLOSED</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- NETWORK -->
+      <section class="dossier-section">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="sec-code">WF-DA-04</span>
+            <h2 class="sec-title" data-i18n="dossier.networkTitle">OPERATIVE NETWORK</h2>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-1); line-height:1.7; margin-bottom:28px; max-width:680px;" data-i18n="dossier.treatzNetworkIntro">
+            Primary operative maintains documented contact with all active Wraff Force units.
+            Network connections are operational in nature. One connection is under ongoing review.
+            Colonel Flops has not confirmed or denied any of these relationships.
+          </p>
+          <div class="network-grid">
+
+            <a href="/dossier/colonel-flops.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/colonel-flops.png" alt="Colonel Flops">
+              <div class="network-card__info">
+                <div class="network-card__name">COL. FLOPS</div>
+                <div class="network-card__role">CF-01 · Psych Ops</div>
+                <div class="network-card__note" data-i18n="dossier.treatzNet1">Commissioned by Treatz without prior authorization. Relationship: foundational. Status: officially acknowledged.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/unit-two.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-two.png" alt="Unit Two">
+              <div class="network-card__info">
+                <div class="network-card__name">UNIT TWO</div>
+                <div class="network-card__role">02-K9-OPS · Snack Retrieval</div>
+                <div class="network-card__note" data-i18n="dossier.treatzNet2">Under observation. 17 incident reports. Treatz maintains professional distance near secured snacks.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/sergeant-bork.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/sergeant-bork.png" alt="Sergeant Bork">
+              <div class="network-card__info">
+                <div class="network-card__name">SGT. BORK</div>
+                <div class="network-card__role">03-K9-OPS · Perimeter</div>
+                <div class="network-card__note" data-i18n="dossier.treatzNet3">Reliable perimeter anchor. The word "walkies" is not used in briefings. This was learned the hard way.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/lieutenant-sniff.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/lieutenant-sniff.png" alt="Lieutenant Sniff">
+              <div class="network-card__info">
+                <div class="network-card__name">LT. SNIFF</div>
+                <div class="network-card__role">07-K9-OPS · Scent Intel</div>
+                <div class="network-card__note" data-i18n="dossier.treatzNet4">Most thorough field analyst in the unit. Mission timelines now include a 25-minute sniff buffer.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/corporal-zoom.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/corporal-zoom.png" alt="Corporal Zoom">
+              <div class="network-card__info">
+                <div class="network-card__name">CPL. ZOOM</div>
+                <div class="network-card__role">11-K9-OPS · Rapid Response</div>
+                <div class="network-card__note" data-i18n="dossier.treatzNet5">Fastest response time in the unit. All doors on deployment sites are now pre-assessed.</div>
+              </div>
+            </a>
+
+            <a href="/dossier/unit-five.html" class="network-card">
+              <img class="network-card__portrait" src="/assets/img/operatives/unit-five.png" alt="Unit Five">
+              <div class="network-card__info">
+                <div class="network-card__name">UNIT FIVE</div>
+                <div class="network-card__role">44-K9-OPS · Cuddle Command</div>
+                <div class="network-card__note" data-i18n="dossier.treatzNet6">Named Colonel Flops. Cuddle protocol filed and approved. Treatz signed off on it. No comment issued.</div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+</body>
+</html>
