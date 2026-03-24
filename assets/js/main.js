@@ -49,13 +49,13 @@
             <span class="pulse-dot"></span>
             <span data-i18n="nav.classified">CLASSIFIED</span>
           </a>
-          <button class="wf-nav__hamburger" id="hamburger" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
           <div class="lang-toggle">
             <button class="lang-btn" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="de">DE</button>
           </div>
+          <button class="wf-nav__hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
         </div>
 
       </div>
@@ -157,19 +157,13 @@
     if (!hamburger || !mobileMenu) return;
 
     function openMenu() {
-      mobileMenu.style.display = 'flex';
-      requestAnimationFrame(() => mobileMenu.classList.add('open'));
+      mobileMenu.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
       mobileMenu.classList.remove('open');
       document.body.style.overflow = '';
-      setTimeout(() => {
-        if (!mobileMenu.classList.contains('open')) {
-          mobileMenu.style.display = 'none';
-        }
-      }, 220);
     }
 
     hamburger.addEventListener('click', openMenu);
