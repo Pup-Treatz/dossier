@@ -49,34 +49,40 @@
             <span class="pulse-dot"></span>
             <span data-i18n="nav.classified">CLASSIFIED</span>
           </a>
+          <button class="wf-nav__hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
           <div class="lang-toggle">
             <button class="lang-btn" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="de">DE</button>
           </div>
-          <button class="wf-nav__hamburger" id="hamburger" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
         </div>
 
       </div>
     </nav>
 
-    <div class="wf-mobile-menu" id="mobileMenu">
-      <a href="/about.html"       data-i18n="nav.agency">AGENCY</a>
-      <a href="/operatives.html"  data-i18n="nav.operatives">OPERATIVES</a>
-      <span class="wf-mobile-menu__section" data-i18n="nav.operations">OPERATIONS</span>
-      <a href="/operations.html"      data-i18n="nav.missionArchive" style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Mission Archive</a>
-      <a href="/incident-reports.html" data-i18n="nav.incidentReports" style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Incident Reports</a>
-      <a href="/intel-board.html"      data-i18n="nav.intelBoard"      style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Intel Board</a>
-      <a href="/status.html"      data-i18n="nav.status">STATUS</a>
-      <span class="wf-mobile-menu__section" data-i18n="nav.files">FILES</span>
-      <a href="/field-manual.html"     data-i18n="nav.fieldManual"     style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Field Manual</a>
-      <a href="/anthem-hall.html"      data-i18n="nav.anthemHall"      style="padding-left:28px; font-size:10px; opacity:0.7;">↳ Anthem Hall</a>
-      <a href="/contact.html"     data-i18n="nav.contact">CONTACT</a>
-      <a href="/classified.html"  class="mob-classified">
-        <span class="pulse-dot"></span>
-        <span data-i18n="nav.classified">CLASSIFIED</span>
-      </a>
+    <!-- MOBILE OVERLAY MENU -->
+    <div class="wf-mobile-overlay" id="mobileMenu">
+      <div class="wf-mobile-overlay__inner">
+        <button class="wf-mobile-overlay__close" id="mobileClose" aria-label="Close">✕</button>
+        <nav class="wf-mobile-overlay__nav">
+          <a href="/about.html"       data-i18n="nav.agency">AGENCY</a>
+          <a href="/operatives.html"  data-i18n="nav.operatives">OPERATIVES</a>
+          <span class="wf-mob-section" data-i18n="nav.operations">OPERATIONS</span>
+          <a href="/operations.html"      data-i18n="nav.missionArchive">↳ Mission Archive</a>
+          <a href="/incident-reports.html" data-i18n="nav.incidentReports">↳ Incident Reports</a>
+          <a href="/intel-board.html"      data-i18n="nav.intelBoard">↳ Intel Board</a>
+          <a href="/status.html"      data-i18n="nav.status">STATUS</a>
+          <span class="wf-mob-section" data-i18n="nav.files">FILES</span>
+          <a href="/field-manual.html" data-i18n="nav.fieldManual">↳ Field Manual</a>
+          <a href="/anthem-hall.html"  data-i18n="nav.anthemHall">↳ Anthem Hall</a>
+          <a href="/contact.html"     data-i18n="nav.contact">CONTACT</a>
+          <a href="/classified.html"  class="mob-classified">
+            <span class="pulse-dot"></span>
+            <span data-i18n="nav.classified">CLASSIFIED</span>
+          </a>
+        </nav>
+      </div>
     </div>
   `;
 
@@ -146,25 +152,37 @@
   function initHamburger() {
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
+    const closeBtn   = document.getElementById('mobileClose');
 
     if (!hamburger || !mobileMenu) return;
 
-    hamburger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-    });
+    function openMenu() {
+      mobileMenu.style.display = 'flex';
+      requestAnimationFrame(() => mobileMenu.classList.add('open'));
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (!mobileMenu.classList.contains('open')) {
+          mobileMenu.style.display = 'none';
+        }
+      }, 220);
+    }
+
+    hamburger.addEventListener('click', openMenu);
+    if (closeBtn) closeBtn.addEventListener('click', closeMenu);
 
     // Close on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-      });
+      link.addEventListener('click', closeMenu);
     });
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.classList.remove('open');
-      }
+    // Close on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
     });
   }
 
