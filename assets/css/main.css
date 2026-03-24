@@ -526,8 +526,10 @@ main {
 
   section { padding: 56px 0; }
 
+  .wf-nav__inner         { padding: 0 16px; gap: 0; justify-content: space-between; }
   .wf-nav__links         { display: none; }
-  .wf-nav__hamburger     { display: flex; }
+  .wf-nav__right         { gap: 4px; }
+  .wf-nav__hamburger     { display: flex; margin-left: 4px; }
   .wf-nav__classified    { display: none; }
 
   .wf-footer__inner {
