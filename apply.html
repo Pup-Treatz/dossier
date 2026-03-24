@@ -200,7 +200,8 @@
       transition: background 0.15s;
     }
     .app-row__main:hover { background: var(--bg-2); }
-    .app-row__photo { width: 32px; height: 32px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); }
+    .app-row__photo { width: 32px; height: 32px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); cursor: zoom-in; transition: border-color 0.15s; }
+    .app-row__photo:hover { border-color: var(--silver-dim); }
     .app-row__num { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); }
     .app-row__name { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .app-row__origin { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -235,6 +236,25 @@
     .sidebar-stat:last-child { border-bottom: none; }
     .sidebar-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); }
     .sidebar-stat__value { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; color: var(--text-0); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+      cursor: zoom-out;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img {
+      max-width: min(90vw, 600px);
+      max-height: 85vh;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-md);
+      object-fit: contain;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
   </style>
 </head>
 <body>
@@ -251,16 +271,28 @@
 
     <!-- APPLY BUTTON + MODAL TRIGGER -->
     <div class="wrap" style="padding: 32px 0 0;">
-      <button id="openFormBtn" style="
-        display: inline-flex; align-items: center; gap: 10px;
-        font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
-        text-transform: uppercase; text-decoration: none;
-        color: var(--text-0); background: var(--bg-3);
-        border: 1px solid var(--border-hi); border-radius: var(--radius);
-        padding: 12px 28px; cursor: pointer; transition: all 0.2s;
-      " onmouseover="this.style.borderColor='var(--silver-dim)'" onmouseout="this.style.borderColor='var(--border-hi)'">
-        <span data-i18n="apply.openFormBtn">JETZT BEWERBEN →</span>
-      </button>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <button id="openFormBtn" style="
+          display: inline-flex; align-items: center; gap: 10px;
+          font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+          text-transform: uppercase; text-decoration: none;
+          color: var(--text-0); background: var(--bg-3);
+          border: 1px solid var(--border-hi); border-radius: var(--radius);
+          padding: 12px 28px; cursor: pointer; transition: all 0.2s;
+        " onmouseover="this.style.borderColor='var(--silver-dim)'" onmouseout="this.style.borderColor='var(--border-hi)'">
+          <span data-i18n="apply.openFormBtn">JETZT BEWERBEN →</span>
+        </button>
+        <a href="/applicants.html" style="
+          display: inline-flex; align-items: center; gap: 10px;
+          font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+          text-transform: uppercase; text-decoration: none;
+          color: var(--text-2); background: var(--bg-1);
+          border: 1px solid var(--border); border-radius: var(--radius);
+          padding: 12px 28px; transition: all 0.2s;
+        " onmouseover="this.style.color='var(--text-0)'; this.style.borderColor='var(--border-md)'" onmouseout="this.style.color='var(--text-2)'; this.style.borderColor='var(--border)'">
+          <span data-i18n="apply.listAllBtn">ALLE BEWERBER →</span>
+        </a>
+      </div>
     </div>
 
     <!-- FORM MODAL OVERLAY -->
@@ -534,11 +566,19 @@
             <span data-i18n="apply.listEmpty">KEINE BEWERBUNGEN EINGEGANGEN. SEI DER ERSTE.</span>
           </div>
         </div>
+        <div id="showMoreWrap" style="display:none; padding-top:16px; text-align:right;">
+          <a href="/applicants.html" style="font-family:var(--font-mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-2); text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='var(--text-0)'" onmouseout="this.style.color='var(--text-2)'" data-i18n="apply.listAllBtn">ALLE BEWERBER ANZEIGEN →</a>
+        </div>
       </div>
     </section>
 
   </main>
   <div id="main-footer"></div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="">
+  </div>
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/main.js"></script>
   <script>
@@ -707,6 +747,10 @@
 
     const recent = [...applicants].reverse().slice(0, 9);
     recent.forEach(app => grid.appendChild(renderRow(app)));
+
+    // "Alle anzeigen" Link einblenden wenn mehr als 9
+    const showMore = document.getElementById('showMoreWrap');
+    if (showMore) showMore.style.display = applicants.length > 9 ? 'block' : 'none';
   }
 
   // ── AI EVALUATION ──
@@ -903,6 +947,31 @@
 
   // Formular nach erfolgreichem Submit schließen
   const origSubmit = document.getElementById('applyForm').onsubmit;
+
+
+  // ── LIGHTBOX ──
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+  // Delegate: Klick auf Foto in Zeilen
+  document.addEventListener('click', e => {
+    const photo = e.target.closest('.app-row__photo');
+    if (photo && photo.src && !photo.src.includes('svg+xml')) {
+      e.stopPropagation();
+      openLightbox(photo.src);
+    }
+  });
 
   // ── INIT ──
   loadApplicants().then(renderList);
