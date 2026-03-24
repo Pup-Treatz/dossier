@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Applicant Registry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <style>
+    .page-hero { padding: 100px 0 48px; border-bottom: 1px solid var(--border); }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 16px; }
+
+    /* Stats bar */
+    .stats-bar { display: flex; gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 32px 0 0; }
+    .stats-bar__item { flex: 1; padding: 14px 20px; border-right: 1px solid var(--border); background: var(--bg-1); }
+    .stats-bar__item:last-child { border-right: none; }
+    .stats-bar__value { font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--text-0); line-height: 1; }
+    .stats-bar__label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-top: 4px; }
+    @media (max-width: 600px) { .stats-bar { flex-wrap: wrap; } .stats-bar__item { flex: 1 1 50%; border-bottom: 1px solid var(--border); } }
+
+    /* Filter bar */
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 20px 0; border-bottom: 1px solid var(--border); align-items: center; }
+    .filter-btn { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-1); color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+    .filter-btn:hover { color: var(--text-0); border-color: var(--border-md); }
+    .filter-btn.active { color: var(--text-0); border-color: var(--silver-dim); background: var(--bg-3); }
+    .filter-search { margin-left: auto; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; padding: 6px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-2); color: var(--text-0); outline: none; width: 200px; transition: border-color 0.15s; }
+    .filter-search:focus { border-color: var(--border-hi); }
+    .filter-search::placeholder { color: var(--text-3); }
+
+    /* Registry table */
+    .registry { margin-top: 0; }
+    .registry-header {
+      display: grid;
+      grid-template-columns: 44px 120px 1fr 140px 200px 100px 24px;
+      gap: 12px; padding: 8px 12px;
+      border-bottom: 2px solid var(--border-md);
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3);
+    }
+    .app-row { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .app-row:last-child { border-bottom: none; }
+    .app-row__main {
+      display: grid;
+      grid-template-columns: 44px 120px 1fr 140px 200px 100px 24px;
+      align-items: center; gap: 12px;
+      padding: 12px 12px; cursor: pointer;
+    }
+    .app-row__main:hover { background: var(--bg-2); }
+    .app-row__photo { width: 36px; height: 36px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); }
+    .app-row__num { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); }
+    .app-row__name { font-family: var(--font-display); font-size: 17px; letter-spacing: 1.5px; color: var(--text-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .app-row__origin { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .app-row__rating { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap; }
+    .app-row__date { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); }
+    .app-row__toggle { font-family: var(--font-mono); font-size: 9px; color: var(--text-3); transition: color 0.15s; text-align: center; }
+    .app-row__detail { display: none; padding: 16px 20px 20px 56px; background: var(--bg-2); border-top: 1px solid var(--border); }
+    .app-row.open .app-row__detail { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .app-row__protocol { font-size: 13px; color: var(--text-1); line-height: 1.75; }
+    .app-row__detail-meta { display: flex; flex-direction: column; gap: 10px; }
+    .detail-field__label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+    .detail-field__value { font-size: 12px; color: var(--text-1); }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 24px 0; }
+    .page-btn { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; padding: 7px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-1); color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+    .page-btn:hover { color: var(--text-0); border-color: var(--border-md); }
+    .page-btn.active { color: var(--text-0); border-color: var(--silver-dim); background: var(--bg-3); }
+    .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .page-info { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; color: var(--text-3); padding: 0 8px; }
+
+    /* Empty */
+    .empty-state { padding: 64px 0; text-align: center; font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--text-3); }
+
+    @media (max-width: 900px) {
+      .registry-header { display: none; }
+      .app-row__main { grid-template-columns: 36px 1fr 24px; }
+      .app-row__num, .app-row__origin, .app-row__rating, .app-row__date { display: none; }
+      .app-row.open .app-row__detail { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow" data-i18n="apply.listEyebrow">WF-RECRUIT-02</div>
+        <h1 class="page-hero__title" data-i18n="apply.listTitle">BEWERBERLISTE</h1>
+        <p style="font-size:14px; color:var(--text-2); max-width:560px; line-height:1.7;" data-i18n="apply.listLead">Öffentliche Übersicht aller eingereichten Bewerbungen.</p>
+        <div class="stats-bar" id="statsBar">
+          <div class="stats-bar__item">
+            <div class="stats-bar__value" id="statTotal">—</div>
+            <div class="stats-bar__label" data-i18n="apply.sidebarReceived">Eingegangen</div>
+          </div>
+          <div class="stats-bar__item">
+            <div class="stats-bar__value" style="color:var(--green-bright);" id="statAccepted">—</div>
+            <div class="stats-bar__label" data-i18n="apply.sidebarAccepted">Zugelassen</div>
+          </div>
+          <div class="stats-bar__item">
+            <div class="stats-bar__value" style="color:var(--amber);" id="statWatch">—</div>
+            <div class="stats-bar__label" data-i18n="apply.sidebarWatch">Unter Beobachtung</div>
+          </div>
+          <div class="stats-bar__item">
+            <div class="stats-bar__value" style="color:var(--red);" id="statRejected">—</div>
+            <div class="stats-bar__label" data-i18n="apply.sidebarRejected">Abgelehnt</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap" style="padding-top:0;">
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all" data-i18n="incidentReports.filterAll">ALLE</button>
+        <button class="filter-btn" data-filter="approved" data-i18n="apply.ratingApproved">WEITERLEITUNG EMPFOHLEN</button>
+        <button class="filter-btn" data-filter="watch" data-i18n="apply.ratingWatch">UNTER BEOBACHTUNG</button>
+        <button class="filter-btn" data-filter="rejected" data-i18n="apply.ratingRejected">ABGELEHNT</button>
+        <input class="filter-search" type="text" id="searchInput" placeholder="Suche…" data-i18n="[placeholder]apply.searchPlaceholder">
+      </div>
+
+      <!-- Table header -->
+      <div class="registry-header">
+        <span></span>
+        <span data-i18n="apply.colNum">NUMMER</span>
+        <span data-i18n="apply.colName">DECKNAME</span>
+        <span data-i18n="apply.colOrigin">HERKUNFT</span>
+        <span data-i18n="apply.colRating">EINSTUFUNG</span>
+        <span data-i18n="apply.colDate">DATUM</span>
+        <span></span>
+      </div>
+
+      <!-- Registry rows -->
+      <div class="registry" id="registry"></div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <div class="wrap" style="padding-bottom:32px; text-align:center;">
+      <a href="/apply.html" style="font-family:var(--font-mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-2); text-decoration:none; border:1px solid var(--border); border-radius:var(--radius); padding:8px 18px; display:inline-block; transition:all 0.15s;" onmouseover="this.style.color='var(--text-0)'; this.style.borderColor='var(--border-hi)'" onmouseout="this.style.color='var(--text-2)'; this.style.borderColor='var(--border)'" data-i18n="apply.backToApply">← ZURÜCK ZUR BEWERBUNG</a>
+    </div>
+  </main>
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script>
+    const STORAGE_KEY = 'wf-applicants';
+    const PER_PAGE = 20;
+    let allApplicants = [];
+    let filtered = [];
+    let currentPage = 1;
+    let activeFilter = 'all';
+
+    const INCOGNITO_SVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#1A1E24"/><circle cx="32" cy="24" r="12" fill="#2A3040"/><ellipse cx="32" cy="52" rx="20" ry="14" fill="#2A3040"/><text x="32" y="28" text-anchor="middle" font-size="14" fill="#6A7888" font-family="monospace">?</text></svg>`)}`;
+
+    function getRatingColor(rating) {
+      const map = { 'WEITERLEITUNG EMPFOHLEN': 'var(--green-bright)', 'FORWARDING RECOMMENDED': 'var(--green-bright)', 'AKTE UNTER VORBEHALT': 'var(--silver-dim)', 'FILE UNDER RESERVATION': 'var(--silver-dim)', 'UNTER BEOBACHTUNG': 'var(--amber)', 'UNDER OBSERVATION': 'var(--amber)', 'BEWERBUNG ABGELEHNT': 'var(--red)', 'APPLICATION REJECTED': 'var(--red)' };
+      return map[rating] || 'var(--silver-dim)';
+    }
+
+    function isApproved(r) { return ['WEITERLEITUNG EMPFOHLEN','FORWARDING RECOMMENDED'].includes(r); }
+    function isWatch(r)    { return ['UNTER BEOBACHTUNG','UNDER OBSERVATION'].includes(r); }
+    function isRejected(r) { return ['BEWERBUNG ABGELEHNT','APPLICATION REJECTED'].includes(r); }
+
+    function updateStats(list) {
+      document.getElementById('statTotal').textContent    = list.length;
+      document.getElementById('statAccepted').textContent = list.filter(a => isApproved(a.rating)).length;
+      document.getElementById('statWatch').textContent    = list.filter(a => isWatch(a.rating)).length;
+      document.getElementById('statRejected').textContent = list.filter(a => isRejected(a.rating)).length;
+    }
+
+    function renderRow(app) {
+      const row = document.createElement('div');
+      row.className = 'app-row';
+      row.innerHTML = `
+        <div class="app-row__main">
+          <img class="app-row__photo" src="${app.photo || INCOGNITO_SVG}" alt="">
+          <span class="app-row__num">${app.num}</span>
+          <span class="app-row__name">${app.callsign}</span>
+          <span class="app-row__origin">${app.origin || '—'}</span>
+          <span class="app-row__rating" style="color:${getRatingColor(app.rating)}">● ${app.rating}</span>
+          <span class="app-row__date">${app.date}</span>
+          <span class="app-row__toggle">▶</span>
+        </div>
+        <div class="app-row__detail">
+          <div class="app-row__protocol">${app.protocol}</div>
+          <div class="app-row__detail-meta">
+            <div>
+              <div class="detail-field__label" data-i18n="apply.b2title">Rasse</div>
+              <div class="detail-field__value">${app.breed || '—'}</div>
+            </div>
+            <div>
+              <div class="detail-field__label" data-i18n="apply.b3title">Stärke</div>
+              <div class="detail-field__value">${app.strength || '—'}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      row.querySelector('.app-row__main').addEventListener('click', () => {
+        row.classList.toggle('open');
+        row.querySelector('.app-row__toggle').textContent = row.classList.contains('open') ? '▼' : '▶';
+      });
+      return row;
+    }
+
+    function renderPage() {
+      const registry = document.getElementById('registry');
+      registry.innerHTML = '';
+
+      const start = (currentPage - 1) * PER_PAGE;
+      const page = filtered.slice(start, start + PER_PAGE);
+
+      if (page.length === 0) {
+        registry.innerHTML = '<div class="empty-state" data-i18n="apply.listEmpty">KEINE BEWERBUNGEN EINGEGANGEN.</div>';
+        return;
+      }
+      page.forEach(app => registry.appendChild(renderRow(app)));
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const pag = document.getElementById('pagination');
+      pag.innerHTML = '';
+      const pages = Math.ceil(filtered.length / PER_PAGE);
+      if (pages <= 1) return;
+
+      const prev = document.createElement('button');
+      prev.className = 'page-btn';
+      prev.textContent = '←';
+      prev.disabled = currentPage === 1;
+      prev.onclick = () => { currentPage--; renderPage(); };
+      pag.appendChild(prev);
+
+      for (let i = 1; i <= pages; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+        btn.textContent = i;
+        btn.onclick = ((_i) => () => { currentPage = _i; renderPage(); })(i);
+        pag.appendChild(btn);
+      }
+
+      const next = document.createElement('button');
+      next.className = 'page-btn';
+      next.textContent = '→';
+      next.disabled = currentPage === pages;
+      next.onclick = () => { currentPage++; renderPage(); };
+      pag.appendChild(next);
+
+      const info = document.createElement('span');
+      info.className = 'page-info';
+      info.textContent = `${(currentPage-1)*PER_PAGE+1}–${Math.min(currentPage*PER_PAGE, filtered.length)} / ${filtered.length}`;
+      pag.appendChild(info);
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      filtered = [...allApplicants].reverse().filter(app => {
+        const matchFilter =
+          activeFilter === 'all' ||
+          (activeFilter === 'approved' && isApproved(app.rating)) ||
+          (activeFilter === 'watch'    && isWatch(app.rating)) ||
+          (activeFilter === 'rejected' && isRejected(app.rating));
+        const matchSearch = !search ||
+          app.callsign.toLowerCase().includes(search) ||
+          (app.origin || '').toLowerCase().includes(search) ||
+          app.rating.toLowerCase().includes(search);
+        return matchFilter && matchSearch;
+      });
+      currentPage = 1;
+      renderPage();
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+    // Load
+    async function init() {
+      try {
+        const result = await window.storage.get(STORAGE_KEY, true);
+        allApplicants = result ? JSON.parse(result.value) : [];
+      } catch { allApplicants = []; }
+      updateStats(allApplicants);
+      filtered = [...allApplicants].reverse();
+      renderPage();
+    }
+    init();
+  </script>
+</body>
+</html>

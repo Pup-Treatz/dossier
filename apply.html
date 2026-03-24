@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRAFF FORCE — Recruitment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="icon" href="/assets/img/logo/favicon.ico">
+  <style>
+    /* ── PAGE ── */
+    .page-hero { padding: 100px 0 56px; border-bottom: 1px solid var(--border); }
+    .page-hero__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero__eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text-3); }
+    .page-hero__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); letter-spacing: 6px; line-height: 1; color: var(--text-0); margin-bottom: 20px; }
+    .page-hero__lead { font-size: 15px; color: var(--text-1); line-height: 1.75; max-width: 620px; }
+
+    /* ── LAYOUT ── */
+    .apply-layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; padding: 56px 0; align-items: start; }
+    @media (max-width: 1024px) { .apply-layout { grid-template-columns: 1fr; } }
+
+    /* ── FORM ── */
+    .wf-form { display: flex; flex-direction: column; gap: 28px; }
+
+    .form-block {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .form-block__header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .form-block__num {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      color: var(--text-3); background: var(--bg-3);
+      border: 1px solid var(--border); border-radius: 2px;
+      padding: 2px 7px;
+    }
+    .form-block__title {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-1);
+    }
+    .form-block__body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+    .wf-label {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; display: block;
+    }
+    .wf-input {
+      width: 100%; background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 14px;
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px;
+      color: var(--text-0); outline: none; transition: border-color 0.15s;
+    }
+    .wf-input:focus { border-color: var(--border-hi); }
+    .wf-input::placeholder { color: var(--text-3); }
+    textarea.wf-input { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+    /* Breed chips */
+    .breed-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .breed-chip {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
+      padding: 5px 12px; border-radius: 2px;
+      border: 1px solid var(--border); background: var(--bg-2);
+      color: var(--text-2); cursor: pointer; transition: all 0.15s;
+      user-select: none;
+    }
+    .breed-chip:hover { border-color: var(--border-md); color: var(--text-0); }
+    .breed-chip.selected { border-color: var(--silver-dim); background: var(--bg-3); color: var(--text-0); }
+    .breed-chip.rejected { border-color: rgba(224,52,52,0.4); color: var(--red); background: rgba(224,52,52,0.05); }
+    .breed-chip.rejected.selected { border-color: var(--red); background: rgba(224,52,52,0.12); }
+
+    /* Strength options */
+    .strength-options { display: flex; flex-direction: column; gap: 8px; }
+    .strength-opt {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg-2);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .strength-opt:hover { border-color: var(--border-md); background: var(--bg-3); }
+    .strength-opt.selected { border-color: var(--silver-dim); background: var(--bg-3); }
+    .strength-opt input { display: none; }
+    .strength-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 1px solid var(--border-md); flex-shrink: 0; transition: all 0.15s;
+    }
+    .strength-opt.selected .strength-dot { background: var(--silver-dim); border-color: var(--silver-dim); }
+    .strength-opt__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-2); }
+    .strength-opt.selected .strength-opt__label { color: var(--text-0); }
+
+    /* Lore questions */
+    .lore-q { margin-bottom: 4px; }
+    .lore-q__text { font-size: 13px; color: var(--text-1); margin-bottom: 10px; line-height: 1.5; }
+    .lore-options { display: flex; flex-direction: column; gap: 6px; }
+    .lore-opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg-2);
+      cursor: pointer; transition: all 0.15s; font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 1px; color: var(--text-2);
+    }
+    .lore-opt:hover { border-color: var(--border-md); color: var(--text-1); }
+    .lore-opt.selected { border-color: var(--silver-dim); color: var(--text-0); background: var(--bg-3); }
+    .lore-opt input { display: none; }
+    .lore-bullet { width: 8px; height: 8px; border-radius: 1px; border: 1px solid var(--border-md); flex-shrink: 0; transition: all 0.15s; }
+    .lore-opt.selected .lore-bullet { background: var(--silver-dim); border-color: var(--silver-dim); }
+
+    /* Photo upload */
+    .photo-upload {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 24px; text-align: center; cursor: pointer;
+      transition: border-color 0.15s; position: relative;
+    }
+    .photo-upload:hover { border-color: var(--border-md); }
+    .photo-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .photo-upload__icon { font-size: 28px; margin-bottom: 8px; opacity: 0.5; }
+    .photo-upload__text { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); }
+    .photo-upload__sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+    .photo-preview { width: 80px; height: 80px; border-radius: var(--radius); object-fit: cover; margin: 0 auto 8px; display: block; border: 1px solid var(--border-md); }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%; padding: 14px; font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      background: var(--bg-3); border: 1px solid var(--border-hi);
+      border-radius: var(--radius); color: var(--text-0);
+      cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .submit-btn:hover { background: var(--bg-4); border-color: var(--silver-dim); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── RESULT CARD ── */
+    .result-card {
+      display: none;
+      background: var(--bg-1); border: 1px solid var(--border-md);
+      border-radius: var(--radius); overflow: hidden;
+      position: relative;
+    }
+    .result-card.visible { display: block; }
+    .result-card__header {
+      padding: 16px 20px; background: var(--bg-2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .result-card__num { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; color: var(--text-3); }
+    .result-card__body { padding: 24px 20px; position: relative; overflow: hidden; }
+    .result-seal {
+      position: absolute; right: -20px; bottom: -20px;
+      width: 160px; height: 160px; opacity: 0.06;
+      transform: rotate(-8deg); pointer-events: none;
+    }
+    .result-photo {
+      width: 64px; height: 64px; border-radius: var(--radius);
+      object-fit: cover; border: 1px solid var(--border-md);
+      margin-bottom: 14px; display: block;
+    }
+    .result-name { font-family: var(--font-display); font-size: 28px; letter-spacing: 3px; color: var(--text-0); margin-bottom: 4px; }
+    .result-meta { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; color: var(--text-3); margin-bottom: 14px; }
+    .result-rating { font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; margin-bottom: 16px; }
+    .result-protocol { font-size: 13px; color: var(--text-1); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+    .result-rejected { background: rgba(224,52,52,0.06); border-top: 2px solid var(--red); }
+    .result-rejected .result-rating { color: var(--red); }
+
+    /* ── APPLICANT LIST ── */
+    .applicant-list-section { padding: 56px 0; border-top: 1px solid var(--border); }
+    #applicantGrid { margin-top: 20px; background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; padding: 0 8px; }
+
+    .applicant-card {
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .applicant-card:hover { border-color: var(--border-md); transform: translateY(-2px); }
+    .applicant-card__header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .applicant-card__photo { width: 40px; height: 40px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
+    .applicant-card__name { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); }
+    .applicant-card__origin { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); }
+    .applicant-card__body { padding: 12px 16px; }
+    .applicant-card__rating { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+    .applicant-card__snippet { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+    .applicant-card__footer { padding: 8px 16px; border-top: 1px solid var(--border); background: var(--bg-2); display: flex; justify-content: space-between; align-items: center; }
+    .applicant-card__date { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1px; color: var(--text-3); }
+    .applicant-card__num { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1px; color: var(--text-3); }
+
+    /* ── APPLICANT ROW ── */
+    .app-row { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .app-row:last-child { border-bottom: none; }
+    .app-row__main {
+      display: grid;
+      grid-template-columns: 32px 120px 1fr 1fr 1fr 90px 20px;
+      align-items: center; gap: 12px;
+      padding: 12px 4px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .app-row__main:hover { background: var(--bg-2); }
+    .app-row__photo { width: 32px; height: 32px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); }
+    .app-row__num { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); }
+    .app-row__name { font-family: var(--font-display); font-size: 16px; letter-spacing: 1.5px; color: var(--text-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .app-row__origin { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .app-row__rating { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap; }
+    .app-row__date { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--text-3); text-align: right; }
+    .app-row__toggle { font-family: var(--font-mono); font-size: 9px; color: var(--text-3); text-align: center; transition: color 0.15s; }
+    .app-row__detail { display: none; padding: 12px 16px 16px 48px; background: var(--bg-2); border-top: 1px solid var(--border); }
+    .app-row.open .app-row__detail { display: block; }
+    .app-row__protocol { font-size: 13px; color: var(--text-1); line-height: 1.75; margin-bottom: 8px; }
+    .app-row__meta { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; color: var(--text-3); }
+    @media (max-width: 900px) {
+      .app-row__main { grid-template-columns: 32px 1fr 1fr 20px; }
+      .app-row__num, .app-row__origin, .app-row__date { display: none; }
+    }
+
+    /* Rating colors *
+    .rating--green { color: var(--green-bright); }
+    .rating--amber { color: var(--amber); }
+    .rating--red { color: var(--red); }
+    .rating--silver { color: var(--silver-dim); }
+
+    /* Loading spinner */
+    .wf-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border-md); border-top-color: var(--silver); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Sidebar */
+    .apply-sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 16px; }
+    .sidebar-card { background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .sidebar-card__title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+    .sidebar-warning { background: rgba(224,52,52,0.06); border: 1px solid rgba(224,52,52,0.2); border-radius: var(--radius); padding: 16px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--text-2); line-height: 1.7; }
+    .sidebar-stat { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .sidebar-stat:last-child { border-bottom: none; }
+    .sidebar-stat__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); }
+    .sidebar-stat__value { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; color: var(--text-0); }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero__eyebrow"><span data-i18n="apply.eyebrow">WF-RECRUIT-01 · Einstellungsverfahren</span></div>
+        <h1 class="page-hero__title" data-i18n="apply.title">BEWERBUNG</h1>
+<p class="page-hero__lead" data-i18n="apply.lead">Offizielle Bewerbungen für die Wraff Force K9-Einheit.</p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="apply-layout">
+
+        <!-- FORM COLUMN -->
+        <div>
+          <form class="wf-form" id="applyForm">
+
+            <!-- Block 1: Identität -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">01</span>
+                <span class="form-block__title" data-i18n="apply.b1title">Operative Identität</span>
+              </div>
+              <div class="form-block__body">
+                <div>
+                  <label class="wf-label" data-i18n="apply.callsignLabel">Deckname *</label>
+                  <input class="wf-input" type="text" id="f-callsign" data-i18n="[placeholder]apply.callsignPlaceholder" placeholder="z.B. SERGEANT FLUFFKINS" required>
+                </div>
+                <div>
+                  <label class="wf-label" data-i18n="apply.originLabel">Herkunft (optional)</label>
+                  <input class="wf-input" type="text" id="f-origin" data-i18n="[placeholder]apply.originPlaceholder" placeholder="Stadt, Region oder Land">
+                </div>
+              </div>
+            </div>
+
+            <!-- Block 2: Rasse -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">02</span>
+                <span class="form-block__title" data-i18n="apply.b2title">Rasse / Typ</span>
+              </div>
+              <div class="form-block__body">
+                <div>
+                  <label class="wf-label" data-i18n="apply.breedChipsLabel">Schnellauswahl</label>
+                  <div class="breed-chips" id="breedChips">
+                    <div class="breed-chip" data-breed="Shiba Inu">Shiba Inu</div>
+                    <div class="breed-chip" data-breed="Husky">Husky</div>
+                    <div class="breed-chip" data-breed="Labrador">Labrador</div>
+                    <div class="breed-chip" data-breed="Border Collie">Border Collie</div>
+                    <div class="breed-chip" data-breed="Dalmatiner">Dalmatiner</div>
+                    <div class="breed-chip" data-breed="Pudel">Pudel</div>
+                    <div class="breed-chip" data-breed="Schäferhund">Schäferhund</div>
+                    <div class="breed-chip" data-breed="Mischlingsrasse">Mischlingsrasse</div>
+                    <div class="breed-chip" data-breed="Mensch (wird toleriert)" data-i18n="apply.breedMensch">Mensch (wird toleriert)</div>
+                    <div class="breed-chip rejected" data-breed="Kaninchen" data-i18n="apply.breedKaninchen">Kaninchen ⚠</div>
+                  </div>
+                  <label class="wf-label" style="margin-top:8px;" data-i18n="apply.breedTextLabel">Oder freitext</label>
+                  <input class="wf-input" type="text" id="f-breed" data-i18n="[placeholder]apply.breedPlaceholder" placeholder="Andere Rasse / Beschreibung">
+                </div>
+              </div>
+            </div>
+
+            <!-- Block 3: Stärke -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">03</span>
+                <span class="form-block__title" data-i18n="apply.b3title">Primäre Operative Stärke</span>
+              </div>
+              <div class="form-block__body">
+                <div class="strength-options" id="strengthOptions">
+                  <label class="strength-opt">
+                    <input type="radio" name="strength" value="Perimeter-Sicherung">
+                    <div class="strength-dot"></div>
+                    <span class="strength-opt__label" data-i18n="apply.strength1">Perimeter-Sicherung</span>
+                  </label>
+                  <label class="strength-opt">
+                    <input type="radio" name="strength" value="Snack-Erkennung & Bergung">
+                    <div class="strength-dot"></div>
+                    <span class="strength-opt__label">Snack-Erkennung & Bergung</span>
+                  </label>
+                  <label class="strength-opt">
+                    <input type="radio" name="strength" value="Geheimdienstanalyse">
+                    <div class="strength-dot"></div>
+                    <span class="strength-opt__label" data-i18n="apply.strength3">Geheimdienstanalyse</span>
+                  </label>
+                  <label class="strength-opt">
+                    <input type="radio" name="strength" value="Psychologische Kriegsführung">
+                    <div class="strength-dot"></div>
+                    <span class="strength-opt__label" data-i18n="apply.strength4">Psychologische Kriegsführung</span>
+                  </label>
+                  <label class="strength-opt">
+                    <input type="radio" name="strength" value="Kuschel-Unterstützung">
+                    <div class="strength-dot"></div>
+                    <span class="strength-opt__label" data-i18n="apply.strength5">Kuschel-Unterstützung</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Block 4: Snack-Test -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">04</span>
+                <span class="form-block__title" data-i18n="apply.b4title">Verhaltenstest</span>
+              </div>
+              <div class="form-block__body">
+                <div>
+                  <label class="wf-label" data-i18n="apply.snackLabel">Wie reagierst du auf ein unbeaufsichtigtes Leckerli? *</label>
+                  <textarea class="wf-input" id="f-snack" data-i18n="[placeholder]apply.snackPlaceholder" placeholder="Sei ehrlich. Wir prüfen es ohnehin." required></textarea>
+                </div>
+                <div>
+                  <label class="wf-label" data-i18n="apply.juneLabel">Wo warst du am 12. Juni 2025? *</label>
+                  <textarea class="wf-input" id="f-june" data-i18n="[placeholder]apply.junePlaceholder" placeholder="Präzise Angaben sind erwünscht." required style="min-height:60px;"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Block 5: Lore-Test -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">05</span>
+                <span class="form-block__title" data-i18n="apply.b5title">Eignungstest — Allgemeinwissen</span>
+              </div>
+              <div class="form-block__body" style="gap:20px;">
+
+                <div class="lore-q">
+                  <div class="lore-q__text" data-i18n="apply.lq1text">Was war der Auslöser für die Gründung der Wraff Force?</div>
+                  <div class="lore-options" id="lq1">
+                    <label class="lore-opt"><input type="radio" name="lq1" value="wrong1"><div class="lore-bullet"></div data-i18n="apply.lq1w1">Ein ungesichertes Lager Pedigree-Dosenfutter</label>
+                    <label class="lore-opt"><input type="radio" name="lq1" value="correct"><div class="lore-bullet"></div data-i18n="apply.lq1correct">Der Berliner Brezel-Vorfall, März 2025</label>
+                    <label class="lore-opt"><input type="radio" name="lq1" value="wrong2"><div class="lore-bullet"></div data-i18n="apply.lq1w2">Ein diplomatischer Zwischenfall mit Bärbel</label>
+                    <label class="lore-opt"><input type="radio" name="lq1" value="wrong3"><div class="lore-bullet"></div data-i18n="apply.lq1w3">Colonel Flops hat es nie erklärt</label>
+                  </div>
+                </div>
+
+                <div class="lore-q">
+                  <div class="lore-q__text" data-i18n="apply.lq2text">Wie viele Vorkommensberichte wurden gegen Unit Two eingereicht?</div>
+                  <div class="lore-options" id="lq2">
+                    <label class="lore-opt"><input type="radio" name="lq2" value="wrong1"><div class="lore-bullet"></div data-i18n="apply.lq2w1">3 — alle technisch erklärbar</label>
+                    <label class="lore-opt"><input type="radio" name="lq2" value="wrong2"><div class="lore-bullet"></div data-i18n="apply.lq2w2">42 — Ermittlung läuft seit Jahren</label>
+                    <label class="lore-opt"><input type="radio" name="lq2" value="correct"><div class="lore-bullet"></div data-i18n="apply.lq2correct">17 — alle Erklärungen technisch plausibel</label>
+                    <label class="lore-opt"><input type="radio" name="lq2" value="wrong3"><div class="lore-bullet"></div data-i18n="apply.lq2w3">0 — Unit Two war immer unschuldig</label>
+                  </div>
+                </div>
+
+                <div class="lore-q">
+                  <div class="lore-q__text" data-i18n="apply.lq3text">Was ist die offizielle Snack-Bergungsrate der Wraff Force?</div>
+                  <div class="lore-options" id="lq3">
+                    <label class="lore-opt"><input type="radio" name="lq3" value="wrong1"><div class="lore-bullet"></div data-i18n="apply.lq3w1">100% — wir verlieren nie</label>
+                    <label class="lore-opt"><input type="radio" name="lq3" value="wrong2"><div class="lore-bullet"></div data-i18n="apply.lq3w2">51% — akzeptable Mehrheit</label>
+                    <label class="lore-opt"><input type="radio" name="lq3" value="wrong3"><div class="lore-bullet"></div data-i18n="apply.lq3w3">89% — entspricht dem BBI-Korrelationswert</label>
+                    <label class="lore-opt"><input type="radio" name="lq3" value="correct"><div class="lore-bullet"></div data-i18n="apply.lq3correct">73% — etablierter Richtwert, wird nicht revidiert</label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Block 6: Motivation -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">06</span>
+                <span class="form-block__title" data-i18n="apply.b6title">Motivationsschreiben</span>
+              </div>
+              <div class="form-block__body">
+                <div>
+                  <label class="wf-label" data-i18n="apply.motivationLabel">Warum Wraff Force? *</label>
+                  <textarea class="wf-input" id="f-motivation" data-i18n="[placeholder]apply.motivationPlaceholder" placeholder="Überzeuge uns. Oder versuche es zumindest." required style="min-height:100px;"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Block 7: Foto -->
+            <div class="form-block">
+              <div class="form-block__header">
+                <span class="form-block__num">07</span>
+                <span class="form-block__title"><span data-i18n="apply.b7title">Bewerbungsfoto</span> <span style="color:var(--text-3); font-size:9px; letter-spacing:1px;" data-i18n="apply.b7optional">OPTIONAL</span></span>
+              </div>
+              <div class="form-block__body">
+                <div class="photo-upload" id="photoUpload">
+                  <input type="file" id="f-photo" accept="image/*">
+                  <div id="photoPlaceholder">
+                    <div class="photo-upload__icon">🐾</div>
+                    <div class="photo-upload__text" data-i18n="apply.photoUploadText">Foto hochladen</div>
+                    <div class="photo-upload__sub" data-i18n="apply.photoUploadSub">JPG, PNG · Max. 2MB · Wird in der Bewerberliste angezeigt</div>
+                  </div>
+                  <img id="photoPreview" class="photo-preview" style="display:none;" alt="Vorschau">
+                </div>
+              </div>
+            </div>
+
+            <!-- Result card (after submission) -->
+            <div class="result-card" id="resultCard">
+              <div class="result-card__header">
+                <span class="result-card__num" id="resultNum">WF-APP-2025-000</span>
+                <span class="badge badge--green" id="resultBadge">● AUSWERTUNG ABGESCHLOSSEN</span>
+              </div>
+              <div class="result-card__body" id="resultBody">
+                <img src="/assets/img/logo/wf-seal.png" alt="" class="result-seal">
+                <img id="resultPhoto" class="result-photo" style="display:none;" alt="">
+                <div class="result-name" id="resultName"></div>
+                <div class="result-meta" id="resultMeta"></div>
+                <div class="result-rating" id="resultRating"></div>
+                <div class="result-protocol" id="resultProtocol"></div>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span data-i18n="apply.submitBtn">BEWERBUNG EINREICHEN →</span>
+            </button>
+
+          </form>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="apply-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-card__title" data-i18n="apply.sidebarStatusTitle">Bewerbungsstatus</div>
+            <div class="sidebar-stat">
+              <span class="sidebar-stat__label" data-i18n="apply.sidebarReceived">Eingegangen</span>
+              <span class="sidebar-stat__value" id="statCount">—</span>
+            </div>
+            <div class="sidebar-stat">
+              <span class="sidebar-stat__label" data-i18n="apply.sidebarAccepted">Zugelassen</span>
+              <span class="sidebar-stat__value" style="color:var(--green-bright);" id="statAccepted">—</span>
+            </div>
+            <div class="sidebar-stat">
+              <span class="sidebar-stat__label" data-i18n="apply.sidebarWatch">Unter Beobachtung</span>
+              <span class="sidebar-stat__value" style="color:var(--amber);" id="statWatch">—</span>
+            </div>
+            <div class="sidebar-stat">
+              <span class="sidebar-stat__label" data-i18n="apply.sidebarRejected">Abgelehnt</span>
+              <span class="sidebar-stat__value" style="color:var(--red);" id="statRejected">—</span>
+            </div>
+          </div>
+
+          <div class="sidebar-warning">
+            <span data-i18n="apply.sidebarWarning">⚠ HINWEIS — Alle Antworten werden ausgewertet. Ergebnisse sind öffentlich.</span>
+          </div>
+
+          <div class="sidebar-card">
+            <div class="sidebar-card__title" data-i18n="apply.sidebarRatingsTitle">Einstufungen</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; color:var(--green-bright);" data-i18n="apply.ratingApproved">● WEITERLEITUNG EMPFOHLEN</div>
+              <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; color:var(--silver-dim);" data-i18n="apply.ratingReserve">● AKTE UNTER VORBEHALT</div>
+              <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; color:var(--amber);" data-i18n="apply.ratingWatch">● UNTER BEOBACHTUNG</div>
+              <div style="font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; color:var(--red);" data-i18n="apply.ratingRejected">● BEWERBUNG ABGELEHNT</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- APPLICANT LIST -->
+    <section class="applicant-list-section">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="sec-code"><span data-i18n="apply.listEyebrow">WF-RECRUIT-02</span></span>
+          <h2 class="sec-title" data-i18n="apply.listTitle">BEWERBERLISTE</h2>
+        </div>
+<p style="font-size:14px; color:var(--text-2); margin-top:8px; margin-bottom:0;" data-i18n="apply.listLead">Öffentliche Übersicht aller eingereichten Bewerbungen.</p>
+        <div class="applicant-grid" id="applicantGrid">
+          <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:2px; color:var(--text-3); padding:32px 0;" id="emptyState">
+            <span data-i18n="apply.listEmpty">KEINE BEWERBUNGEN EINGEGANGEN. SEI DER ERSTE.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <div id="main-footer"></div>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script>
+  // ── BREED CHIPS ──
+  let selectedBreed = '';
+  document.querySelectorAll('.breed-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.breed-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selectedBreed = chip.dataset.breed;
+      document.getElementById('f-breed').value = selectedBreed;
+    });
+  });
+
+  // ── STRENGTH OPTIONS ──
+  document.querySelectorAll('.strength-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.strength-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
+    });
+  });
+
+  // ── LORE OPTIONS ──
+  document.querySelectorAll('.lore-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const name = opt.querySelector('input').name;
+      document.querySelectorAll(`input[name="${name}"]`).forEach(i => {
+        i.closest('.lore-opt').classList.remove('selected');
+      });
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
+    });
+  });
+
+  // ── PHOTO UPLOAD ──
+  const photoInput = document.getElementById('f-photo');
+  const photoPreview = document.getElementById('photoPreview');
+  const photoPlaceholder = document.getElementById('photoPlaceholder');
+  let photoBase64 = '';
+
+  photoInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { alert('Bild zu groß. Max. 2MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      photoBase64 = ev.target.result;
+      photoPreview.src = photoBase64;
+      photoPreview.style.display = 'block';
+      photoPlaceholder.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ── STORAGE HELPERS ──
+  const STORAGE_KEY = 'wf-applicants';
+
+  async function loadApplicants() {
+    try {
+      const result = await window.storage.get(STORAGE_KEY, true);
+      return result ? JSON.parse(result.value) : [];
+    } catch { return []; }
+  }
+
+  async function saveApplicants(list) {
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(list), true);
+    } catch(e) { console.error('Storage error:', e); }
+  }
+
+  // ── RENDER LIST ──
+  function getLang() {
+    return (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+  }
+
+  function t(key) {
+    if (window.WFi18n && window.WFi18n.t) return window.WFi18n.t(key);
+    return key;
+  }
+
+  const INCOGNITO_SVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#1A1E24"/><circle cx="32" cy="24" r="12" fill="#2A3040"/><ellipse cx="32" cy="52" rx="20" ry="14" fill="#2A3040"/><text x="32" y="28" text-anchor="middle" font-size="14" fill="#6A7888" font-family="monospace">?</text></svg>`)}`;
+
+  function getRatingColors() {
+    const lang = (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+    const ratings = {
+      de: { 'WEITERLEITUNG EMPFOHLEN': 'rating--green', 'AKTE UNTER VORBEHALT': 'rating--silver', 'UNTER BEOBACHTUNG': 'rating--amber', 'BEWERBUNG ABGELEHNT': 'rating--red' },
+      en: { 'FORWARDING RECOMMENDED': 'rating--green', 'FILE UNDER RESERVATION': 'rating--silver', 'UNDER OBSERVATION': 'rating--amber', 'APPLICATION REJECTED': 'rating--red' }
+    };
+    return ratings[lang] || ratings.en;
+  }
+
+  function getRatingColor(rating) {
+    const map = { 'WEITERLEITUNG EMPFOHLEN': 'var(--green-bright)', 'FORWARDING RECOMMENDED': 'var(--green-bright)', 'AKTE UNTER VORBEHALT': 'var(--silver-dim)', 'FILE UNDER RESERVATION': 'var(--silver-dim)', 'UNTER BEOBACHTUNG': 'var(--amber)', 'UNDER OBSERVATION': 'var(--amber)', 'BEWERBUNG ABGELEHNT': 'var(--red)', 'APPLICATION REJECTED': 'var(--red)' };
+    return map[rating] || 'var(--silver-dim)';
+  }
+
+  function renderRow(app) {
+    const row = document.createElement('div');
+    row.className = 'app-row';
+    row.innerHTML = `
+      <div class="app-row__main">
+        <img class="app-row__photo" src="${app.photo || INCOGNITO_SVG}" alt="">
+        <span class="app-row__num">${app.num}</span>
+        <span class="app-row__name">${app.callsign}</span>
+        <span class="app-row__origin">${app.origin || '—'}</span>
+        <span class="app-row__rating" style="color:${getRatingColor(app.rating)}">● ${app.rating}</span>
+        <span class="app-row__date">${app.date}</span>
+        <span class="app-row__toggle">▶</span>
+      </div>
+      <div class="app-row__detail">
+        <div class="app-row__protocol">${app.protocol}</div>
+        <div class="app-row__meta">${app.breed || ''} ${app.strength ? '· ' + app.strength : ''}</div>
+      </div>
+    `;
+    row.querySelector('.app-row__main').addEventListener('click', () => {
+      row.classList.toggle('open');
+      row.querySelector('.app-row__toggle').textContent = row.classList.contains('open') ? '▼' : '▶';
+    });
+    return row;
+  }
+
+  function renderList(applicants) {
+    const grid = document.getElementById('applicantGrid');
+    const empty = document.getElementById('emptyState');
+
+    // Update stats
+    document.getElementById('statCount').textContent = applicants.length;
+    document.getElementById('statAccepted').textContent = applicants.filter(a => ['WEITERLEITUNG EMPFOHLEN','FORWARDING RECOMMENDED'].includes(a.rating)).length;
+    document.getElementById('statWatch').textContent = applicants.filter(a => ['UNTER BEOBACHTUNG','UNDER OBSERVATION'].includes(a.rating)).length;
+    document.getElementById('statRejected').textContent = applicants.filter(a => ['BEWERBUNG ABGELEHNT','APPLICATION REJECTED'].includes(a.rating)).length;
+
+    if (applicants.length === 0) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+
+    grid.querySelectorAll('.app-row').forEach(r => r.remove());
+
+    const recent = [...applicants].reverse().slice(0, 9);
+    recent.forEach(app => grid.appendChild(renderRow(app)));
+  }
+
+  // ── AI EVALUATION ──
+  async function evaluateApplication(data) {
+    const isRabbit = data.breed.toLowerCase().includes('kaninchen');
+
+    if (isRabbit) {
+      return {
+        rating: 'BEWERBUNG ABGELEHNT',
+        protocol: `Bewerbung von ${data.callsign} wurde automatisch abgelehnt. Rasse: Kaninchen. Klassifikation: WF-HOSTILE-ADJACENT. Eine weitere Prüfung ist nicht erforderlich. Verweis an: Bärbel-Ermittlungsakte. Diese Entscheidung ist endgültig. Widersprüche werden nicht entgegengenommen.`
+      };
+    }
+
+    const loreScore = [data.lq1, data.lq2, data.lq3].filter(a => a === 'correct').length;
+
+    const prompt = `Du bist das offizielle Wraff Force Bewerbungssystem. Werte die folgende Bewerbung aus und erstelle ein offizielles Beurteilungsprotokoll.
+
+BEWERBERDATEN:
+- Deckname: ${data.callsign}
+- Herkunft: ${data.origin || 'nicht angegeben'}
+- Rasse: ${data.breed || 'nicht angegeben'}
+- Primäre Stärke: ${data.strength || 'nicht angegeben'}
+- Reaktion auf unbeaufsichtigtes Leckerli: "${data.snack}"
+- Aufenthaltsort am 12. Juni 2025: "${data.june}"
+- Allgemeinwissen-Score: ${loreScore}/3 korrekte Antworten
+- Motivation: "${data.motivation}"
+
+ANWEISUNGEN:
+Antworte NUR mit einem JSON-Objekt, keine Markdown-Backticks, kein sonstiger Text.
+Schreibe das Protokoll auf ${getLang() === 'de' ? 'Deutsch' : 'Englisch'}.
+Wähle eine Einstufung basierend auf den Antworten:
+- "WEITERLEITUNG EMPFOHLEN" (gute Antworten, Lore-Score 2-3, überzeugende Motivation)
+- "AKTE UNTER VORBEHALT" (mittelmäßige Antworten, Lore-Score 1-2)
+- "UNTER BEOBACHTUNG" (verdächtige Antworten beim Leckerli-Test, ähnlich wie Unit Two)
+- "BEWERBUNG ABGELEHNT" (unbrauchbar, komplett falsche Lore-Antworten, keine Motivation)
+
+Schreibe das Protokoll im bürokratisch-militärischen Wraff Force Stil: sachlich, leicht absurd, mit subtilen Hinweisen auf die Lore. 3-4 Sätze. Auf Deutsch.
+
+Format:
+{"rating": "EINSTUFUNG", "protocol": "Protokolltext"}`;
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const result = await response.json();
+    const text = result.content[0].text.replace(/```json|```/g, '').trim();
+    return JSON.parse(text);
+  }
+
+  // ── FORM SUBMIT ──
+  document.getElementById('applyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<span class="wf-spinner"></span> ${t('apply.submitting')}`;
+
+    const breed = document.getElementById('f-breed').value || selectedBreed || 'nicht angegeben';
+
+    const data = {
+      callsign: document.getElementById('f-callsign').value,
+      origin: document.getElementById('f-origin').value,
+      breed,
+      strength: document.querySelector('input[name="strength"]:checked')?.value || 'nicht angegeben',
+      snack: document.getElementById('f-snack').value,
+      june: document.getElementById('f-june').value,
+      motivation: document.getElementById('f-motivation').value,
+      lq1: document.querySelector('input[name="lq1"]:checked')?.value || 'none',
+      lq2: document.querySelector('input[name="lq2"]:checked')?.value || 'none',
+      lq3: document.querySelector('input[name="lq3"]:checked')?.value || 'none',
+    };
+
+    try {
+      const evaluation = await evaluateApplication(data);
+      const applicants = await loadApplicants();
+      const num = `WF-APP-2025-${String(applicants.length + 1).padStart(3, '0')}`;
+      const date = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+      const newApp = {
+        num, date,
+        callsign: data.callsign,
+        origin: data.origin,
+        breed: data.breed,
+        strength: data.strength,
+        rating: evaluation.rating,
+        protocol: evaluation.protocol,
+        photo: photoBase64 || null,
+      };
+
+      applicants.push(newApp);
+      await saveApplicants(applicants);
+
+      // Ergebniskarte anzeigen
+      const isRejected = evaluation.rating === 'BEWERBUNG ABGELEHNT';
+      const card = document.getElementById('resultCard');
+      card.classList.add('visible');
+      if (isRejected) card.classList.add('result-rejected');
+
+      document.getElementById('resultNum').textContent = num;
+      document.getElementById('resultName').textContent = data.callsign.toUpperCase();
+      document.getElementById('resultMeta').textContent = `${data.breed} · ${data.origin || 'Herkunft unbekannt'} · ${date}`;
+
+      const colorMap = {
+        'WEITERLEITUNG EMPFOHLEN': 'color:var(--green-bright)',
+        'AKTE UNTER VORBEHALT': 'color:var(--silver-dim)',
+        'UNTER BEOBACHTUNG': 'color:var(--amber)',
+        'BEWERBUNG ABGELEHNT': 'color:var(--red)',
+      };
+      const ratingEl = document.getElementById('resultRating');
+      ratingEl.textContent = '● ' + evaluation.rating;
+      ratingEl.style.cssText = colorMap[evaluation.rating] || '';
+
+      document.getElementById('resultProtocol').textContent = evaluation.protocol;
+
+      if (photoBase64) {
+        const ph = document.getElementById('resultPhoto');
+        ph.src = photoBase64;
+        ph.style.display = 'block';
+      }
+
+      // Badge
+      const badge = document.getElementById('resultBadge');
+      if (isRejected) {
+        badge.className = 'badge badge--red';
+        badge.textContent = t('apply.resultBadgeRejected');
+      } else {
+        badge.className = 'badge badge--green';
+        badge.textContent = t('apply.resultBadgeOk');
+      }
+
+      // Liste neu rendern
+      renderList(applicants);
+
+      // Scroll zum Ergebnis
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      btn.innerHTML = t('apply.submitted');
+      btn.style.color = 'var(--green-bright)';
+
+    } catch(err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.innerHTML = 'FEHLER — ERNEUT VERSUCHEN';
+      btn.style.color = 'var(--red)';
+    }
+  });
+
+  // ── INIT ──
+  loadApplicants().then(renderList);
+  </script>
+</body>
+</html>
