@@ -149,7 +149,17 @@
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/main.js"></script>
   <script>
-    const STORAGE_KEY = 'wf-applicants';
+
+    const WF_DB = 'https://wraff-force-default-rtdb.europe-west1.firebasedatabase.app/applicants';
+    async function dbLoad() {
+      try {
+        const r = await fetch(WF_DB + '.json');
+        const data = await r.json();
+        if (!data) return [];
+        return Object.values(data);
+      } catch(e) { return []; }
+    }
+
     const PER_PAGE = 20;
     let allApplicants = [];
     let filtered = [];
@@ -290,10 +300,7 @@
 
     // Load
     async function init() {
-      try {
-        const result = await window.storage.get(STORAGE_KEY, true);
-        allApplicants = result ? JSON.parse(result.value) : [];
-      } catch { allApplicants = []; }
+      allApplicants = await dbLoad();
       updateStats(allApplicants);
       filtered = [...allApplicants].reverse();
       renderPage();

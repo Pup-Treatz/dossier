@@ -249,7 +249,34 @@
       </div>
     </section>
 
-    <div class="wrap">
+    <!-- APPLY BUTTON + MODAL TRIGGER -->
+    <div class="wrap" style="padding: 32px 0 0;">
+      <button id="openFormBtn" style="
+        display: inline-flex; align-items: center; gap: 10px;
+        font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+        text-transform: uppercase; text-decoration: none;
+        color: var(--text-0); background: var(--bg-3);
+        border: 1px solid var(--border-hi); border-radius: var(--radius);
+        padding: 12px 28px; cursor: pointer; transition: all 0.2s;
+      " onmouseover="this.style.borderColor='var(--silver-dim)'" onmouseout="this.style.borderColor='var(--border-hi)'">
+        <span data-i18n="apply.openFormBtn">JETZT BEWERBEN →</span>
+      </button>
+    </div>
+
+    <!-- FORM MODAL OVERLAY -->
+    <div id="formOverlay" style="
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(10,13,18,0.96);
+      backdrop-filter: blur(12px);
+      overflow-y: auto;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    ">
+      <div style="max-width: 1100px; margin: 0 auto; padding: 24px 24px 64px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding-top:8px;">
+          <div style="font-family:var(--font-display); font-size:28px; letter-spacing:3px; color:var(--text-0);" data-i18n="apply.title">BEWERBUNG</div>
+          <button id="closeFormBtn" style="font-family:var(--font-mono); font-size:18px; color:var(--text-2); background:none; border:none; cursor:pointer; padding:8px; transition:color 0.15s;" onmouseover="this.style.color='var(--text-0)'" onmouseout="this.style.color='var(--text-2)'">✕</button>
+        </div>
       <div class="apply-layout">
 
         <!-- FORM COLUMN -->
@@ -491,6 +518,7 @@
         </div>
 
       </div>
+      </div>
     </div>
 
     <!-- APPLICANT LIST -->
@@ -567,20 +595,49 @@
   });
 
   // ── STORAGE HELPERS ──
-  const STORAGE_KEY = 'wf-applicants';
 
-  async function loadApplicants() {
+  // ── FIREBASE REALTIME DATABASE ──
+  const WF_DB = 'https://wraff-force-default-rtdb.europe-west1.firebasedatabase.app/applicants';
+
+  async function dbLoad() {
     try {
-      const result = await window.storage.get(STORAGE_KEY, true);
-      return result ? JSON.parse(result.value) : [];
-    } catch { return []; }
+      const r = await fetch(WF_DB + '.json');
+      const data = await r.json();
+      if (!data) return [];
+      return Object.values(data);
+    } catch(e) { console.error('DB load error:', e); return []; }
   }
 
-  async function saveApplicants(list) {
+  async function dbSave(applicants) {
     try {
-      await window.storage.set(STORAGE_KEY, JSON.stringify(list), true);
-    } catch(e) { console.error('Storage error:', e); }
+      const obj = {};
+      applicants.forEach((a, i) => { obj[a.num] = a; });
+      await fetch(WF_DB + '.json', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(obj)
+      });
+    } catch(e) { console.error('DB save error:', e); }
   }
+
+  async function dbPush(entry) {
+    try {
+      await fetch(WF_DB + '/' + entry.num + '.json', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
+      });
+    } catch(e) { console.error('DB push error:', e); throw e; }
+  }
+
+  async function dbDelete(num) {
+    try {
+      await fetch(WF_DB + '/' + num + '.json', { method: 'DELETE' });
+    } catch(e) { console.error('DB delete error:', e); throw e; }
+  }
+
+  async function loadApplicants() { return await dbLoad(); }
+  async function saveApplicants(list) { await dbSave(list); }
 
   // ── RENDER LIST ──
   function getLang() {
@@ -746,8 +803,7 @@ Format:
         photo: photoBase64 || null,
       };
 
-      applicants.push(newApp);
-      await saveApplicants(applicants);
+      await dbPush(newApp);
 
       // Ergebniskarte anzeigen
       const isRejected = evaluation.rating === 'BEWERBUNG ABGELEHNT';
@@ -787,13 +843,15 @@ Format:
         badge.textContent = t('apply.resultBadgeOk');
       }
 
-      // Liste neu rendern
-      renderList(applicants);
+      // Liste neu laden und rendern
+      const updated = await loadApplicants();
+      renderList(updated);
 
       // Scroll zum Ergebnis
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       btn.innerHTML = t('apply.submitted');
+      setTimeout(closeForm, 1500);
       btn.style.color = 'var(--green-bright)';
 
     } catch(err) {
@@ -803,6 +861,25 @@ Format:
       btn.style.color = 'var(--red)';
     }
   });
+
+  // ── FORM MODAL ──
+  document.getElementById('openFormBtn').addEventListener('click', () => {
+    const overlay = document.getElementById('formOverlay');
+    overlay.style.pointerEvents = 'all';
+    overlay.style.opacity = '1';
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('closeFormBtn').addEventListener('click', closeForm);
+  function closeForm() {
+    const overlay = document.getElementById('formOverlay');
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeForm(); });
+
+  // Formular nach erfolgreichem Submit schließen
+  const origSubmit = document.getElementById('applyForm').onsubmit;
 
   // ── INIT ──
   loadApplicants().then(renderList);

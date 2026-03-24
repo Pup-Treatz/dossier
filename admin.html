@@ -175,7 +175,24 @@
 
   <script>
     const PASSWORD = 'unruhe';
-    const STORAGE_KEY = 'wf-applicants';
+
+    const WF_DB = 'https://wraff-force-default-rtdb.europe-west1.firebasedatabase.app/applicants';
+    async function dbLoad() {
+      try {
+        const r = await fetch(WF_DB + '.json');
+        const data = await r.json();
+        if (!data) return [];
+        return Object.values(data);
+      } catch(e) { return []; }
+    }
+    async function dbSave(list) {
+      const obj = {};
+      list.forEach(a => { obj[a.num] = a; });
+      await fetch(WF_DB + '.json', { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(obj) });
+    }
+    async function dbDeleteOne(num) {
+      await fetch(WF_DB + '/' + num + '.json', { method: 'DELETE' });
+    }
 
     const INCOGNITO = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#1A1E24"/><circle cx="32" cy="24" r="12" fill="#2A3040"/><ellipse cx="32" cy="52" rx="20" ry="14" fill="#2A3040"/><text x="32" y="28" text-anchor="middle" font-size="14" fill="#6A7888" font-family="monospace">?</text></svg>`)}`;
 
@@ -212,17 +229,14 @@
     let applicants = [];
 
     async function loadAdmin() {
-      try {
-        const result = await window.storage.get(STORAGE_KEY, true);
-        applicants = result ? JSON.parse(result.value) : [];
-      } catch { applicants = []; }
+      applicants = await dbLoad();
       updateStats();
       renderRows(applicants);
     }
 
     async function saveApplicants() {
       try {
-        await window.storage.set(STORAGE_KEY, JSON.stringify(applicants), true);
+        await dbSave(applicants);
       } catch(e) { alert('Fehler beim Speichern: ' + e.message); }
     }
 
@@ -258,8 +272,8 @@
         `;
         row.querySelector('.act-btn--del').addEventListener('click', () => {
           showConfirm(`Eintrag "${app.callsign}" (${app.num}) wirklich löschen?`, async () => {
+            await dbDeleteOne(app.num);
             applicants = applicants.filter(a => a.num !== app.num);
-            await saveApplicants();
             updateStats();
             const search = document.getElementById('adminSearch').value.toLowerCase();
             renderRows(search ? applicants.filter(a => a.callsign.toLowerCase().includes(search) || (a.origin||'').toLowerCase().includes(search)) : applicants);
