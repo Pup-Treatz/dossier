@@ -44,37 +44,37 @@
     }
     .form-block__title {
       font-family: var(--font-mono); font-size: 10px; letter-spacing: 2.5px;
-      text-transform: uppercase; color: var(--text-1);
+      text-transform: uppercase; color: var(--text-0);
     }
     .form-block__body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
 
     .wf-label {
-      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; display: block;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-2); margin-bottom: 8px; display: block;
     }
     .wf-input {
-      width: 100%; background: var(--bg-2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 10px 14px;
-      font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px;
+      width: 100%; background: var(--bg-3); border: 1px solid var(--border-md);
+      border-radius: var(--radius); padding: 12px 16px;
+      font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.5px;
       color: var(--text-0); outline: none; transition: border-color 0.15s;
     }
-    .wf-input:focus { border-color: var(--border-hi); }
-    .wf-input::placeholder { color: var(--text-3); }
-    textarea.wf-input { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .wf-input:focus { border-color: var(--silver-dim); background: var(--bg-4, #2A3040); }
+    .wf-input::placeholder { color: var(--text-2); }
+    textarea.wf-input { resize: vertical; min-height: 90px; line-height: 1.7; }
 
     /* Breed chips */
     .breed-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
     .breed-chip {
-      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
-      padding: 5px 12px; border-radius: 2px;
-      border: 1px solid var(--border); background: var(--bg-2);
-      color: var(--text-2); cursor: pointer; transition: all 0.15s;
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px;
+      padding: 8px 14px; border-radius: var(--radius);
+      border: 1px solid var(--border-md); background: var(--bg-2);
+      color: var(--text-1); cursor: pointer; transition: all 0.15s;
       user-select: none;
     }
-    .breed-chip:hover { border-color: var(--border-md); color: var(--text-0); }
+    .breed-chip:hover { border-color: var(--silver-dim); color: var(--text-0); background: var(--bg-3); }
     .breed-chip.selected { border-color: var(--silver-dim); background: var(--bg-3); color: var(--text-0); }
-    .breed-chip.rejected { border-color: rgba(224,52,52,0.4); color: var(--red); background: rgba(224,52,52,0.05); }
-    .breed-chip.rejected.selected { border-color: var(--red); background: rgba(224,52,52,0.12); }
+    .breed-chip.rejected { border-color: rgba(224,52,52,0.5); color: var(--red); background: rgba(224,52,52,0.06); }
+    .breed-chip.rejected.selected { border-color: var(--red); background: rgba(224,52,52,0.15); }
 
     /* Strength options */
     .strength-options { display: flex; flex-direction: column; gap: 8px; }
@@ -92,7 +92,7 @@
       border: 1px solid var(--border-md); flex-shrink: 0; transition: all 0.15s;
     }
     .strength-opt.selected .strength-dot { background: var(--silver-dim); border-color: var(--silver-dim); }
-    .strength-opt__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-2); }
+    .strength-opt__label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-1); }
     .strength-opt.selected .strength-opt__label { color: var(--text-0); }
 
     /* Lore questions */
@@ -101,12 +101,12 @@
     .lore-options { display: flex; flex-direction: column; gap: 6px; }
     .lore-opt {
       display: flex; align-items: center; gap: 10px;
-      padding: 8px 12px; border-radius: var(--radius);
-      border: 1px solid var(--border); background: var(--bg-2);
+      padding: 10px 14px; border-radius: var(--radius);
+      border: 1px solid var(--border-md); background: var(--bg-2);
       cursor: pointer; transition: all 0.15s; font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 1px; color: var(--text-2);
+      font-size: 11px; letter-spacing: 1px; color: var(--text-1);
     }
-    .lore-opt:hover { border-color: var(--border-md); color: var(--text-1); }
+    .lore-opt:hover { border-color: var(--silver-dim); color: var(--text-0); background: var(--bg-3); }
     .lore-opt.selected { border-color: var(--silver-dim); color: var(--text-0); background: var(--bg-3); }
     .lore-opt input { display: none; }
     .lore-bullet { width: 8px; height: 8px; border-radius: 1px; border: 1px solid var(--border-md); flex-shrink: 0; transition: all 0.15s; }
