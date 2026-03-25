@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WF-TERMINAL — Wraff Force</title>
+  <meta name="description" content="WF-TERMINAL · Automatisches Kommunikationssystem · Wraff Force K9 Special Unit" />
+
+  <!-- Fonts (same as site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Site styles (nav, footer, tokens) -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/img/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon-32x32.png" />
+
+  <style>
+    /* ── PAGE LAYOUT ──────────────────────────────────────────────────────── */
+    body {
+      overflow: hidden; /* no body scroll — terminal fills viewport */
+    }
+
+    /* Nav sits on top as normal — terminal starts below it */
+    .terminal-page {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - var(--nav-height));
+      margin-top: var(--nav-height);
+      background: var(--bg);
+    }
+
+    /* ── TERMINAL HEADER ──────────────────────────────────────────────────── */
+    .term-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 24px;
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .term-header__left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .term-header__id {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .term-header__title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 3px;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .term-header__sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+    }
+
+    .term-header__right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .term-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .term-status__dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: termPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes termPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    .term-clear-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      background: none;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .term-clear-btn:hover {
+      color: var(--red);
+      border-color: var(--red);
+    }
+
+    /* ── MESSAGES AREA ────────────────────────────────────────────────────── */
+    .term-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      /* custom scrollbar */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-md) transparent;
+    }
+    .term-messages::-webkit-scrollbar { width: 4px; }
+    .term-messages::-webkit-scrollbar-track { background: transparent; }
+    .term-messages::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+
+    /* ── WELCOME BLOCK ────────────────────────────────────────────────────── */
+    .term-welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .term-welcome__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    .term-welcome__title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 4px;
+      color: var(--text-0);
+    }
+
+    .term-welcome__body {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-2);
+      max-width: 640px;
+    }
+
+    .term-welcome__meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+
+    /* ── MESSAGE BUBBLES ──────────────────────────────────────────────────── */
+    .term-msg {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 0 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      animation: msgFadeIn 0.25s ease both;
+    }
+    .term-msg:last-child { border-bottom: none; }
+
+    @keyframes msgFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .term-msg__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding-top: 2px;
+      text-align: right;
+    }
+
+    .term-msg--user   .term-msg__label { color: var(--silver); }
+    .term-msg--system .term-msg__label { color: var(--green); }
+
+    .term-msg__content {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--text-1);
+    }
+
+    /* User messages slightly dimmer */
+    .term-msg--user .term-msg__content {
+      color: var(--text-2);
+    }
+
+    /* System messages brighter */
+    .term-msg--system .term-msg__content {
+      color: var(--text-0);
+    }
+
+    /* ── THINKING INDICATOR ───────────────────────────────────────────────── */
+    .term-thinking {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 0 14px;
+      padding: 14px 0;
+      animation: msgFadeIn 0.2s ease both;
+    }
+
+    .term-thinking__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green);
+      padding-top: 2px;
+      text-align: right;
+    }
+
+    .term-thinking__dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      height: 22px;
+    }
+
+    .term-thinking__dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      opacity: 0.3;
+      animation: dotBlink 1.2s ease-in-out infinite;
+    }
+    .term-thinking__dots span:nth-child(2) { animation-delay: 0.2s; }
+    .term-thinking__dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotBlink {
+      0%, 80%, 100% { opacity: 0.3; }
+      40%            { opacity: 1;   }
+    }
+
+    /* ── INPUT AREA ───────────────────────────────────────────────────────── */
+    .term-input-area {
+      flex-shrink: 0;
+      padding: 16px 24px 20px;
+      background: var(--bg-1);
+      border-top: 1px solid var(--border);
+    }
+
+    .term-input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .term-input-prefix {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--green);
+      padding-bottom: 10px;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .term-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border-md);
+      color: var(--text-0);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 8px 0;
+      resize: none;
+      outline: none;
+      max-height: 120px;
+      overflow-y: auto;
+      transition: border-color 0.15s;
+    }
+    .term-input:focus {
+      border-bottom-color: var(--green);
+    }
+    .term-input::placeholder {
+      color: var(--text-3);
+    }
+
+    .term-send-btn {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--green);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 9px 16px;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+      margin-bottom: 1px;
+    }
+    .term-send-btn:hover  { background: #22c46e; }
+    .term-send-btn:active { opacity: 0.8; }
+    .term-send-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .term-input-hint {
+      margin-top: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-3);
+    }
+
+    /* ── ERROR STATE ──────────────────────────────────────────────────────── */
+    .term-error {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--red);
+      padding: 10px 0;
+    }
+
+    /* ── MOBILE ADJUSTMENTS ───────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .term-header { padding: 8px 16px; }
+      .term-header__sub { display: none; }
+      .term-messages { padding: 16px; }
+      .term-input-area { padding: 12px 16px 16px; }
+      .term-msg { grid-template-columns: 38px 1fr; gap: 0 10px; }
+      .term-msg__content { font-size: 12px; }
+      .term-welcome__title { font-size: 22px; }
+    }
+
+    /* ── FOOTER hidden on terminal (full viewport) ────────────────────────── */
+    .wf-footer { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Nav injected by main.js -->
+  <div id="main-nav"></div>
+
+  <!-- Terminal Page -->
+  <div class="terminal-page">
+
+    <!-- Header bar -->
+    <div class="term-header">
+      <div class="term-header__left">
+        <div>
+          <div class="term-header__id">WF-COMM-01</div>
+          <div class="term-header__title" data-i18n="terminal.title">WF-TERMINAL</div>
+        </div>
+        <div class="term-header__sub" data-i18n="terminal.classification">
+          Classification: External · Clearance Level: Standard
+        </div>
+      </div>
+      <div class="term-header__right">
+        <div class="term-status">
+          <span class="term-status__dot"></span>
+          <span data-i18n="terminal.subtitle">Automated Communication System</span>
+        </div>
+        <button class="term-clear-btn" id="termClearBtn" data-i18n="terminal.clearBtn">
+          CLEAR SESSION
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="term-messages" id="termMessages">
+
+      <!-- Welcome block (static, always shown) -->
+      <div class="term-welcome" id="termWelcome">
+        <div class="term-welcome__eyebrow">WRAFF FORCE · K9 SPECIAL UNIT</div>
+        <div class="term-welcome__title" data-i18n="terminal.welcomeTitle">WF-TERMINAL ACTIVE</div>
+        <div class="term-welcome__body" data-i18n="terminal.welcomeBody">
+          Automated communication system of Wraff Force K9 Unit.
+          Clearance: External. Snack threat level: 2. What is your query?
+        </div>
+        <div class="term-welcome__meta" id="termSessionId">SESSION: INIT</div>
+      </div>
+
+      <!-- Messages injected here by JS -->
+      <div id="termMsgList"></div>
+
+    </div>
+
+    <!-- Input area -->
+    <div class="term-input-area">
+      <div class="term-input-row">
+        <span class="term-input-prefix">&gt;_</span>
+        <textarea
+          class="term-input"
+          id="termInput"
+          rows="1"
+          data-i18n-placeholder="terminal.inputPlaceholder"
+          placeholder="Enter query…"
+          autocomplete="off"
+          spellcheck="false"
+        ></textarea>
+        <button class="term-send-btn" id="termSendBtn" data-i18n="terminal.sendBtn">
+          SEND
+        </button>
+      </div>
+      <div class="term-input-hint" id="termHint">
+        ↵ Enter · Shift+Enter für neue Zeile
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ── CONFIG ────────────────────────────────────────────────────────────
+    // Netlify function URL — replace YOUR-SITE with your Netlify subdomain
+    // After deploying: https://YOUR-SITE.netlify.app/.netlify/functions/wf-proxy
+    // Or if custom domain on Netlify: https://wraff.agency/.netlify/functions/wf-proxy
+    const API_URL = 'https://chic-custard-b0ce15.netlify.app/.netlify/functions/wf-proxy';
+
+    // Max messages kept in UI (older ones removed to avoid huge DOM)
+    const MAX_MESSAGES = 80;
+
+    // ── STATE ─────────────────────────────────────────────────────────────
+    // conversation history for the API (role/content pairs)
+    let history = [];
+    let isLoading = false;
+
+    // ── DOM REFS ──────────────────────────────────────────────────────────
+    const msgList   = document.getElementById('termMsgList');
+    const input     = document.getElementById('termInput');
+    const sendBtn   = document.getElementById('termSendBtn');
+    const clearBtn  = document.getElementById('termClearBtn');
+    const sessionEl = document.getElementById('termSessionId');
+    const hint      = document.getElementById('termHint');
+
+    // ── SESSION ID ────────────────────────────────────────────────────────
+    function genSessionId() {
+      return 'K9-' +
+        Math.random().toString(36).substring(2, 5).toUpperCase() + '-' +
+        Date.now().toString().slice(-4);
+    }
+    sessionEl.textContent = 'SESSION: ' + genSessionId();
+
+    // ── AUTO-RESIZE TEXTAREA ──────────────────────────────────────────────
+    function resizeInput() {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    }
+    input.addEventListener('input', resizeInput);
+
+    // ── RENDER MESSAGE ────────────────────────────────────────────────────
+    function renderMessage(role, text) {
+      const lang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+      const label = role === 'user'
+        ? (lang === 'de' ? 'USER' : 'USER')
+        : 'TERMINAL';
+
+      const div = document.createElement('div');
+      div.className = `term-msg term-msg--${role === 'user' ? 'user' : 'system'}`;
+
+      // Sanitise and convert newlines → <br>
+      const safe = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
+
+      div.innerHTML = `
+        <span class="term-msg__label">${label}</span>
+        <span class="term-msg__content">${safe}</span>
+      `;
+
+      msgList.appendChild(div);
+
+      // Prune old messages if over limit
+      const msgs = msgList.querySelectorAll('.term-msg');
+      if (msgs.length > MAX_MESSAGES) {
+        msgs[0].remove();
+      }
+
+      scrollToBottom();
+      return div;
+    }
+
+    // ── THINKING INDICATOR ────────────────────────────────────────────────
+    function showThinking() {
+      const lang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+      const el = document.createElement('div');
+      el.className = 'term-thinking';
+      el.id = 'termThinking';
+      el.innerHTML = `
+        <span class="term-thinking__label">TERMINAL</span>
+        <span class="term-thinking__dots">
+          <span></span><span></span><span></span>
+        </span>
+      `;
+      msgList.appendChild(el);
+      scrollToBottom();
+    }
+
+    function hideThinking() {
+      const el = document.getElementById('termThinking');
+      if (el) el.remove();
+    }
+
+    // ── SCROLL ────────────────────────────────────────────────────────────
+    function scrollToBottom() {
+      const container = document.getElementById('termMessages');
+      requestAnimationFrame(() => {
+        container.scrollTop = container.scrollHeight;
+      });
+    }
+
+    // ── SEND MESSAGE ──────────────────────────────────────────────────────
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text || isLoading) return;
+
+      isLoading = true;
+      sendBtn.disabled = true;
+      input.value = '';
+      resizeInput();
+
+      // Render user message
+      renderMessage('user', text);
+
+      // Add to history
+      history.push({ role: 'user', content: text });
+
+      // Show thinking
+      showThinking();
+
+      try {
+        const lang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: history,
+            lang: lang
+          })
+        });
+
+        hideThinking();
+
+        if (!response.ok) {
+          const errLang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+          const errMsg = errLang === 'de'
+            ? 'Verbindung unterbrochen. Bitte erneut versuchen.'
+            : 'Connection interrupted. Please try again.';
+          renderMessage('assistant', errMsg);
+          // Remove last user message from history on error
+          history.pop();
+        } else {
+          const data = await response.json();
+          const reply = data.content || '';
+          renderMessage('assistant', reply);
+          // Add assistant reply to history
+          history.push({ role: 'assistant', content: reply });
+        }
+
+      } catch (err) {
+        hideThinking();
+        const errLang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+        const errMsg = errLang === 'de'
+          ? 'Verbindung unterbrochen. Bitte erneut versuchen.'
+          : 'Connection interrupted. Please try again.';
+        renderMessage('assistant', errMsg);
+        history.pop();
+      }
+
+      isLoading = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    // ── CLEAR SESSION ─────────────────────────────────────────────────────
+    function clearSession() {
+      history = [];
+      msgList.innerHTML = '';
+      sessionEl.textContent = 'SESSION: ' + genSessionId();
+      input.focus();
+    }
+
+    // ── EVENTS ────────────────────────────────────────────────────────────
+    sendBtn.addEventListener('click', sendMessage);
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    clearBtn.addEventListener('click', clearSession);
+
+    // ── I18N: update placeholder + hint on lang change ────────────────────
+    function updateI18nStrings() {
+      const lang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+      const ph = lang === 'de' ? 'Anfrage eingeben…' : 'Enter query…';
+      input.setAttribute('placeholder', ph);
+      hint.textContent = lang === 'de'
+        ? '↵ Enter senden · Shift+Enter neue Zeile'
+        : '↵ Enter to send · Shift+Enter for new line';
+    }
+
+    document.addEventListener('wf:langChanged', updateI18nStrings);
+    updateI18nStrings();
+
+    // ── FOCUS INPUT ON LOAD ───────────────────────────────────────────────
+    window.addEventListener('load', () => {
+      setTimeout(() => input.focus(), 300);
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
