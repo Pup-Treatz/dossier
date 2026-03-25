@@ -503,7 +503,8 @@
     "statusFounding": "FOUNDING",
     "statusSealed": "— Sealed —",
     "statusAnomaly": "ANOMALY",
-    "statusActive": "ACTIVE"
+    "statusActive": "ACTIVE",
+    "cardBody": "21 completed missions. All outcomes documented. Some details redacted for operational security. 73% snack recovery rate maintained."
   },
   "incidentReports": {
     "title": "INCIDENT REPORTS",
@@ -751,7 +752,10 @@
     "scTitle": "FULL ARCHIVE ON SOUNDCLOUD",
     "scDesc": "All 8 Wraff Force compositions are available in the official SoundCloud archive. Access is unrestricted. Clearance is still recommended. The archive is maintained by primary operative Puppy Treatz. Unit Two's listening history has been reviewed. It was not helpful.",
     "scBtn": "Open Full Archive →",
-    "viewLyrics": "View Lyrics"
+    "viewLyrics": "View Lyrics",
+    "cardBody": "Officially recognized Wraff Force anthems. For use during ceremonies, briefings and dramatic slow-motion corridor walks only.",
+    "subtitle": "Official Audio Files",
+    "enterHall": "Enter Hall →"
   },
   "status": {
     "title": "STATUS",
@@ -1146,5 +1150,8 @@
     "colRating": "CLASSIFICATION",
     "colDate": "DATE",
     "openFormBtn": "APPLY NOW →"
+  },
+  "ticker": {
+    "label": "LIVE FEED"
   }
 }

@@ -472,7 +472,8 @@
     "thLocation": "Ort",
     "thRecovery": "Bergungsrate",
     "thStatus": "Status",
-    "sealedNote": "* ERFOLG mit verzeichneten Anomalien. Zwei Akten versiegelt. WF-OP-006 wird nicht besprochen."
+    "sealedNote": "* ERFOLG mit verzeichneten Anomalien. Zwei Akten versiegelt. WF-OP-006 wird nicht besprochen.",
+    "cardBody": "21 abgeschlossene Einsätze. Alle Ergebnisse dokumentiert. Einige Details aus Sicherheitsgründen geschwärzt. 73% Snack-Bergungsrate aufrechterhalten."
   },
   "incidentReports": {
     "title": "VORKOMMENSBERICHTE",
@@ -720,7 +721,10 @@
     "scTitle": "VOLLSTÄNDIGES ARCHIV AUF SOUNDCLOUD",
     "scDesc": "Alle 8 Wraff Force Kompositionen sind im offiziellen SoundCloud-Archiv verfügbar. Zugang ist unbeschränkt. Freigabe wird dennoch empfohlen. Das Archiv wird vom primären Operativen Puppy Treatz gepflegt. Unit Twos Hörverlauf wurde überprüft. Er war nicht hilfreich.",
     "scBtn": "Vollständiges Archiv öffnen →",
-    "viewLyrics": "Liedtext anzeigen"
+    "viewLyrics": "Liedtext anzeigen",
+    "cardBody": "Offiziell anerkannte Wraff Force Hymnen. Ausschließlich für Zeremonien, Briefings und dramatische Zeitlupen-Flurläufe.",
+    "subtitle": "Offizielle Audiodateien",
+    "enterHall": "Hymnenraum betreten →"
   },
   "status": {
     "title": "STATUS",
@@ -1115,5 +1119,8 @@
     "colRating": "EINSTUFUNG",
     "colDate": "DATUM",
     "openFormBtn": "JETZT BEWERBEN →"
+  },
+  "ticker": {
+    "label": "LIVE FEED"
   }
 }
