@@ -1153,5 +1153,23 @@
   },
   "ticker": {
     "label": "LIVE FEED"
+  },
+  "terminal": {
+    "title": "WF-TERMINAL",
+    "subtitle": "Automated Communication System",
+    "classification": "Classification: External · Clearance Level: Standard",
+    "inputPlaceholder": "Enter query…",
+    "sendBtn": "SEND",
+    "welcomeTitle": "WF-TERMINAL ACTIVE",
+    "welcomeBody": "Automated communication system of Wraff Force K9 Unit. Clearance: External. Snack threat level: 2. What is your query?",
+    "thinking": "PROCESSING",
+    "errorMsg": "Connection interrupted. Please try again.",
+    "clearBtn": "CLEAR SESSION",
+    "clearConfirm": "Session cleared. All logs removed.",
+    "navCardCode": "WF-04",
+    "navCardTitle": "WF-TERMINAL",
+    "navCardSub": "Communication System",
+    "navCardBody": "Automated communication system of Wraff Force. Clearance: External. Questions permitted. Answers vary.",
+    "navCardArrow": "Open Terminal →"
   }
 }
