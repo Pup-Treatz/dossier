@@ -336,6 +336,71 @@
         @media (max-width: 1024px) { .operative-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid-4 { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 900px) { .page-hero { padding: 80px 0 32px; } .threat-list { grid-template-columns: 1fr 1fr; } .treat-alert-levels { grid-template-columns: repeat(3, 1fr); } .treat-alert-levels-labels { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 600px) { .operative-grid { grid-template-columns: 1fr 1fr; } .stats-grid-4 { grid-template-columns: 1fr 1fr; } .threat-list { grid-template-columns: 1fr; } }
+
+    /* ── ESKALATIONS-EFFEKTE ── */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-4px) rotate(-0.5deg); }
+      40% { transform: translateX(4px) rotate(0.5deg); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+    @keyframes flashRed {
+      0%,100% { background: rgba(224,52,52,0.05); }
+      50% { background: rgba(224,52,52,0.18); }
+    }
+    @keyframes criticalPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(224,52,52,0); }
+      50% { box-shadow: 0 0 20px 4px rgba(224,52,52,0.4); }
+    }
+    .level-shake { animation: shake 0.4s ease; }
+    .level-flash { animation: flashRed 0.8s ease infinite; }
+    .level-critical { animation: flashRed 0.4s ease infinite, criticalPulse 1s ease infinite; }
+
+    /* Treatz Popup */
+    .treatz-popup-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.85);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .treatz-popup-overlay.open { opacity: 1; pointer-events: all; }
+    .treatz-popup {
+      background: var(--bg-1); border: 2px solid var(--red);
+      border-radius: var(--radius); padding: 40px;
+      max-width: min(480px, 90vw); position: relative;
+      animation: shake 0.5s ease;
+    }
+    .treatz-popup__stamp {
+      font-family: var(--font-display); font-size: 11px; letter-spacing: 3px;
+      color: var(--red); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .treatz-popup__photo {
+      width: 56px; height: 56px; border-radius: var(--radius);
+      object-fit: cover; object-position: top;
+      border: 1px solid var(--border-md); float: right; margin: 0 0 12px 16px;
+    }
+    .treatz-popup__title {
+      font-family: var(--font-display); font-size: 32px; letter-spacing: 3px;
+      color: var(--text-0); margin-bottom: 16px; line-height: 1.1;
+    }
+    .treatz-popup__text {
+      font-size: 14px; color: var(--text-1); line-height: 1.75;
+      margin-bottom: 8px;
+    }
+    .treatz-popup__note {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+      color: var(--text-3); margin-bottom: 28px;
+    }
+    .treatz-popup__btn {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 12px 24px;
+      background: var(--bg-3); border: 1px solid var(--border-hi);
+      border-radius: var(--radius); color: var(--text-0);
+      cursor: pointer; transition: all 0.2s; width: 100%;
+    }
+    .treatz-popup__btn:hover { border-color: var(--silver-dim); background: var(--bg-4, #2A3040); }
   </style>
 </head>
 <body>
@@ -675,6 +740,25 @@
     if (window.WF_LANG) updateMapLabels();
     else document.addEventListener('wf:langChanged', updateMapLabels, { once: true });
   </script>
+
+  <!-- TREATZ POPUP — Stufe 6 -->
+  <div class="treatz-popup-overlay" id="treatzPopup">
+    <div class="treatz-popup">
+      <img class="treatz-popup__photo" src="/assets/img/operatives/treatz.png" alt="Puppy Treatz">
+      <div class="treatz-popup__stamp">⚠ 09-K9-OPS · NOTFALLKOMMUNIKATION</div>
+      <div class="treatz-popup__title" id="popupTitle">SOFORT AUFHÖREN.</div>
+      <div class="treatz-popup__text" id="popupText">
+        Colonel Flops ist nervös. Das ist kein Drill. Die Snack-Bedrohungsstufe hat ein Niveau erreicht,
+        das operativ nicht mehr vertretbar ist. Das Kommando bittet dringend um Deeskalation.
+      </div>
+      <div class="treatz-popup__note" id="popupNote">
+        — Puppy Treatz, 09-K9-OPS · Primärer Operativer · Sehr besorgt
+      </div>
+      <button class="treatz-popup__btn" id="popupApologyBtn">
+        ES TUT MIR LEID. ICH HÖRE AUF.
+      </button>
+    </div>
+  </div>
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/main.js"></script>
 
@@ -708,6 +792,7 @@
       const lang = getLang();
       const data = lang === 'de' ? levelsDe[level] : levels[level];
       const color = levels[level].color;
+      const card = document.getElementById('treat-alert-card');
 
       document.getElementById('tal-level-num').textContent = level;
       document.getElementById('tal-level-num').style.color = color;
@@ -727,17 +812,29 @@
         lbl.style.color = i === level ? color : '';
       });
 
-      // Level 5 — card flash
-      const card = document.getElementById('treat-alert-card');
-      if (level === 5) {
+      // ── STUFEN-EFFEKTE ──
+      card.className = 'treat-alert-card';
+      card.style.borderColor = '';
+      card.style.background = '';
+      document.body.style.animation = '';
+
+      if (level === 3) {
+        // Kurzes Zittern
+        card.classList.add('level-shake');
+        setTimeout(() => card.classList.remove('level-shake'), 500);
+      } else if (level === 4) {
+        // Rotes Blinken der Karte
         card.style.borderColor = 'rgba(224,52,52,0.5)';
-        card.style.background = 'rgba(224,52,52,0.05)';
-      } else {
-        card.style.borderColor = '';
-        card.style.background = '';
+        card.classList.add('level-flash');
+      } else if (level === 5) {
+        // Kritisch — starkes Blinken + ganzer Screen zittert
+        card.style.borderColor = 'rgba(224,52,52,0.7)';
+        card.classList.add('level-critical');
+        document.body.classList.add('level-shake');
+        setTimeout(() => document.body.classList.remove('level-shake'), 600);
       }
 
-      // Hide button at max
+      // Button
       const btn = document.getElementById('tal-escalate-btn');
       btn.style.display = level >= 5 ? 'none' : '';
 
@@ -745,7 +842,35 @@
     }
 
     document.getElementById('tal-escalate-btn').addEventListener('click', () => {
-      if (currentLevel < 5) updateAlert(currentLevel + 1);
+      if (currentLevel < 5) {
+        updateAlert(currentLevel + 1);
+      } else if (currentLevel === 5) {
+        // STUFE 6 — Treatz Popup!
+        currentLevel = 6;
+        const lang = getLang();
+        const isDE = lang === 'de';
+        document.getElementById('popupTitle').textContent = isDE
+          ? 'SOFORT AUFHÖREN.' : 'STOP IMMEDIATELY.';
+        document.getElementById('popupText').textContent = isDE
+          ? 'Colonel Flops ist nervös. Das ist kein Drill. Die Snack-Bedrohungsstufe hat ein Niveau erreicht, das operativ nicht mehr vertretbar ist. Das Kommando bittet dringend um Deeskalation.'
+          : 'Colonel Flops is nervous. This is not a drill. The snack threat level has reached a point that is no longer operationally acceptable. Command urgently requests de-escalation.';
+        document.getElementById('popupNote').textContent = isDE
+          ? '— Puppy Treatz, 09-K9-OPS · Primärer Operativer · Sehr besorgt'
+          : '— Puppy Treatz, 09-K9-OPS · Primary Operative · Very concerned';
+        document.getElementById('popupApologyBtn').textContent = isDE
+          ? 'ES TUT MIR LEID. ICH HÖRE AUF.' : 'I AM SORRY. I WILL STOP.';
+        document.getElementById('treatzPopup').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    // Entschuldigung-Button → zurück auf Stufe 2
+    document.getElementById('popupApologyBtn').addEventListener('click', () => {
+      document.getElementById('treatzPopup').classList.remove('open');
+      document.body.style.overflow = '';
+      updateAlert(2);
+      // Eskalations-Button wieder einblenden
+      document.getElementById('tal-escalate-btn').style.display = '';
     });
 
     // Init — warten bis i18n geladen
