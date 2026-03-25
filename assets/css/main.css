@@ -598,12 +598,13 @@ main {
 
   section { padding: 56px 0; }
 
-  .wf-nav__inner         { padding: 0 16px; gap: 0; justify-content: space-between; width: 100%; max-width: 100%; box-sizing: border-box; }
+  .wf-nav__inner         { padding: 0 12px; gap: 0; justify-content: space-between; width: 100%; max-width: 100vw; box-sizing: border-box; overflow: hidden; }
   .wf-nav__links         { display: none; }
-  .wf-nav__right         { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .wf-nav__hamburger     { display: flex; margin-left: 0; }
+  .wf-nav__right         { display: flex; align-items: center; gap: 4px; flex-shrink: 0; min-width: 0; }
+  .wf-nav__hamburger     { display: flex; flex-shrink: 0; }
   .wf-nav__classified    { display: none; }
-  .lang-toggle           { display: flex; }
+  .wf-nav__logo          { min-width: 0; overflow: hidden; }
+  .lang-toggle           { display: flex; flex-shrink: 0; }
 
   .wf-footer__inner {
     flex-direction: column;
