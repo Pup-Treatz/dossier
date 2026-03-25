@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# WRAFF FORCE — netlify.toml
+#
+# Netlify wird NUR für die Serverless Function genutzt.
+# Die Website selbst läuft weiterhin auf GitHub Pages.
+# ─────────────────────────────────────────────────────────────────────────────
+
+[build]
+  # Wir haben keine Build-Step — nur die Function
+  functions = "netlify/functions"
+  # Kein publish-Dir nötig da wir keine Site auf Netlify hosten
+
+[functions]
+  # Node.js Version für die Function
+  node_bundler = "esbuild"
+
+# CORS-Header für alle Anfragen an die Function
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin  = "https://wraff.agency"
+    Access-Control-Allow-Methods = "POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
