@@ -520,7 +520,7 @@
     .news-ticker__inner {
       display: flex; align-items: center;
       white-space: nowrap;
-      animation: tickerScroll 300s linear infinite;
+      animation: tickerScroll 400s linear infinite;
     }
     .news-ticker__inner:hover { animation-play-state: paused; }
     @keyframes tickerScroll {
@@ -637,14 +637,12 @@
 
 
   <!-- NEWS TICKER -->
-  <div style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-1);">
-    <div class="wrap" style="padding-top:0; padding-bottom:0;">
-      <div class="news-ticker" id="newsTicker" style="border:none;">
+  <div class="wrap" style="padding-top:0; padding-bottom:0;">
+    <div class="news-ticker" id="newsTicker">
         <div class="news-ticker__label" data-i18n="ticker.label">LIVE FEED</div>
         <div class="news-ticker__track">
           <div class="news-ticker__inner" id="tickerInner"></div>
         </div>
-      </div>
     </div>
   </div>
 
