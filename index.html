@@ -487,6 +487,54 @@
       text-shadow: 0 0 40px rgba(45,199,109,0.6);
     }
 
+
+    /* ── NEWS TICKER ── */
+    .news-ticker {
+      background: var(--bg-1);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      height: 36px; overflow: hidden;
+      position: relative;
+    }
+    .news-ticker__label {
+      flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 16px;
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      border-right: 1px solid var(--border);
+      height: 100%; background: var(--bg-1);
+      z-index: 2; white-space: nowrap;
+    }
+    .news-ticker__label::before {
+      content: '●';
+      animation: tickerPulse 1s ease-in-out infinite;
+    }
+    @keyframes tickerPulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    .news-ticker__track {
+      flex: 1; overflow: hidden;
+      display: flex; align-items: center;
+      height: 100%;
+    }
+    .news-ticker__inner {
+      display: flex; align-items: center;
+      white-space: nowrap;
+      animation: tickerScroll 120s linear infinite;
+    }
+    .news-ticker__inner:hover { animation-play-state: paused; }
+    @keyframes tickerScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .news-ticker__item {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
+      color: var(--text-2); padding: 0 32px; white-space: nowrap;
+    }
+    .news-ticker__sep {
+      color: var(--text-3); flex-shrink: 0;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .treat-strip__inner { flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -587,6 +635,15 @@
     </div>
   </section>
 
+
+  <!-- NEWS TICKER -->
+  <div class="news-ticker" id="newsTicker">
+    <div class="news-ticker__label" data-i18n="ticker.label">LIVE FEED</div>
+    <div class="news-ticker__track">
+      <div class="news-ticker__inner" id="tickerInner"></div>
+    </div>
+  </div>
+
   <!-- STATS + TREAT STRIP — same width as nav cards -->
   <div class="wrap">
 
@@ -677,7 +734,7 @@
               Officially recognized Wraff Force anthems. For use during ceremonies,
               briefings and dramatic slow-motion corridor walks only.
             </div>
-            <div class="nav-card__arrow">Enter Hall →</div>
+            <div class="nav-card__arrow" data-i18n="anthemHall.enterHall">Enter Hall →</div>
           </a>
 
         </div>
@@ -784,6 +841,41 @@
       // Warten bis Fonts geladen, dann starten
       document.fonts.ready.then(runVerify);
     }
+  </script>
+
+  <script>
+    // ── NEWS TICKER ──
+    (function() {
+      const lang = (window.WFi18n && window.WFi18n.getLang()) || localStorage.getItem('wf-lang') || 'en';
+      fetch('/assets/data/ticker.json')
+        .then(r => r.json())
+        .then(data => {
+          const items = data[lang] || data.en;
+          const inner = document.getElementById('tickerInner');
+          if (!inner) return;
+          // Doppelt für nahtlose Loop
+          const html = [...items, ...items].map(item =>
+            `<span class="news-ticker__item">${item}</span><span class="news-ticker__sep">·</span>`
+          ).join('');
+          inner.innerHTML = html;
+        })
+        .catch(() => {});
+
+      // Bei Sprachwechsel neu laden
+      document.addEventListener('wf:langChanged', () => {
+        const newLang = (window.WFi18n && window.WFi18n.getLang()) || 'en';
+        fetch('/assets/data/ticker.json')
+          .then(r => r.json())
+          .then(data => {
+            const items = data[newLang] || data.en;
+            const inner = document.getElementById('tickerInner');
+            if (!inner) return;
+            inner.innerHTML = [...items, ...items].map(item =>
+              `<span class="news-ticker__item">${item}</span><span class="news-ticker__sep">·</span>`
+            ).join('');
+          }).catch(() => {});
+      });
+    })();
   </script>
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/main.js"></script>
