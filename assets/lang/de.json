@@ -753,7 +753,15 @@
     "habinghorstName": "Operation Habinghorst Küche",
     "easterFoilName": "Oster-Folienfragment-Ermittlung",
     "flopsRelocationName": "Colonel Flops Verlagerungsereignis",
-    "unitTwoInvestName": "Unit Two — Laufende Ermittlung"
+    "unitTwoInvestName": "Unit Two — Laufende Ermittlung",
+    "treatLevels": {
+      "0": "Schlummernde Krümel",
+      "1": "Sichtbare Snack-Aktivität",
+      "2": "Unbeaufsichtigtes Leckerli-Szenario",
+      "3": "Bodenkontakt-Ereignis",
+      "4": "Mehrfach-Leckerli-Verschüttung",
+      "5": "Vollständiger Beutelkompromiss"
+    }
   },
   "classified": {
     "gateEyebrow": "Wraff Force · Eingeschränkter Zugang",
