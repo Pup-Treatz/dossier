@@ -30,9 +30,13 @@
     /* ── UNIT TWO BANNER ── */
     .unit-two-banner__inner {
       display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; flex-wrap: nowrap;
+      gap: 16px; flex-wrap: wrap;
       background: rgba(212,133,10,0.05); border: 1px solid rgba(212,133,10,0.2);
       border-radius: var(--radius); padding: 14px 20px;
+    }
+    @media (max-width: 600px) {
+      .unit-two-banner__inner { gap: 12px; }
+      .unit-two-banner__inner > div:last-child { flex-basis: 100%; justify-content: flex-start; }
     }
     .unit-two-banner__portrait { width: 36px; height: 36px; border-radius: var(--radius); object-fit: cover; object-position: top; border: 1px solid rgba(212,133,10,0.3); flex-shrink: 0; }
 
