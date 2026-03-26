@@ -35,21 +35,25 @@
       margin-top: var(--nav-height);
       background: var(--bg);
       overflow-x: hidden;
-      max-width: 100vw;
       width: 100%;
     }
 
     /* ── TERMINAL HEADER ──────────────────────────────────────────────────── */
     .term-header {
       flex-shrink: 0;
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .term-header__inner-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 10px 16px;
-      background: var(--bg-1);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
       min-width: 0;
     }
 
@@ -135,6 +139,10 @@
       flex: 1;
       overflow-y: auto;
       padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -295,9 +303,14 @@
     /* ── INPUT AREA ───────────────────────────────────────────────────────── */
     .term-input-area {
       flex-shrink: 0;
-      padding: 16px 24px 20px;
       background: var(--bg-1);
       border-top: 1px solid var(--border);
+    }
+
+    .term-input-area__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px 20px;
     }
 
     .term-input-row {
@@ -409,6 +422,7 @@
 
     <!-- Header bar -->
     <div class="term-header">
+      <div class="term-header__inner-wrap">
       <div class="term-header__left">
         <div>
           <div class="term-header__id">WF-COMM-01</div>
@@ -426,6 +440,7 @@
         <button class="term-clear-btn" id="termClearBtn" data-i18n="terminal.clearBtn">
           CLEAR SESSION
         </button>
+      </div>
       </div>
     </div>
 
@@ -450,6 +465,7 @@
 
     <!-- Input area -->
     <div class="term-input-area">
+      <div class="term-input-area__inner">
       <div class="term-input-row">
         <span class="term-input-prefix">&gt;_</span>
         <textarea
@@ -467,6 +483,7 @@
       </div>
       <div class="term-input-hint" id="termHint">
         ↵ Enter · Shift+Enter für neue Zeile
+      </div>
       </div>
     </div>
 
