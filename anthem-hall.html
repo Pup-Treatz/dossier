@@ -572,9 +572,37 @@ our battle cry is clear:</span>
 
       // ── Widget events ──
       widget.bind(SC.Widget.Events.READY, () => {
+        // getSounds() returns incomplete metadata for tracks beyond the first ~5.
+        // Fix: crawl each index sequentially via skip() + getCurrentSound() to force-load all metadata.
         widget.getSounds(sounds => {
-          tracks = sounds;
-          renderTracklist();
+          const total = sounds.length;
+          if (!total) { renderTracklist(); return; }
+
+          tracks = new Array(total).fill(null);
+          let loaded = 0;
+
+          function crawl(idx) {
+            if (idx >= total) return;
+            widget.skip(idx);
+            // small delay lets the widget resolve the track before we query it
+            setTimeout(() => {
+              widget.getCurrentSound(sound => {
+                tracks[idx] = {
+                  title:    sound.title    || sounds[idx].title    || `Track ${idx + 1}`,
+                  duration: sound.duration || sounds[idx].duration || 0
+                };
+                loaded++;
+                if (loaded === total) {
+                  widget.skip(0); // reset to first track
+                  renderTracklist();
+                } else {
+                  crawl(idx + 1);
+                }
+              });
+            }, 120);
+          }
+
+          crawl(0);
         });
       });
 
