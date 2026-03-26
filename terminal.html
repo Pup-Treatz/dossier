@@ -515,11 +515,13 @@
       const div = document.createElement('div');
       div.className = `term-msg term-msg--${role === 'user' ? 'user' : 'system'}`;
 
-      // Sanitise and convert newlines → <br>
+      // Sanitise, strip separator lines, convert newlines → <br>
       const safe = text
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
+        .replace(/^[-=─═]{3,}\s*$/gm, '')   // Trennlinien entfernen
+        .replace(/\n{3,}/g, '\n\n')          // max 2 Leerzeilen
         .replace(/\n/g, '<br>');
 
       div.innerHTML = `
