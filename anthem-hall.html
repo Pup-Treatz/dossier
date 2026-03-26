@@ -593,7 +593,8 @@ our battle cry is clear:</span>
                 };
                 loaded++;
                 if (loaded === total) {
-                  widget.skip(0); // reset to first track
+                  widget.skip(0);
+                  widget.pause(); // ensure no autoplay after crawl
                   renderTracklist();
                 } else {
                   crawl(idx + 1);
