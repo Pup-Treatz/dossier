@@ -14,7 +14,9 @@
     "files": "DATEIEN"
   },
   "footer": {
-    "tagline": "Pfoten auf dem Boden · Nasen in der Luft · Snacks gesichert"
+    "tagline": "Pfoten auf dem Boden · Nasen in der Luft · Snacks gesichert",
+    "impressum": "Impressum",
+    "datenschutz": "Datenschutz"
   },
   "classification": {
     "snackSensitive": "Klassifizierung: Snack-Sensitiv",
@@ -146,7 +148,7 @@
     "unitRosterLabel": "Einheitenliste — Aktives Personal",
     "honorary": "Ehrenamtlich",
     "classifiedNote": "Weitere Operative-Akten existieren auf höheren Freigabestufen. Zugang eingeschränkt. Wenden Sie sich an Ihren Handler für eine Autorisierung.",
-    "cardBody": "Vollständige Dossiers für alle 8 aktiven Wraff Force Operativen. Status, Division, Verhaltensprofil und Vorfallshistorie.",
+    "cardBody": "Vollständige Akten aller 8 aktiven Wraff Force Operativen. Status, Division, Verhaltensprofil und Vorkommenshistorie.",
     "treatzName": "PUPPY TREATZ",
     "treatzNote": "Primäre Operative und Gründungsmitglied. Anwesend beim Berliner Brezel-Vorfall. Alle nachfolgende Wraff Force Aktivität geht auf diesen Moment zurück.",
     "flopsName": "COLONEL FLOPS",
@@ -473,7 +475,7 @@
     "thRecovery": "Bergungsrate",
     "thStatus": "Status",
     "sealedNote": "* ERFOLG mit verzeichneten Anomalien. Zwei Akten versiegelt. WF-OP-006 wird nicht besprochen.",
-    "cardBody": "21 abgeschlossene Einsätze. Alle Ergebnisse dokumentiert. Einige Details aus operativen Sicherheitsgründen geschwärzt. 73% Snack-Bergungsrate aufrechterhalten."
+    "cardBody": "21 abgeschlossene Einsätze. Alle Ergebnisse dokumentiert. Einige Details aus Sicherheitsgründen geschwärzt. 73% Snack-Bergungsrate aufrechterhalten."
   },
   "incidentReports": {
     "title": "VORKOMMENSBERICHTE",
@@ -722,7 +724,7 @@
     "scDesc": "Alle 8 Wraff Force Kompositionen sind im offiziellen SoundCloud-Archiv verfügbar. Zugang ist unbeschränkt. Freigabe wird dennoch empfohlen. Das Archiv wird vom primären Operativen Puppy Treatz gepflegt. Unit Twos Hörverlauf wurde überprüft. Er war nicht hilfreich.",
     "scBtn": "Vollständiges Archiv öffnen →",
     "viewLyrics": "Liedtext anzeigen",
-    "cardBody": "Offiziell anerkannte Wraff Force Hymnen. Nur für Zeremonien, Briefings und dramatische Zeitlupen-Korridorgänge.",
+    "cardBody": "Offiziell anerkannte Wraff Force Hymnen. Ausschließlich für Zeremonien, Briefings und dramatische Zeitlupen-Flurläufe.",
     "subtitle": "Offizielle Audiodateien",
     "enterHall": "Hymnenraum betreten →"
   },
@@ -753,15 +755,7 @@
     "habinghorstName": "Operation Habinghorst Küche",
     "easterFoilName": "Oster-Folienfragment-Ermittlung",
     "flopsRelocationName": "Colonel Flops Verlagerungsereignis",
-    "unitTwoInvestName": "Unit Two — Laufende Ermittlung",
-    "treatLevels": {
-      "0": "Schlummernde Krümel",
-      "1": "Sichtbare Snack-Aktivität",
-      "2": "Unbeaufsichtigtes Leckerli-Szenario",
-      "3": "Bodenkontakt-Ereignis",
-      "4": "Mehrfach-Leckerli-Verschüttung",
-      "5": "Vollständiger Beutelkompromiss"
-    }
+    "unitTwoInvestName": "Unit Two — Laufende Ermittlung"
   },
   "classified": {
     "gateEyebrow": "Wraff Force · Eingeschränkter Zugang",
@@ -1130,23 +1124,5 @@
   },
   "ticker": {
     "label": "LIVE FEED"
-  },
-  "terminal": {
-    "title": "WF-TERMINAL",
-    "subtitle": "Automatisches Kommunikationssystem",
-    "classification": "Klassifizierung: Extern · Clearance-Level: Standard",
-    "inputPlaceholder": "Anfrage eingeben…",
-    "sendBtn": "SENDEN",
-    "welcomeTitle": "WF-TERMINAL AKTIV",
-    "welcomeBody": "Automatisches Kommunikationssystem der Wraff Force K9-Einheit. Clearance: Extern. Snack-Bedrohungsstufe: 2. Was ist deine Anfrage?",
-    "thinking": "VERARBEITUNG LÄUFT",
-    "errorMsg": "Verbindung unterbrochen. Bitte erneut versuchen.",
-    "clearBtn": "SESSION LÖSCHEN",
-    "clearConfirm": "Session wurde gelöscht. Alle Protokolle entfernt.",
-    "navCardCode": "WF-04",
-    "navCardTitle": "WF-TERMINAL",
-    "navCardSub": "Kommunikationssystem",
-    "navCardBody": "Automatisches Kommunikationssystem der Wraff Force. Clearance: Extern. Fragen erlaubt. Antworten variieren.",
-    "navCardArrow": "Terminal öffnen →"
   }
 }
